@@ -1,5 +1,0 @@
-com\cityquest\controller\HomeController.class
-com\cityquest\DatabaseLoader.class
-com\cityquest\CityQuestApiApplication.class
-com\cityquest\persistence\dbo\Employee.class
-com\cityquest\persistence\repository\EmployeeRepository.class
