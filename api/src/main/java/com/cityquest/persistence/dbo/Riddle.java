@@ -16,17 +16,17 @@ public class Riddle {
 	private String description;
 	private String solution;
 	private RiddleType type;
-	private RiddleGenre genre;
+	private RiddleCategory category;
 	private String attachment;
 
 	private Riddle() {}
 
-	public Riddle(String name, String description, String solution, RiddleType type, RiddleGenre genre) {
+	public Riddle(String name, String description, String solution, RiddleType type, RiddleCategory category) {
 		this.name = name;
 		this.description = description;
 		this.solution = solution;
 		this.type = type;
-		this.genre = genre;
+		this.category = category;
 	}
 
 	public Long getId() {
@@ -69,12 +69,12 @@ public class Riddle {
 		this.type = type;
 	}
 
-	public RiddleGenre getGenre() {
-		return genre;
+	public RiddleCategory getCategory() {
+		return category;
 	}
 
-	public void setGenre(RiddleGenre genre) {
-		this.genre = genre;
+	public void setCategory(RiddleCategory category) {
+		this.category = category;
 	}
 
 	public String getAttachement() {
