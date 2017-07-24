@@ -1,11 +1,14 @@
-import React from "react";
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
-import { List, ListItem, SearchBar } from "react-native-elements";
+/**
+ * Created by Dominik Schwarz on 24.07.2017.
+ */
+import React, { Component } from "react";
+import { FlatList, Button, StyleSheet, View, Text, ActivityIndicator } from "react-native";
+import { List, ListItem } from "react-native-elements";
 
-export default class App extends React.Component {
+
+export default class RiddleList extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             loading: false,
             data: [],
@@ -20,7 +23,7 @@ export default class App extends React.Component {
 
     makeRemoteRequest = () => {
         const { page } = this.state;
-        const url = `http://192.168.178.60:8080/api/riddles?page=${page}&size=20`;
+        const url = `http://192.168.178.67:8080/api/riddles?page=${page}&size=20`;
         this.setState({ loading: true });
 
         fetch(url)
