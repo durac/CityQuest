@@ -13,24 +13,20 @@ const auth0 = new Auth0(credentials);
 export default class App extends Component {
 
     state = {
-        isLoggedIn: false
+        isLoggedIn: false,
+        accessToken: ''
     }
 
     _onLogin() {
         auth0
             .webAuth
-            .authorize({scope: 'openid email', audience: 'https://' + credentials.domain + '/userinfo'})
+            .authorize({scope: 'openid profile read:riddles',   audience: 'https://cityquest.at/api/', responseType: 'token id_token'})
             .then(credentials => {
-                console.log(credentials.accessToken);
-                Alert.alert(
-                    'Success',
-                    'AccessToken: ' + credentials.accessToken,
-                    [
-                        {text: 'OK', onPress: () => console.log('OK Pressed')},
-                    ],
-                    { cancelable: false }
-                )
-                this.setState({isLoggedIn: true});
+                console.log(credentials);
+                this.setState({
+                    isLoggedIn: true,
+                    accessToken: credentials.accessToken
+                });
             })
             .catch(error => console.log(error));
     }
@@ -41,7 +37,7 @@ export default class App extends Component {
 
     render(){
         if (this.state.isLoggedIn)
-            return <RiddleList/>;
+            return <RiddleList accessToken={this.state.accessToken}/>;
         else
             return <Login
                 onLoginPress={() => this._onLogin()}

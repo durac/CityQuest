@@ -25,8 +25,10 @@ export default class RiddleList extends React.Component {
         const { page } = this.state;
         const url = `http://192.168.178.67:8080/api/riddles?page=${page}&size=20`;
         this.setState({ loading: true });
-
-        fetch(url)
+        fetch(url, {
+            headers: {
+                'Authorization': `Bearer ${this.props.accessToken}`
+            }})
             .then(res => res.json())
             .then(res => {
                 this.setState({

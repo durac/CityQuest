@@ -1,6 +1,6 @@
 # CityQuest
 
-CityQuest is a treasure hunting iOS and Android App which transforms the our cities into active learning environments.
+CityQuest is a treasure hunting iOS and Android App which transforms our cities into active learning environments.
 
 ------------------------------------------------------------
 
