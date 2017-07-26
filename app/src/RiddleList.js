@@ -2,9 +2,10 @@
  * Created by Dominik Schwarz on 24.07.2017.
  */
 import React, { Component } from "react";
-import { FlatList, Button, StyleSheet, View, Text, ActivityIndicator } from "react-native";
+import { Alert, FlatList, Button, StyleSheet, View, Text, ActivityIndicator } from "react-native";
 import { List, ListItem } from "react-native-elements";
 
+import Utils from "./utils/Utils";
 
 export default class RiddleList extends React.Component {
     constructor(props) {
@@ -29,6 +30,7 @@ export default class RiddleList extends React.Component {
             headers: {
                 'Authorization': `Bearer ${this.props.accessToken}`
             }})
+            .then(Utils.checkStatus)
             .then(res => res.json())
             .then(res => {
                 this.setState({
@@ -39,12 +41,15 @@ export default class RiddleList extends React.Component {
             })
             .catch(error => {
                 console.error(error);
+                Alert.alert(
+                    'Error',
+                    'Oh no! An error occured. Sorry for that :/'
+                )
             });
     };
 
     handleRefresh = () => {
-        this.setState(
-            {
+        this.setState({
                 page: 0,
                 refreshing: true
             },
@@ -55,8 +60,7 @@ export default class RiddleList extends React.Component {
     };
 
     handleLoadMore = () => {
-        this.setState(
-            {
+        this.setState({
                 page: this.state.page + 1
             },
             () => {

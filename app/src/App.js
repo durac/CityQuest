@@ -15,20 +15,25 @@ export default class App extends Component {
     state = {
         isLoggedIn: false,
         accessToken: ''
-    }
+    };
 
     _onLogin() {
         auth0
             .webAuth
             .authorize({scope: 'openid profile read:riddles',   audience: 'https://cityquest.at/api/', responseType: 'token id_token'})
             .then(credentials => {
-                console.log(credentials);
                 this.setState({
                     isLoggedIn: true,
                     accessToken: credentials.accessToken
                 });
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                console.log(error);
+                Alert.alert(
+                    'Error',
+                    'Oh no! An error occured. Sorry for that!'
+                )
+            });
     }
 
     componentDidMount() {
