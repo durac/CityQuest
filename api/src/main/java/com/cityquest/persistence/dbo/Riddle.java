@@ -1,23 +1,27 @@
 package com.cityquest.persistence.dbo;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * @author Dominik Schwarz
  */
 @Entity
-public class Riddle {
+public class Riddle implements Serializable{
 
 	@Id @GeneratedValue
 	private Long id;
+	@Column(unique=true)
 	private String name;
 	private String description;
 	private String solution;
 	private RiddleType type;
 	private RiddleCategory category;
 	private String attachment;
+	private Boolean used;
 
 	private Riddle() {}
 
