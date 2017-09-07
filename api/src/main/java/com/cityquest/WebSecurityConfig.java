@@ -17,19 +17,22 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @PropertySource("classpath:auth0.properties")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value(value = "${auth0.apiAudience}")
-    private String apiAudience;
-    @Value(value = "${auth0.issuer}")
-    private String issuer;
+    @Value(value = "${auth0.apiAudience}") private String apiAudience;
+
+    @Value(value = "${auth0.issuer}") private String issuer;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        JwtWebSecurityConfigurer
-                .forRS256(apiAudience, issuer)
+        JwtWebSecurityConfigurer.forRS256(apiAudience, issuer)
                 .configure(http)
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/riddles").hasAuthority("read:riddles")
-                .anyRequest().authenticated();
+                .antMatchers(HttpMethod.GET, "/")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/users")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/riddles")
+                .hasAuthority("read:riddles")
+                .anyRequest()
+                .authenticated();
     }
 }

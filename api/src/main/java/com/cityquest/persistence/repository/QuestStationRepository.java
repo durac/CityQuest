@@ -1,11 +1,11 @@
 package com.cityquest.persistence.repository;
 
-import com.cityquest.persistence.dbo.QuestStation;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import com.cityquest.persistence.model.QuestStation;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * @author Dominik Schwarz
  */
-public interface QuestStationRepository extends PagingAndSortingRepository<QuestStation, Long> {
+public interface QuestStationRepository extends JpaRepository<QuestStation, Long> {
 
 }

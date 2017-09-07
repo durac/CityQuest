@@ -1,6 +1,6 @@
 package com.cityquest.persistence.repository;
 
-import com.cityquest.persistence.dbo.Riddle;
+import com.cityquest.persistence.model.Riddle;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**

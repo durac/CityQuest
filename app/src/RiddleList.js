@@ -24,7 +24,7 @@ export default class RiddleList extends React.Component {
 
     makeRemoteRequest = () => {
         const { page } = this.state;
-        const url = `http://192.168.178.60:8080/api/riddles?page=${page}&size=20`;
+        const url = `http://192.168.178.67:8080/api/riddles?page=${page}&size=20`;
         this.setState({ loading: true });
         fetch(url, {
             headers: {
@@ -43,8 +43,8 @@ export default class RiddleList extends React.Component {
                 console.error(error);
                 Alert.alert(
                     'Error',
-                    'Oh no! An error occured. Sorry for that :/'
-                )
+                    'Oh no! An error occured. Sorry for that!'
+                );
             });
     };
 

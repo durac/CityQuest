@@ -1,11 +1,11 @@
 package com.cityquest.persistence.repository;
 
-import com.cityquest.persistence.dbo.FixedQuest;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import com.cityquest.persistence.model.FixedQuest;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * @author Dominik Schwarz
  */
-public interface FixedQuestRepository extends PagingAndSortingRepository<FixedQuest, Long> {
+public interface FixedQuestRepository extends JpaRepository<FixedQuest, Long> {
 
 }

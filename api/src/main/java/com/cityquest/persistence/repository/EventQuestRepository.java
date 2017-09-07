@@ -1,11 +1,11 @@
 package com.cityquest.persistence.repository;
 
-import com.cityquest.persistence.dbo.EventQuest;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import com.cityquest.persistence.model.EventQuest;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * @author Dominik Schwarz
  */
-public interface EventQuestRepository extends PagingAndSortingRepository<EventQuest, Long> {
+public interface EventQuestRepository extends JpaRepository<EventQuest, Long> {
 
 }
