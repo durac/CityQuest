@@ -1,7 +1,7 @@
 /**
  * Created by Dominik Schwarz on 26.07.2017.
  */
-import Alert from 'react-native';
+
 
 var Utils = {
     checkStatus: function(response) {
