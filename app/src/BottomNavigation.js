@@ -2,7 +2,7 @@
  * Created by Dominik Schwarz on 08.09.2017.
  */
 import React, { Component } from "react";
-import QuestListScreen from "./QuestListScreen/QuestListScreen.js";
+import QuestListScreen from "./QuestListScreen/index.js";
 import MyQuestsScreen from "./MyQuestsScreen/MyQuestsScreen.js";
 import QRScannerScreen from "./QRScannerScreen/QRScannerScreen.js";
 import ProfileScreen from "./ProfileScreen/ProfileScreen.js";

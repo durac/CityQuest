@@ -8,6 +8,7 @@ import { List, ListItem } from "react-native-elements";
 import Utils from "./utils/Utils";
 
 export default class RiddleList extends React.Component {
+    
     constructor(props) {
         super(props);
         this.state = {

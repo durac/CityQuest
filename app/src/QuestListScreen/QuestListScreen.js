@@ -12,6 +12,21 @@ const auth0 = new Auth0(credentials);
 
 export default class QuestListScreen extends Component {
 
+    static navigationOptions = ({ navigation }) => ({
+        header: (
+            <Header>
+                <Body>
+                <Title>Quest-Liste</Title>
+                </Body>
+                <Right>
+                    <Button transparent onPress={() => this._onLogin()}>
+                        <Icon name="more"/>
+                    </Button>
+                </Right>
+            </Header>
+        )
+    });
+
     state = {
         isLoggedIn: false,
         accessToken: '',
@@ -53,19 +68,9 @@ export default class QuestListScreen extends Component {
     render() {
         return (
             <Container>
-                <Header>
-                    <Body>
-                    <Title>Quest-Liste</Title>
-                    </Body>
-                    <Right>
-                        <Button transparent onPress={() => this._onLogin()}>
-                            <Icon name="more"/>
-                        </Button>
-                    </Right>
-                </Header>
                 <Content padder>
                     <Card>
-                        <CardItem>
+                        <CardItem button onPress={() => this.props.navigation.navigate("QuestDetails")}>
                             <Left>
                                 <Image
                                     style={{width: 120, height: 120, borderRadius: 10}}
