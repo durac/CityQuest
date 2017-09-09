@@ -19,7 +19,7 @@ export default class QuestListScreen extends Component {
                 <Title>Quest-Liste</Title>
                 </Body>
                 <Right>
-                    <Button transparent onPress={() => this._onLogin()}>
+                    <Button transparent onPress={() => this.onLogin()}>
                         <Icon name="more"/>
                     </Button>
                 </Right>
@@ -33,7 +33,7 @@ export default class QuestListScreen extends Component {
         userId: ''
     };
 
-    _onLogin() {
+    onLogin() {
         auth0
             .webAuth
             .authorize({scope: 'openid profile read:riddles',   audience: 'https://cityquest.at/api/', responseType: 'token id_token'})

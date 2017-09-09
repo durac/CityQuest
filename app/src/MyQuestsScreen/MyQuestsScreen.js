@@ -12,6 +12,7 @@ export default class QRScannerScreen extends Component {
 
     state = {
     };
+    
     componentDidMount() {
         //Do something here like hide splash screen
     }
