@@ -32,8 +32,7 @@ public class QuestStation implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "riddle_id") private Riddle riddle;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(
+    @LazyCollection(LazyCollectionOption.FALSE) @OneToMany(
             mappedBy = "questStation",
             orphanRemoval = true) private List<SolvedQuestStation> users = new ArrayList<>();
 

@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * @author Dominik Schwarz
  */
-public class EventQuestDto extends Quest{
+public class EventQuestDto extends Quest {
 
     private Date startDate;
 

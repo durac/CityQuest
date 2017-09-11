@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Dominik Schwarz
  */
-public class QuestDto{
+public class QuestDto {
 
     private Long id;
 

@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * @author Dominik Schwarz
  */
-public class SolvedQuestStationDto{
+public class SolvedQuestStationDto {
 
     private UserDto user;
 

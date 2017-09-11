@@ -1,11 +1,11 @@
 package com.cityquest.persistence.repository;
 
 import com.cityquest.persistence.model.Riddle;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Dominik Schwarz
  */
-public interface RiddleRepository extends JpaRepository<Riddle, Long> {
+public interface RiddleRepository extends PagingAndSortingRepository<Riddle, Long> {
 
 }

@@ -35,7 +35,8 @@ public class User implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE) @JoinTable(
             name = "user_quest",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "quest_id", referencedColumnName = "id")) private List<Quest> quests = new ArrayList<>();
+            inverseJoinColumns = @JoinColumn(name = "quest_id", referencedColumnName = "id")) private List<Quest> quests =
+            new ArrayList<>();
 
     private User() {
     }
