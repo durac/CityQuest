@@ -30,7 +30,7 @@ public class QuestStation implements Serializable {
 
     private String qrcode;
 
-    @ManyToOne @JoinColumn(name = "riddle_id") private Riddle riddle;
+    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "riddle_id") private Riddle riddle;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(
@@ -52,20 +52,20 @@ public class QuestStation implements Serializable {
         this.qrcode = qrcode;
     }
 
-    public Quest getQuest() {
-        return quest;
-    }
-
-    public void setQuest(Quest quest) {
-        this.quest = quest;
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Quest getQuest() {
+        return quest;
+    }
+
+    public void setQuest(Quest quest) {
+        this.quest = quest;
     }
 
     public Integer getSeqNr() {

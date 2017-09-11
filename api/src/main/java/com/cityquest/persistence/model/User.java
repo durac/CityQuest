@@ -3,7 +3,6 @@ package com.cityquest.persistence.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -123,16 +122,6 @@ public class User implements Serializable {
 
     public void setSolvedQuestStations(List<SolvedQuestStation> solvedQuestStations) {
         this.solvedQuestStations = solvedQuestStations;
-    }
-
-    public void addCurrentQuestStation(QuestStation qs) {
-        if (solvedQuestStations != null && !solvedQuestStations.isEmpty()) {
-            solvedQuestStations.get(solvedQuestStations.size() - 1).setEndDate(new Date());
-        }
-        SolvedQuestStation solvedQS = new SolvedQuestStation(this, qs);
-        solvedQS.setStartDate(new Date());
-        solvedQuestStations.add(solvedQS);
-        qs.getUsers().add(solvedQS);
     }
 
     public List<Quest> getQuests() {

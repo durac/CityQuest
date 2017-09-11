@@ -1,20 +1,17 @@
-package com.cityquest.persistence.model;
+package com.cityquest.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.io.Serializable;
+import com.cityquest.persistence.model.Riddle;
+import com.cityquest.persistence.model.RiddleCategory;
+import com.cityquest.persistence.model.RiddleType;
 
 /**
  * @author Dominik Schwarz
  */
-@Entity
-public class Riddle implements Serializable {
+public class RiddleDto {
 
-    @Id @GeneratedValue private Long id;
+    private Long id;
 
-    @Column(unique = true) private String name;
+    private String name;
 
     private String description;
 
@@ -28,15 +25,22 @@ public class Riddle implements Serializable {
 
     private Boolean used;
 
-    private Riddle() {
-    }
+    public static RiddleDto of(Riddle riddle) {
+        if (riddle == null) {
+            return null;
+        }
 
-    public Riddle(String name, String description, String solution, RiddleType type, RiddleCategory category) {
-        this.name = name;
-        this.description = description;
-        this.solution = solution;
-        this.type = type;
-        this.category = category;
+        RiddleDto riddleDto = new RiddleDto();
+        riddleDto.setId(riddle.getId());
+        riddleDto.setName(riddle.getName());
+        riddleDto.setDescription(riddle.getDescription());
+        riddleDto.setSolution(riddle.getSolution());
+        riddleDto.setType(riddle.getType());
+        riddleDto.setCategory(riddle.getCategory());
+        riddleDto.setAttachement(riddle.getAttachement());
+        riddleDto.setUsed(riddle.getUsed());
+
+        return riddleDto;
     }
 
     public Long getId() {
