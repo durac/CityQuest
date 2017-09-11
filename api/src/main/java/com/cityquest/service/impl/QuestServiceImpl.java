@@ -9,6 +9,7 @@ import com.cityquest.service.QuestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Dominik Schwarz on 11.09.2017.
  */
+@Service
 public class QuestServiceImpl implements QuestService {
 
     private static final Logger logger = LoggerFactory.getLogger(QuestServiceImpl.class);
@@ -30,7 +32,7 @@ public class QuestServiceImpl implements QuestService {
 
         return fixedQuestRepository.findByStatus(status)
                 .stream()
-                .map(s -> (FixedQuestDto) FixedQuestDto.of(s))
+                .map(s -> FixedQuestDto.of(s))
                 .collect(Collectors.toList());
     }
 

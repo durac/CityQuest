@@ -9,14 +9,16 @@ import Camera from 'react-native-camera';
 
 export default class QRScannerScreen extends Component {
 
-    state = {
-        dimensions: undefined
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            dimensions: undefined
+        };
+    }
 
     onQrCodeRead() {
         alert("hey spotted barcode!");
     }
-
 
     componentDidMount() {
         //Do something here like hide splash screen
@@ -24,7 +26,7 @@ export default class QRScannerScreen extends Component {
 
     render() {
         if (this.state.dimensions) {
-            var { dimensions } = this.state
+            var { dimensions } = this.state;
             var { width, height } = dimensions
         }
         return (
@@ -58,8 +60,10 @@ export default class QRScannerScreen extends Component {
     }
 
     onLayout = event => {
-        if (this.state.dimensions) return // layout was already called
-        let {width, height} = event.nativeEvent.layout
-        this.setState({dimensions: {width, height}})
+        if (this.state.dimensions) return; // layout was already called
+        let {width, height} = event.nativeEvent.layout;
+        this.setState({
+            dimensions: {width, height}
+        });
     }
 }

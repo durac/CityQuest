@@ -93,7 +93,7 @@ export default (variables = variable) => {
 					alignSelf: 'stretch',
 				},
 			},
-			flex: 1,
+			flex: 1.5,
 			alignSelf: 'stretch',
 			alignItems: 'flex-start',
 		},
@@ -150,7 +150,7 @@ export default (variables = variable) => {
 			'NativeBase.Switch': {
 				alignSelf: null,
 			},
-			flex: 0.8,
+			flex: 0.5,
 		},
 		'.header': {
 			'NativeBase.Text': {
