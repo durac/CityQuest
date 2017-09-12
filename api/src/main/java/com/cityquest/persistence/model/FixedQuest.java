@@ -17,7 +17,7 @@ public class FixedQuest extends Quest implements Serializable {
     }
 
     public FixedQuest(String name, QuestStatus status, String description, QuestDifficulty difficulty, Integer duration,
-            String area) {
-        super(name, status, description, difficulty, duration, area);
+            String area, String image) {
+        super(name, status, description, difficulty, duration, area, image);
     }
 }

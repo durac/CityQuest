@@ -25,6 +25,8 @@ public class Quest implements Serializable {
 
     private String area;
 
+    private String image;
+
     @OneToMany(mappedBy = "quest") private List<QuestStation> questStations = new ArrayList<>();
 
     @ManyToMany(
@@ -40,13 +42,14 @@ public class Quest implements Serializable {
     }
 
     public Quest(String name, QuestStatus status, String description, QuestDifficulty difficulty, Integer duration,
-            String area) {
+            String area, String image) {
         this.name = name;
         this.status = status;
         this.description = description;
         this.difficulty = difficulty;
         this.duration = duration;
         this.area = area;
+        this.image = image;
     }
 
     public Long getId() {
@@ -103,6 +106,14 @@ public class Quest implements Serializable {
 
     public void setArea(String area) {
         this.area = area;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public List<QuestStation> getQuestStations() {

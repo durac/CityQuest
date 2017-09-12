@@ -3,7 +3,7 @@
  */
 import React, {Component} from "react";
 import Auth0 from "react-native-auth0";
-import {Alert, StyleSheet} from "react-native";
+import {Alert, StyleSheet, View} from "react-native";
 import {StackNavigator} from "react-navigation";
 import {
     StyleProvider,
@@ -24,8 +24,7 @@ import {
     H2,
     H3
 } from "native-base";
-import Moment from 'moment';
-
+import Moment from "moment";
 import Utils from "../utils/Utils";
 
 var credentials = require('../utils/auth0-credentials');
@@ -63,7 +62,7 @@ export default class QuestListScreen extends Component {
                 console.log(error);
                 Alert.alert('Error', 'Oh no! An error occured. Sorry for that!');
             });
-    }
+    };
 
     static navigationOptions = ({navigation}) => ({
         header: (
@@ -85,6 +84,7 @@ export default class QuestListScreen extends Component {
         this.state = {
             fixedQuests: [],
             eventQuests: [],
+            ready: false,
             loading: true,
             refreshing: false,
             isLoggedIn: false,
@@ -102,86 +102,84 @@ export default class QuestListScreen extends Component {
     }
 
     render() {
-        if (this.state.loading)
-            return (
-                <Container>
-                    <Content padder>
+        const fixedQuests = this.state.fixedQuests.map((f, i) =>
+            <Card key={i}>
+                <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {fixedQuest: f})}
+                          style={styles.cardItem}>
+                    <Left>
+                        <Thumbnail square
+                                   style={styles.thumbnail}
+                                   source={{uri: f.image}}/>
+                    </Left>
+                    <Body>
+                    <H3 style={{marginTop : 10}}>{f.name}</H3>
+                    <Text style={{marginTop : 8}}></Text>
+                    <Text style={styles.infoText}><Icon name="pin" style={styles.infoText}/> {f.area}</Text>
+                    <Text style={styles.infoText}><Icon name="time" style={styles.infoText}/> {f.duration} min</Text>
+                    {this.difficultyToSymbol(f.difficulty)}
+                    </Body>
+                    <Right>
+                        <Icon name="ios-arrow-forward" style={styles.cardArrow}/>
+                    </Right>
+                </CardItem>
+            </Card>
+        );
+        const eventQuests = this.state.eventQuests.map((e, i) =>
+            <Card key={i}>
+                <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {eventQuest: e})}
+                          style={styles.cardItem}>
+                    <Left>
+                        <Thumbnail square
+                                   style={styles.thumbnail}
+                                   source={{uri: e.image}}
+                        />
+                    </Left>
+                    <Body>
+                    <H3 style={{marginTop : 10}}>{e.name}</H3>
+                    <Text style={{marginTop : 3}}></Text>
+                    <Text style={styles.infoText}><Icon name="play"
+                                                        style={styles.infoText}/> {Moment(e.startDate).format('DD.MM.YYYY HH:mm')}
+                    </Text>
+                    <Text style={styles.infoText}><Icon name="pin" style={styles.infoText}/> {e.area}</Text>
+                    <Text style={styles.infoText}><Icon name="time" style={styles.infoText}/> {e.duration} min</Text>
+                    {this.difficultyToSymbol(e.difficulty)}
+                    </Body>
+                    <Right>
+                        <Icon name="ios-arrow-forward" style={styles.cardArrow}/>
+                    </Right>
+                </CardItem>
+            </Card>
+        );
+        return (
+            <Container>
+                <Content padder>
+                    { this.state.loading ?
                         <Spinner color='#634405'/>
-                    </Content>
-                </Container>
-            )
-        else {
-            const fixedQuests = this.state.fixedQuests.map((f, i) =>
-                <Card key={i}>
-                    <CardItem button onPress={() => this.props.navigation.navigate("QuestDetails")} style={styles.cardItem}>
-                        <Left>
-                            <Thumbnail square
-                                       style={styles.thumbnail}
-                                       source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}/>
-                        </Left>
-                        <Body>
-                            <H3 style={{marginTop : 10}}>{f.name}</H3>
-                            <Text style={{marginTop : 8}}></Text>
-                            <Text style={styles.infoText}><Icon name="pin" style={styles.infoText}/> {f.area}</Text>
-                            <Text style={styles.infoText}><Icon name="time" style={styles.infoText}/> {f.duration} min</Text>
-                            {this.difficultyToSymbol(f.difficulty)}
-                        </Body>
-                        <Right>
-                            <Icon name="ios-arrow-forward" style={styles.cardArrow}/>
-                        </Right>
-                    </CardItem>
-                </Card>
-            );
-            const eventQuests = this.state.eventQuests.map((e, i) =>
-                <Card key={i}>
-                    <CardItem button onPress={() => this.props.navigation.navigate("QuestDetails")} style={styles.cardItem}>
-                        <Left>
-                            <Thumbnail square
-                                       style={styles.thumbnail}
-                                       source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
-                            />
-                        </Left>
-                        <Body>
-                            <H3  style={{marginTop : 10}}>{e.name}</H3>
-                            <Text style={{marginTop : 3}}></Text>
-                            <Text style={styles.infoText}><Icon name="play" style={styles.infoText}/> {Moment(e.startDate).format('DD.MM.YYYY HH:mm')}</Text>
-                            <Text style={styles.infoText}><Icon name="pin" style={styles.infoText}/> {e.area}</Text>
-                            <Text style={styles.infoText}><Icon name="time" style={styles.infoText}/> {e.duration} min</Text>
-                            {this.difficultyToSymbol(e.difficulty)}
-                        </Body>
-                        <Right>
-                            <Icon name="ios-arrow-forward" style={styles.cardArrow}/>
-                        </Right>
-                    </CardItem>
-                </Card>
-            );
-            return (
-                <Container>
-                    <Content padder>
-                        <Text style={{marginLeft : 8}}>Dauerhafte Quests</Text>
-                        {fixedQuests}
-                        <Text style={{marginLeft : 8}}>Event-Quests</Text>
-                        {eventQuests}
-                        <Text style={{marginLeft : 5}}></Text>
-                    </Content>
-                </Container>
-            );
-        }
+                        : <View>
+                            {fixedQuests}
+                            <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3>
+                            {eventQuests}
+                            <Text style={{marginLeft : 5}}></Text>
+                        </View>
+                    }
+                </Content>
+            </Container>
+        );
     }
 
     difficultyToSymbol(difficulty) {
-        if(difficulty == 'EASY') {
+        if (difficulty == 'EASY') {
             return <Text><Icon name="school" style={styles.difficultyIcon}/>
-                 <Icon name="school" style={[styles.difficultyIcon, {color: 'lightgrey'}]}/>
-                 <Icon name="school" style={[styles.difficultyIcon, {fontSize: 18, color: 'lightgrey'}]}/></Text>;
-        } else if(difficulty == 'MEDIUM') {
+                <Icon name="school" style={[styles.difficultyIcon, {color: 'lightgrey'}]}/>
+                <Icon name="school" style={[styles.difficultyIcon, {fontSize: 18, color: 'lightgrey'}]}/></Text>;
+        } else if (difficulty == 'MEDIUM') {
             return <Text><Icon name="school" style={styles.difficultyIcon}/>
-                 <Icon name="school" style={styles.difficultyIcon}/>
-                 <Icon name="school" style={[styles.difficultyIcon, {color: 'lightgrey'}]}/></Text>;
+                <Icon name="school" style={styles.difficultyIcon}/>
+                <Icon name="school" style={[styles.difficultyIcon, {color: 'lightgrey'}]}/></Text>;
         } else {
             return <Text><Icon name="school" style={styles.difficultyIcon}/>
-                 <Icon name="school" style={styles.difficultyIcon} />
-                 <Icon name="school" style={styles.difficultyIcon}/></Text>;
+                <Icon name="school" style={styles.difficultyIcon}/>
+                <Icon name="school" style={styles.difficultyIcon}/></Text>;
         }
     }
 
@@ -202,7 +200,7 @@ export default class QuestListScreen extends Component {
             })
             .catch(error => {
                 this.setState({loading: false});
-                console.error(error);
+                console.warn(error);
                 Alert.alert(
                     'Error',
                     'Oh no! An error occured. Sorry for that!'
@@ -227,7 +225,7 @@ export default class QuestListScreen extends Component {
             })
             .catch(error => {
                 this.setState({loading: false});
-                console.error(error);
+                console.warn(error);
                 Alert.alert(
                     'Error',
                     'Oh no! An error occured. Sorry for that!'

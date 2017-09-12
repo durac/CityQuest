@@ -37,6 +37,7 @@ public class EventQuestDto extends Quest {
         questDto.setDifficulty(quest.getDifficulty());
         questDto.setDuration(quest.getDuration());
         questDto.setArea(quest.getArea());
+        questDto.setImage(quest.getImage());
         questDto.setStartDate(quest.getStartDate());
         questDto.setEndDate(quest.getEndDate());
         questDto.setMinStarter(quest.getMinStarter());

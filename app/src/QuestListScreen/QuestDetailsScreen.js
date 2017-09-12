@@ -5,7 +5,7 @@ import React, {Component} from "react";
 import Auth0 from 'react-native-auth0';
 import { Alert, Image } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import { StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Card, CardItem} from 'native-base';
+import { StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, H1} from 'native-base';
 
 var credentials = require('../utils/auth0-credentials');
 const auth0 = new Auth0(credentials);
@@ -24,7 +24,7 @@ export default class QuestDetailsScreen extends Component {
                 <Title>Quest Details</Title>
                 </Body>
                 <Right>
-                    <Button transparent onPress={() => this._onLogin()}>
+                    <Button transparent>
                         <Icon name="more"/>
                     </Button>
                 </Right>
@@ -32,21 +32,25 @@ export default class QuestDetailsScreen extends Component {
         )
     });
 
-    state = {
-        isLoggedIn: false,
-        accessToken: '',
-        userId: ''
-    };
+    constructor(props) {
+        super(props);
+    }
 
     componentDidMount() {
         //Do something here like hide splash screen
     }
 
     render() {
+        let quest = [];
+        if (this.props.navigation.state.params.eventQuest == undefined) {
+            quest = this.props.navigation.state.params.fixedQuest;
+        } else {
+            quest = this.props.navigation.state.params.eventQuest;
+        }
         return (
             <Container>
                 <Content padder>
-                    <Text>Details</Text>
+                    <H1>{quest.name}</H1>
                 </Content>
             </Container>
         );

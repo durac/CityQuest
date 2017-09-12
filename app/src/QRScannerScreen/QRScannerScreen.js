@@ -2,17 +2,19 @@
  * Created by Dominik Schwarz on 08.09.2017.
  */
 import React, {Component} from "react";
-import { Alert, StyleSheet} from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import { StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text } from 'native-base';
-import Camera from 'react-native-camera';
+import {Alert, StyleSheet, InteractionManager} from "react-native";
+import {StackNavigator} from "react-navigation";
+import {StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon} from "native-base";
+import Camera from "react-native-camera";
+import { withNavigationFocus } from 'react-navigation-is-focused-hoc'
 
-export default class QRScannerScreen extends Component {
+class QRScannerScreen extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            dimensions: undefined
+            dimensions: undefined,
+            ready: false
         };
     }
 
@@ -21,41 +23,41 @@ export default class QRScannerScreen extends Component {
     }
 
     componentDidMount() {
-        //Do something here like hide splash screen
+        InteractionManager.runAfterInteractions(() => this.setState({ready: true}));
     }
 
     render() {
         if (this.state.dimensions) {
-            var { dimensions } = this.state;
-            var { width, height } = dimensions
+            var {dimensions} = this.state;
+            var {width, height} = dimensions
         }
         return (
-                <Container>
-                    <Header>
-                        <Body>
-                        <Title>Scan QR-Code</Title>
-                        </Body>
-                        <Right>
-                            <Button transparent onPress={() => this._onLogin()}>
-                                <Icon name="more"/>
-                            </Button>
-                        </Right>
-                    </Header>
-                    <Content onLayout={this.onLayout}>
-                        {
-                            this.state.dimensions ?
-                                <Camera
-                                    ref={(cam) => {
+            <Container>
+                <Header>
+                    <Body>
+                    <Title>Scan QR-Code</Title>
+                    </Body>
+                    <Right>
+                        <Button transparent onPress={() => this._onLogin()}>
+                            <Icon name="more"/>
+                        </Button>
+                    </Right>
+                </Header>
+                <Content onLayout={this.onLayout} style={{backgroundColor: 'black'}}>
+                    {
+                        this.state.dimensions && this.props.isFocused && this.state.ready ?
+                            <Camera
+                                ref={(cam) => {
                                         this.camera = cam;
                                     }}
-                                    style={{height}}
-                                    aspect={Camera.constants.Aspect.full}
-                                    onBarCodeRead={()=>{this.onQrCodeRead()}}
-                                    barCodeTypes={[Camera.constants.BarCodeType.qr]}/>
-                                : undefined
-                        }
-                    </Content>
-                </Container>
+                                style={{height}}
+                                aspect={Camera.constants.Aspect.full}
+                                onBarCodeRead={()=>{this.onQrCodeRead()}}
+                                barCodeTypes={[Camera.constants.BarCodeType.qr]}/>
+                            : undefined
+                    }
+                </Content>
+            </Container>
         );
     }
 
@@ -67,3 +69,6 @@ export default class QRScannerScreen extends Component {
         });
     }
 }
+
+export default withNavigationFocus(QRScannerScreen, 'QRScanner')
+

@@ -120,28 +120,28 @@ public class DatabaseLoader implements CommandLineRunner {
     private void saveFixedQuests() {
         this.fixedQuestRepo.save(new FixedQuest("History Walk", QuestStatus.ACTIVE,
                 "Diese Schatzsuche führt euch durch den historischen 1. Wiener Gemeindebezirk. Viel Spaß beim History Walk.",
-                QuestDifficulty.EASY, 120, "1. Bezirk"));
+                QuestDifficulty.EASY, 120, "1. Bezirk", "https://i.imgur.com/qJHl9UO.png"));
         this.fixedQuestRepo.save(new FixedQuest("Draft Quest", QuestStatus.DRAFT,
                 "Diese Schatzsuche führt euch durch den historischen 1. Wiener Gemeindebezirk. Viel Spaß beim History Walk.",
-                QuestDifficulty.MEDIUM, 150, "5. Bezirk"));
+                QuestDifficulty.MEDIUM, 150, "5. Bezirk", "https://i.imgur.com/qJHl9UO.png"));
         this.fixedQuestRepo.save(new FixedQuest("Already Closed", QuestStatus.CLOSED,
                 "Diese Schatzsuche führt euch durch den historischen 1. Wiener Gemeindebezirk. Viel Spaß beim History Walk.",
-                QuestDifficulty.HARD, 180, "7. Bezirk"));
+                QuestDifficulty.HARD, 180, "7. Bezirk", "https://i.imgur.com/qJHl9UO.png"));
     }
 
     private void saveEventQuests() throws Exception {
         this.eventQuestRepo.save(new EventQuest("Logic Quest", QuestStatus.REGISTRATION,
                 "Bei dieser Quest müsst ihr eine Reihe kniffliger Logikrätsel lösen. Aufgeben ist keine Option!",
-                QuestDifficulty.HARD, 120, "Stadtpark", dateFormat.parse("2017-10-01 18:00"),
+                QuestDifficulty.HARD, 120, "Stadtpark", "https://i.imgur.com/3207Wla.png", dateFormat.parse("2017-10-01 18:00"),
                 dateFormat.parse("2017-10-02 00:00"), 10, 100, dateFormat.parse("2017-09-15 10:00"),
                 dateFormat.parse("2017-10-01 15:00"), ""));
         this.eventQuestRepo.save(new EventQuest("Prater Gaudi", QuestStatus.REGISTRATION,
                 "Entdecke den historischen und modernen Prater auf einer neuer Art. Viel Spaß!", QuestDifficulty.MEDIUM, 90,
-                "Prater", dateFormat.parse("2017-10-10 18:00"), dateFormat.parse("2017-10-10 23:00"), 20, 200,
+                "Prater", "https://i.imgur.com/zeAllnU.png", dateFormat.parse("2017-10-10 18:00"), dateFormat.parse("2017-10-10 23:00"), 20, 200,
                 dateFormat.parse("2017-09-20 10:00"), dateFormat.parse("2017-10-11 15:00"), ""));
         this.eventQuestRepo.save(new EventQuest("Test Quest", QuestStatus.DRAFT,
                 "Bei dieser Quest müsst ihr eine Reihe kniffliger Logikrätsel lösen. Aufgeben ist keine Option!",
-                QuestDifficulty.HARD, 150, "7. Bezirk", dateFormat.parse("2017-10-03 18:00"),
+                QuestDifficulty.HARD, 150, "7. Bezirk", "https://i.imgur.com/3207Wla.png", dateFormat.parse("2017-10-03 18:00"),
                 dateFormat.parse("2017-10-04 00:00"), 10, 100, dateFormat.parse("2017-09-17 10:00"),
                 dateFormat.parse("2017-10-02 15:00"), ""));
     }

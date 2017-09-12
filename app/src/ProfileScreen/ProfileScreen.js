@@ -2,17 +2,19 @@
  * Created by Dominik Schwarz on 08.09.2017.
  */
 import React, {Component} from "react";
-import { Alert } from 'react-native';
+import { Alert} from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import { StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text } from 'native-base';
+import { StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Spinner} from 'native-base';
 
 export default class QRScannerScreen extends Component {
 
-    state = {
-    };
-    
+    constructor(props) {
+        super(props);
+        this.state = {
+        };
+    }
+
     componentDidMount() {
-        //Do something here like hide splash screen
     }
 
     render() {

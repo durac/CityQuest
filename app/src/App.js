@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { StyleProvider, Container, Content, Picker, Button, Text } from "native-base";
+import { StyleProvider } from "native-base";
+import { updateFocus } from 'react-navigation-is-focused-hoc'
+
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
 import BottomNavigation from "./BottomNavigation.js";
@@ -24,7 +25,7 @@ export default class App extends Component {
         }
         return (
             <StyleProvider style={getTheme(commonColor)}>
-                <BottomNavigation />
+                <BottomNavigation onNavigationStateChange={(prevState, currentState) => { updateFocus(currentState)}}/>
             </StyleProvider>
         );
     }

@@ -26,6 +26,8 @@ public class QuestDto {
 
     private String area;
 
+    private String image;
+
     private List<QuestStationDto> questStations = new ArrayList<>();
 
     private List<UserDto> users = new ArrayList<>();
@@ -43,6 +45,7 @@ public class QuestDto {
         questDto.setDifficulty(quest.getDifficulty());
         questDto.setDuration(quest.getDuration());
         questDto.setArea(quest.getArea());
+        questDto.setImage(quest.getImage());
 
         return questDto;
     }
@@ -117,5 +120,13 @@ public class QuestDto {
 
     public void setUsers(List<UserDto> users) {
         this.users = users;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

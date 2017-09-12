@@ -20,6 +20,7 @@ public class FixedQuestDto extends QuestDto {
         questDto.setDifficulty(quest.getDifficulty());
         questDto.setDuration(quest.getDuration());
         questDto.setArea(quest.getArea());
+        questDto.setImage(quest.getImage());
 
         return questDto;
     }

@@ -4,17 +4,19 @@
 import React, {Component} from "react";
 import { Alert } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import { StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text } from 'native-base';
+import { StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Spinner} from 'native-base';
 import getTheme from '../../native-base-theme/components';
 import commonColor from '../../native-base-theme/variables/commonColor';
 
 export default class QRScannerScreen extends Component {
 
-    state = {
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+        };
+    }
     
     componentDidMount() {
-        //Do something here like hide splash screen
     }
 
     render() {
