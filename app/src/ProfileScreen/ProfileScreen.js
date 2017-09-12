@@ -5,6 +5,7 @@ import React, {Component} from "react";
 import { Alert} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Spinner} from 'native-base';
+import {login} from '../utils/Utils';
 
 export default class QRScannerScreen extends Component {
 
@@ -17,6 +18,7 @@ export default class QRScannerScreen extends Component {
     componentDidMount() {
     }
 
+
     render() {
         return (
                 <Container>
@@ -25,7 +27,7 @@ export default class QRScannerScreen extends Component {
                         <Title>Profil</Title>
                         </Body>
                         <Right>
-                            <Button transparent onPress={() => this._onLogin()}>
+                            <Button transparent onPress={login}>
                                 <Icon name="more"/>
                             </Button>
                         </Right>

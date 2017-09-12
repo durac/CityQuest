@@ -3,7 +3,7 @@
  */
 import React, {Component} from "react";
 import Auth0 from "react-native-auth0";
-import {Alert, StyleSheet, View, ListView, RefreshControl} from "react-native";
+import {Alert, StyleSheet, View, ListView, RefreshControl, AsyncStorage} from "react-native";
 import {StackNavigator} from "react-navigation";
 import {
     StyleProvider,
@@ -25,44 +25,12 @@ import {
     H3
 } from "native-base";
 import Moment from "moment";
-import {fetchData} from "../utils/Utils";
+import {fetchData, login} from "../utils/Utils";
 
 var credentials = require('../utils/auth0-credentials');
 const auth0 = new Auth0(credentials);
 
 export default class QuestListScreen extends Component {
-
-    static onLogin() {
-        auth0
-            .webAuth
-            .authorize({
-                scope: 'openid profile read:riddles',
-                audience: 'https://cityquest.at/api/',
-                responseType: 'token id_token'
-            })
-            .then(credentials => {
-                auth0
-                    .auth
-                    .userInfo({token: credentials.accessToken})
-                    .then(userinfo => {
-                        this.setState({
-                            isLoggedIn: true,
-                            accessToken: credentials.accessToken,
-                            userId: userinfo.sub.split('|')[1]
-                        });
-
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        Alert.alert('Error', 'Oh no! An error occured. Sorry for that!');
-                    });
-
-            })
-            .catch(error => {
-                console.log(error);
-                Alert.alert('Error', 'Oh no! An error occured. Sorry for that!');
-            });
-    };
 
     static navigationOptions = ({navigation}) => ({
         header: (
@@ -71,7 +39,7 @@ export default class QuestListScreen extends Component {
                 <Title>Quest-Liste</Title>
                 </Body>
                 <Right>
-                    <Button transparent onPress={() => this.onLogin()}>
+                    <Button transparent onPress={login}>
                         <Icon name="more"/>
                     </Button>
                 </Right>
@@ -101,6 +69,7 @@ export default class QuestListScreen extends Component {
         this.fetchFixedQuests();
         this.fetchEventQuests();
     }
+
 
     render() {
         const fixedQuests = this.state.fixedQuests.map((f, i) =>
@@ -153,12 +122,12 @@ export default class QuestListScreen extends Component {
         );
         return (
             <Container>
-                <Content padder refreshControl={
+                <Content refreshControl={
                     <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />
                 }>
                     { this.state.loading ?
                         <Spinner color='#634405'/>
-                        : <View>
+                        : <View style={{padding: 7}}>
                             {fixedQuests}
                             <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3>
                             {eventQuests}
@@ -203,10 +172,13 @@ export default class QuestListScreen extends Component {
                 });
             },
             error => {
-                this.setState({loading: false});
+                this.setState({
+                    loading: false,
+                    refreshing: false
+                });
                 Alert.alert(
                     'Da stimmt was nicht!',
-                    'Bitte überprüfe deine Interneverbindung.'
+                    'Leider konnten keine Daten empfangen werden. Bitte versuche es noch einmal.'
                 );
             });
     };
@@ -222,10 +194,13 @@ export default class QuestListScreen extends Component {
                 });
             },
             error => {
-                this.setState({loading: false});
+                this.setState({
+                    loading: false,
+                    refreshing: false
+                });
                 Alert.alert(
                     'Da stimmt was nicht!',
-                    'Bitte überprüfe deine Interneverbindung.'
+                    'Leider konnten keine Daten empfangen werden. Bitte versuche es noch einmal.'
                 );
             });
     };

@@ -7,6 +7,7 @@ import {StackNavigator} from "react-navigation";
 import {StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon} from "native-base";
 import Camera from "react-native-camera";
 import { withNavigationFocus } from 'react-navigation-is-focused-hoc'
+import {login} from '../utils/Utils';
 
 class QRScannerScreen extends Component {
 
@@ -38,7 +39,7 @@ class QRScannerScreen extends Component {
                     <Title>Scan QR-Code</Title>
                     </Body>
                     <Right>
-                        <Button transparent onPress={() => this._onLogin()}>
+                        <Button transparent onPress={login}>
                             <Icon name="more"/>
                         </Button>
                     </Right>

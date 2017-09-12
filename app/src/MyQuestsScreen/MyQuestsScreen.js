@@ -2,11 +2,12 @@
  * Created by Dominik Schwarz on 08.09.2017.
  */
 import React, {Component} from "react";
-import { Alert } from 'react-native';
+import { Alert} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Spinner} from 'native-base';
 import getTheme from '../../native-base-theme/components';
 import commonColor from '../../native-base-theme/variables/commonColor';
+import {login} from '../utils/Utils';
 
 export default class QRScannerScreen extends Component {
 
@@ -15,6 +16,7 @@ export default class QRScannerScreen extends Component {
         this.state = {
         };
     }
+
     
     componentDidMount() {
     }
@@ -28,7 +30,7 @@ export default class QRScannerScreen extends Component {
                         <Title>Meine Quests</Title>
                         </Body>
                         <Right>
-                            <Button transparent onPress={() => this._onLogin()}>
+                            <Button transparent onPress={login}>
                                 <Icon name="more" />
                             </Button>
                         </Right>
