@@ -2,7 +2,7 @@
  * Created by Dominik Schwarz on 08.09.2017.
  */
 import React, {Component} from "react";
-import {Alert, StyleSheet, InteractionManager} from "react-native";
+import {Alert, InteractionManager} from "react-native";
 import {StackNavigator} from "react-navigation";
 import {StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon} from "native-base";
 import Camera from "react-native-camera";

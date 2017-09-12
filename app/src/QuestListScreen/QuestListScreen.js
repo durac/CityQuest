@@ -3,7 +3,7 @@
  */
 import React, {Component} from "react";
 import Auth0 from "react-native-auth0";
-import {Alert, StyleSheet, View} from "react-native";
+import {Alert, StyleSheet, View, ListView, RefreshControl} from "react-native";
 import {StackNavigator} from "react-navigation";
 import {
     StyleProvider,
@@ -25,7 +25,7 @@ import {
     H3
 } from "native-base";
 import Moment from "moment";
-import Utils from "../utils/Utils";
+import {fetchData} from "../utils/Utils";
 
 var credentials = require('../utils/auth0-credentials');
 const auth0 = new Auth0(credentials);
@@ -94,6 +94,7 @@ export default class QuestListScreen extends Component {
         this.difficultyToSymbol = this.difficultyToSymbol.bind(this);
         this.fetchFixedQuests = this.fetchFixedQuests.bind(this);
         this.fetchEventQuests = this.fetchEventQuests.bind(this);
+        this.onRefresh = this.onRefresh.bind(this);
     }
 
     componentDidMount() {
@@ -152,7 +153,9 @@ export default class QuestListScreen extends Component {
         );
         return (
             <Container>
-                <Content padder>
+                <Content padder refreshControl={
+                    <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />
+                }>
                     { this.state.loading ?
                         <Spinner color='#634405'/>
                         : <View>
@@ -183,52 +186,46 @@ export default class QuestListScreen extends Component {
         }
     }
 
+    onRefresh() {
+        this.setState({refreshing: true});
+        this.fetchFixedQuests();
+        this.fetchEventQuests();
+    }
+
     fetchFixedQuests() {
-        const url = `http://192.168.178.67:8080/api/activeFixedQuests`;
         this.setState({loading: true});
-        fetch(url, {
-            headers: {}
-        })
-            .then(Utils.checkStatus)
-            .then(res => res.json())
-            .then(res => {
+        fetchData('activeFixedQuests',
+            res => {
                 this.setState({
                     fixedQuests: res,
                     loading: false,
                     refreshing: false
                 });
-            })
-            .catch(error => {
+            },
+            error => {
                 this.setState({loading: false});
-                console.warn(error);
                 Alert.alert(
-                    'Error',
-                    'Oh no! An error occured. Sorry for that!'
+                    'Da stimmt was nicht!',
+                    'Bitte überprüfe deine Interneverbindung.'
                 );
             });
     };
 
     fetchEventQuests() {
-        const url = `http://192.168.178.67:8080/api/openedEventQuests`;
         this.setState({loading: true});
-        fetch(url, {
-            headers: {}
-        })
-            .then(Utils.checkStatus)
-            .then(res => res.json())
-            .then(res => {
+        fetchData('openedEventQuests',
+            res => {
                 this.setState({
                     eventQuests: res,
                     loading: false,
                     refreshing: false
                 });
-            })
-            .catch(error => {
+            },
+            error => {
                 this.setState({loading: false});
-                console.warn(error);
                 Alert.alert(
-                    'Error',
-                    'Oh no! An error occured. Sorry for that!'
+                    'Da stimmt was nicht!',
+                    'Bitte überprüfe deine Interneverbindung.'
                 );
             });
     };
