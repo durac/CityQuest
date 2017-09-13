@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { NetInfo, AsyncStorage } from "react-native";
-import { StyleProvider, Container, Header, Body, Title, Content, Icon, Text} from "native-base";
+import { Root, StyleProvider, Container, Header, Body, Title, Content, Icon, Text} from "native-base";
 import { updateFocus } from 'react-navigation-is-focused-hoc'
 import { MenuContext } from 'react-native-popup-menu';
 
@@ -35,7 +35,6 @@ export default class App extends Component {
 
 
     async componentWillMount() {
-        AsyncStorage.removeItem('userinfo');
         this.setState({ isReady: true });
     }
 
@@ -47,29 +46,31 @@ export default class App extends Component {
         }
         if(!this.state.isConnected) {
             return (
-                <Container>
-                    <Header>
-                        <Body>
-                            <Title>CityQuest</Title>
-                        </Body>
-                    </Header>
-                    <Content>
-                        <Icon name="thunderstorm"
-                              style={{fontSize: 80, color: 'grey', textAlign: 'center', marginTop: 30}}></Icon>
-                        <Text style={{fontSize: 18, color: 'grey', textAlign: 'center'}}>Offline</Text>
-                        <Text style={{marginTop: 50}}></Text>
-                        <Text style={{fontSize: 18, color: 'grey', textAlign: 'center'}}>Für diese App wird eine</Text>
-                        <Text style={{fontSize: 18, color: 'grey', textAlign: 'center'}}>Internetverbindung benötigt.</Text>
-                    </Content>
-                </Container>
+                <StyleProvider style={getTheme(commonColor)}>
+                    <Container>
+                        <Header>
+                            <Body>
+                                <Title>CityQuest</Title>
+                            </Body>
+                        </Header>
+                        <Content>
+                            <Icon name="thunderstorm" style={{fontSize: 80, color: 'grey', textAlign: 'center', marginTop: 30}} />
+                            <Text style={{fontSize: 18, color: 'grey', textAlign: 'center'}}>Offline</Text>
+                            <Text style={{marginTop: 50, fontSize: 18, color: 'grey', textAlign: 'center'}}>Für diese App wird eine</Text>
+                            <Text style={{fontSize: 18, color: 'grey', textAlign: 'center'}}>Internetverbindung benötigt.</Text>
+                        </Content>
+                    </Container>
+                </StyleProvider>
             )
         }
         return (
-            <StyleProvider style={getTheme(commonColor)}>
-                <MenuContext>
-                    <BottomNavigation onNavigationStateChange={(prevState, currentState) => { updateFocus(currentState)}}/>
-                </MenuContext>
-            </StyleProvider>
+            <Root>
+                <StyleProvider style={getTheme(commonColor)}>
+                    <MenuContext>
+                        <BottomNavigation onNavigationStateChange={(prevState, currentState) => { updateFocus(currentState)}}/>
+                    </MenuContext>
+                </StyleProvider>
+            </Root>
         );
     }
 }

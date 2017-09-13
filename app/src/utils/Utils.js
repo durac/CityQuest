@@ -3,6 +3,7 @@
  */
 import { AsyncStorage } from "react-native";
 import Auth0 from "react-native-auth0";
+import { Toast } from "native-base";
 
 var credentials = require('./auth0-credentials');
 const auth0 = new Auth0(credentials);
@@ -18,7 +19,7 @@ const checkStatus = (response) => {
 };
 
 export const fetchData = (value, onSuccess, onError, accessToken) => {
-    const url = `http://192.168.178.67:8080/api/${value}`;
+    const url = `http://192.168.178.60:8080/api/${value}`;
     fetch(url, {
         headers: {
             'Authorization': `Bearer ${accessToken}`
@@ -51,6 +52,12 @@ export const login = (onSuccess) => {
                         userId: userinfo.sub.split('|')[1]
                     };
                     AsyncStorage.setItem('userinfo', JSON.stringify(user));
+                    Toast.show({
+                        text: 'Anmeldung erfolgreich!',
+                        buttonText: 'Okay',
+                        position: 'bottom',
+                        duration: 1500
+                    });
                     onSuccess(user);
                 })
                 .catch(error => {
@@ -65,5 +72,11 @@ export const login = (onSuccess) => {
 
 export const logout = (onSuccess) => {
     AsyncStorage.removeItem('userinfo');
+    Toast.show({
+        text: 'Abmeldung erfolgreich!',
+        buttonText: 'Okay',
+        position: 'bottom',
+        duration: 1500
+    });
     onSuccess();
 }

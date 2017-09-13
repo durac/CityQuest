@@ -26,7 +26,7 @@ const BottomNavigation = TabNavigator(
                             active={props.navigationState.index === 0}
                             onPress={() => props.navigation.navigate("QuestList")}
                         >
-                            <Icon active name="list" />
+                            <Icon name="list" />
                             <Text>Quests</Text>
                         </Button>
                         <Button

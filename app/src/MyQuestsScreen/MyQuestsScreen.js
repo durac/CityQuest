@@ -6,7 +6,7 @@ import {Alert} from "react-native";
 import {StackNavigator} from "react-navigation";
 import {Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Spinner} from "native-base";
 import {MenuContext} from "react-native-popup-menu";
-import {login} from "../utils/Utils";
+import {CityQuestHeader} from "../components/CityQuestHeader";
 
 export default class QRScannerScreen extends Component {
 
@@ -22,16 +22,7 @@ export default class QRScannerScreen extends Component {
     render() {
         return (
             <Container>
-                <Header>
-                    <Body>
-                    <Title>Meine Quests</Title>
-                    </Body>
-                    <Right>
-                        <Button transparent onPress={login}>
-                            <Icon name="more"/>
-                        </Button>
-                    </Right>
-                </Header>
+                <CityQuestHeader title='Meine Quests'/>
                 <Content>
                     <Text>
                         MyQuest

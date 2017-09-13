@@ -6,27 +6,13 @@ import {Alert, Image, AsyncStorage} from "react-native";
 import {StackNavigator} from "react-navigation";
 import {Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, H1} from "native-base";
 import { MenuContext } from 'react-native-popup-menu';
-import {login} from "../utils/Utils";
+import {CityQuestHeader} from "../components/CityQuestHeader";
 
 export default class QuestDetailsScreen extends Component {
 
     static navigationOptions = ({navigation}) => ({
         header: (
-            <Header>
-                <Left>
-                    <Button transparent onPress={() => navigation.goBack()}>
-                        <Icon name="arrow-back"/>
-                    </Button>
-                </Left>
-                <Body>
-                <Title>Quest Details</Title>
-                </Body>
-                <Right>
-                    <Button transparent onPress={login}>
-                        <Icon name="more"/>
-                    </Button>
-                </Right>
-            </Header>
+            <CityQuestHeader title='Quest-Liste' includeBackIcon={true} navigation={navigation}/>
         )
     });
 
@@ -35,9 +21,6 @@ export default class QuestDetailsScreen extends Component {
     }
 
     componentDidMount() {
-        AsyncStorage.getItem('userinfo', (err, result) => {
-            Alert.alert(JSON.parse(result).isLoggedIn ? 'true' : 'false');
-        });
     }
 
     render() {

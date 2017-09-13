@@ -8,7 +8,7 @@ import {Container, Header, Title, Content, Button, Left, Right, Body, Icon} from
 import Camera from "react-native-camera";
 import { withNavigationFocus } from 'react-navigation-is-focused-hoc'
 import { MenuContext } from 'react-native-popup-menu';
-import {login} from '../utils/Utils';
+import {CityQuestHeader} from "../components/CityQuestHeader";
 
 class QRScannerScreen extends Component {
 
@@ -35,16 +35,7 @@ class QRScannerScreen extends Component {
         }
         return (
             <Container>
-                <Header>
-                    <Body>
-                    <Title>Scan QR-Code</Title>
-                    </Body>
-                    <Right>
-                        <Button transparent onPress={login}>
-                            <Icon name="more"/>
-                        </Button>
-                    </Right>
-                </Header>
+                <CityQuestHeader title='Scan QR-Code'/>
                 <Content onLayout={this.onLayout} style={{backgroundColor: 'black'}}>
                     {
                         this.state.dimensions && this.props.isFocused && this.state.ready ?

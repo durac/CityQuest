@@ -105,7 +105,7 @@ export default {
   },
 
   // Card
-  cardDefaultBg: "#f2ede3",
+  cardDefaultBg: "#fff",
 
   // Color
   brandPrimary: "#d39c2f",
@@ -131,14 +131,14 @@ export default {
 
   // Footer
   footerHeight: 55,
-  footerDefaultBg: "#d39c2f",
+  footerDefaultBg: "#fff",
 
   // FooterTab
-  tabBarTextColor: "#d6c095",
+  tabBarTextColor: "#777062",
   tabBarTextSize: platform === "ios" ? 14 : 11,
-  activeTab: platform === "ios" ? "#d39c2f" : "#fff",
+  activeTab: platform === "ios" ? "#d39c2f" : "#d39c2f",
   sTabBarActiveTextColor: "#d39c2f",
-  tabBarActiveTextColor: "#fff",
+  tabBarActiveTextColor: "#d39c2f",
   tabActiveBgColor: platform === "ios" ? "#e0b257" : undefined,
 
   // Tab

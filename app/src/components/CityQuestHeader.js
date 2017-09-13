@@ -3,7 +3,7 @@
  */
 import React, {Component, PropTypes} from "react";
 import { AsyncStorage, Alert } from "react-native";
-import {Header, Title, Left, Right, Body, Icon, Text} from "native-base";
+import {Header, Title, Left, Right, Body, Icon, Text, Button} from "native-base";
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu';
 import s from "../style/Style.js";
 import {login, logout} from "../utils/Utils";
@@ -33,13 +33,21 @@ export class CityQuestHeader extends Component {
             }
         });
         return this.state.isLoggedIn ?
-            <MenuOption onSelect={() => logout(() => {this.forceUpdate();})}><Text style={s.popupMenuEntry}>Logout</Text></MenuOption>
-            : <MenuOption onSelect={() => login(() => {this.forceUpdate();})}><Text style={s.popupMenuEntry}>Login</Text></MenuOption>;
+            <MenuOption onSelect={() => logout(() => {})}><Text style={s.popupMenuEntry}>Logout</Text></MenuOption>
+            : <MenuOption onSelect={() => login()}><Text style={s.popupMenuEntry}>Login</Text></MenuOption>;
     }
 
     render() {
         return (
             <Header>
+                { this.props.includeBackIcon ?
+                    <Left>
+                        <Button transparent onPress={() => this.props.navigation.goBack()}>
+                            <Icon name="arrow-back"/>
+                        </Button>
+                    </Left>
+                    : undefined
+                }
                 <Body>
                 <Title>{this.props.title}</Title>
                 </Body>
@@ -58,5 +66,7 @@ export class CityQuestHeader extends Component {
 }
 
 CityQuestHeader.propTypes = {
-    title: PropTypes.string
+    title: PropTypes.string,
+    includeBackIcon: PropTypes.bool,
+    navigation: PropTypes.object
 };
