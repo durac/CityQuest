@@ -3,48 +3,22 @@
  */
 import React, {Component} from "react";
 import Auth0 from "react-native-auth0";
-import {Alert, StyleSheet, View, ListView, RefreshControl, AsyncStorage} from "react-native";
+import {Alert, View, RefreshControl, AsyncStorage} from "react-native";
 import {StackNavigator} from "react-navigation";
-import {
-    StyleProvider,
-    Container,
-    Header,
-    Title,
-    Content,
-    Button,
-    Left,
-    Right,
-    Body,
-    Icon,
-    Text,
-    Card,
-    CardItem,
-    Spinner,
-    Thumbnail,
-    H2,
-    H3
-} from "native-base";
+import {Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Card, CardItem,
+    Spinner, Thumbnail, H2, H3} from "native-base";
 import Moment from "moment";
-import {fetchData, login} from "../utils/Utils";
+import {fetchData} from "../utils/Utils";
+import s from "../style/Style";
+import {CityQuestHeader} from "../components/CityQuestHeader";
 
-var credentials = require('../utils/auth0-credentials');
+var credentials = require("../utils/auth0-credentials");
 const auth0 = new Auth0(credentials);
 
 export default class QuestListScreen extends Component {
 
     static navigationOptions = ({navigation}) => ({
-        header: (
-            <Header>
-                <Body>
-                <Title>Quest-Liste</Title>
-                </Body>
-                <Right>
-                    <Button transparent onPress={login}>
-                        <Icon name="more"/>
-                    </Button>
-                </Right>
-            </Header>
-        )
+        header: <CityQuestHeader title='Quest-Liste'/>
     });
 
     constructor(props) {
@@ -75,21 +49,20 @@ export default class QuestListScreen extends Component {
         const fixedQuests = this.state.fixedQuests.map((f, i) =>
             <Card key={i}>
                 <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {fixedQuest: f})}
-                          style={styles.cardItem}>
+                          style={s.cardItem}>
                     <Left>
                         <Thumbnail square
-                                   style={styles.thumbnail}
+                                   style={s.thumbnail}
                                    source={{uri: f.image}}/>
                     </Left>
                     <Body>
-                    <H3 style={{marginTop : 10}}>{f.name}</H3>
-                    <Text style={{marginTop : 8}}></Text>
-                    <Text style={styles.infoText}><Icon name="pin" style={styles.infoText}/> {f.area}</Text>
-                    <Text style={styles.infoText}><Icon name="time" style={styles.infoText}/> {f.duration} min</Text>
+                    <H3 style={[s.h3, {marginTop : 10}]}>{f.name}</H3>
+                    <Text style={[s.infoText, {marginTop : 8}]}><Icon name="pin" style={s.infoText}/> {f.area}</Text>
+                    <Text style={s.infoText}><Icon name="time" style={s.infoText}/> {f.duration} min</Text>
                     {this.difficultyToSymbol(f.difficulty)}
                     </Body>
                     <Right>
-                        <Icon name="ios-arrow-forward" style={styles.cardArrow}/>
+                        <Icon name="ios-arrow-forward" style={s.cardArrow}/>
                     </Right>
                 </CardItem>
             </Card>
@@ -97,25 +70,24 @@ export default class QuestListScreen extends Component {
         const eventQuests = this.state.eventQuests.map((e, i) =>
             <Card key={i}>
                 <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {eventQuest: e})}
-                          style={styles.cardItem}>
+                          style={s.cardItem}>
                     <Left>
                         <Thumbnail square
-                                   style={styles.thumbnail}
+                                   style={s.thumbnail}
                                    source={{uri: e.image}}
                         />
                     </Left>
                     <Body>
-                    <H3 style={{marginTop : 10}}>{e.name}</H3>
-                    <Text style={{marginTop : 3}}></Text>
-                    <Text style={styles.infoText}><Icon name="play"
-                                                        style={styles.infoText}/> {Moment(e.startDate).format('DD.MM.YYYY HH:mm')}
+                    <H3 style={[s.h3, {marginTop : 10}]}>{e.name}</H3>
+                    <Text style={[s.infoText, {marginTop : 3}]}><Icon name="play"
+                                                        style={s.infoText}/> {Moment(e.startDate).format('DD.MM.YYYY HH:mm')}
                     </Text>
-                    <Text style={styles.infoText}><Icon name="pin" style={styles.infoText}/> {e.area}</Text>
-                    <Text style={styles.infoText}><Icon name="time" style={styles.infoText}/> {e.duration} min</Text>
+                    <Text style={s.infoText}><Icon name="pin" style={s.infoText}/> {e.area}</Text>
+                    <Text style={s.infoText}><Icon name="time" style={s.infoText}/> {e.duration} min</Text>
                     {this.difficultyToSymbol(e.difficulty)}
                     </Body>
                     <Right>
-                        <Icon name="ios-arrow-forward" style={styles.cardArrow}/>
+                        <Icon name="ios-arrow-forward" style={s.cardArrow}/>
                     </Right>
                 </CardItem>
             </Card>
@@ -131,7 +103,7 @@ export default class QuestListScreen extends Component {
                             {fixedQuests}
                             <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3>
                             {eventQuests}
-                            <Text style={{marginLeft : 5}}></Text>
+                            <Text style={{marginTop : 5}}></Text>
                         </View>
                     }
                 </Content>
@@ -140,19 +112,9 @@ export default class QuestListScreen extends Component {
     }
 
     difficultyToSymbol(difficulty) {
-        if (difficulty == 'EASY') {
-            return <Text><Icon name="school" style={styles.difficultyIcon}/>
-                <Icon name="school" style={[styles.difficultyIcon, {color: 'lightgrey'}]}/>
-                <Icon name="school" style={[styles.difficultyIcon, {fontSize: 18, color: 'lightgrey'}]}/></Text>;
-        } else if (difficulty == 'MEDIUM') {
-            return <Text><Icon name="school" style={styles.difficultyIcon}/>
-                <Icon name="school" style={styles.difficultyIcon}/>
-                <Icon name="school" style={[styles.difficultyIcon, {color: 'lightgrey'}]}/></Text>;
-        } else {
-            return <Text><Icon name="school" style={styles.difficultyIcon}/>
-                <Icon name="school" style={styles.difficultyIcon}/>
-                <Icon name="school" style={styles.difficultyIcon}/></Text>;
-        }
+        return <Text><Icon name="school" style={s.difficultyIcon}/>
+            <Icon name="school" style={[s.difficultyIcon, (difficulty == 'EASY') ? {color: 'lightgrey'} : undefined]}/>
+            <Icon name="school" style={[s.difficultyIcon, difficulty == 'HARD' ? undefined : {color: 'lightgrey'}]}/></Text>;
     }
 
     onRefresh() {
@@ -205,29 +167,3 @@ export default class QuestListScreen extends Component {
             });
     };
 }
-
-const styles = StyleSheet.create({
-    cardItem: {
-        marginLeft: 0,
-        paddingLeft: 0,
-        marginTop: 0,
-        paddingTop: 0,
-        marginBottom: 0,
-        paddingBottom: 0
-    },
-    thumbnail: {
-        width: 125,
-        height: 125,
-        borderBottomLeftRadius: 10,
-        borderTopLeftRadius: 10
-    },
-    cardArrow: {
-        fontSize: 30
-    },
-    infoText: {
-        fontSize: 14
-    },
-    difficultyIcon: {
-        fontSize: 18
-    }
-});

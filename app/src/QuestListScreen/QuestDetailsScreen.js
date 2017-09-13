@@ -4,7 +4,8 @@
 import React, {Component} from "react";
 import {Alert, Image, AsyncStorage} from "react-native";
 import {StackNavigator} from "react-navigation";
-import {StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, H1} from "native-base";
+import {Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, H1} from "native-base";
+import { MenuContext } from 'react-native-popup-menu';
 import {login} from "../utils/Utils";
 
 export default class QuestDetailsScreen extends Component {
@@ -35,7 +36,7 @@ export default class QuestDetailsScreen extends Component {
 
     componentDidMount() {
         AsyncStorage.getItem('userinfo', (err, result) => {
-            Alert.alert(result);
+            Alert.alert(JSON.parse(result).isLoggedIn ? 'true' : 'false');
         });
     }
 

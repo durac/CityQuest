@@ -62,3 +62,8 @@ export const login = (onSuccess) => {
             console.log(error);
         });
 };
+
+export const logout = (onSuccess) => {
+    AsyncStorage.removeItem('userinfo');
+    onSuccess();
+}

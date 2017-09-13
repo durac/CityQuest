@@ -4,9 +4,10 @@
 import React, {Component} from "react";
 import {Alert, InteractionManager} from "react-native";
 import {StackNavigator} from "react-navigation";
-import {StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon} from "native-base";
+import {Container, Header, Title, Content, Button, Left, Right, Body, Icon} from "native-base";
 import Camera from "react-native-camera";
 import { withNavigationFocus } from 'react-navigation-is-focused-hoc'
+import { MenuContext } from 'react-native-popup-menu';
 import {login} from '../utils/Utils';
 
 class QRScannerScreen extends Component {

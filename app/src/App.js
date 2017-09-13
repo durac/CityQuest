@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { NetInfo } from "react-native";
+import { NetInfo, AsyncStorage } from "react-native";
 import { StyleProvider, Container, Header, Body, Title, Content, Icon, Text} from "native-base";
 import { updateFocus } from 'react-navigation-is-focused-hoc'
+import { MenuContext } from 'react-native-popup-menu';
 
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
@@ -25,15 +26,16 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        NetInfo.isConnected.addEventListener( 'change', this.setIsConnected );
+        NetInfo.isConnected.addEventListener( 'connectionChange', this.setIsConnected );
     }
 
     componentWillUnmount() {
-        NetInfo.isConnected.removeEventListener('change', this.setIsConnected);
+        NetInfo.isConnected.removeEventListener('connectionChange', this.setIsConnected);
     }
 
 
     async componentWillMount() {
+        AsyncStorage.removeItem('userinfo');
         this.setState({ isReady: true });
     }
 
@@ -64,7 +66,9 @@ export default class App extends Component {
         }
         return (
             <StyleProvider style={getTheme(commonColor)}>
-                <BottomNavigation onNavigationStateChange={(prevState, currentState) => { updateFocus(currentState)}}/>
+                <MenuContext>
+                    <BottomNavigation onNavigationStateChange={(prevState, currentState) => { updateFocus(currentState)}}/>
+                </MenuContext>
             </StyleProvider>
         );
     }
