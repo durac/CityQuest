@@ -28,7 +28,7 @@ export default class QuestDetailsScreen extends Component {
         AsyncStorage.getItem('userinfo', (err, result) => {
             const res = JSON.parse(result);
             if(res != undefined){
-                postData('registerForQuest?questId='+quest.id+'&auth0UserId='+res.userId, () => {}, res.accessToken);
+                postData('registerForQuest?questId=5'+quest.id+'&auth0UserId='+res.userId, () => {}, res.accessToken);
                 
             } else {
                 login(() => this.registerForQuest(quest));

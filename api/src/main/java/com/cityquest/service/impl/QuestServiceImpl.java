@@ -59,8 +59,11 @@ public class QuestServiceImpl implements QuestService {
         logger.info("register quest "+questId+" for auth0-user "+auth0UserId);
         Quest quest = questRepository.findOne(questId);
         User user = userRepository.findByAuth0Id(auth0UserId);
+        if(user == null || quest == null) {
+            return;
+        }
         List<Quest> questList = user.getQuests();
-        if(!questList.contains(quest)){
+        if(questList != null && !questList.contains(quest)){
             user.getQuests().add(quest);
             quest.getUsers().add(user);
             userRepository.save(user);
