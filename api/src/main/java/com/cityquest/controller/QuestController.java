@@ -21,8 +21,7 @@ public class QuestController {
 
     private static final Logger logger = LoggerFactory.getLogger(QuestController.class);
 
-    @Autowired
-    private QuestService questService;
+    @Autowired private QuestService questService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/activeFixedQuests")
     public List<FixedQuestDto> getActiveFixedQuests() {
@@ -34,8 +33,18 @@ public class QuestController {
         return questService.findEventQuestsByStatus(QuestStatus.REGISTRATION);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/api/isRegistered")
+    public Boolean getOpenedEventQuests(Long questId, String auth0UserId) {
+        return questService.isRegistered(questId, auth0UserId);
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/api/registerForQuest")
-    public void registerForQuest(Long questId, String auth0UserId) {
-        questService.registerForQuest(questId, auth0UserId);
+    public Boolean registerForQuest(Long questId, String auth0UserId) {
+        return questService.registerForQuest(questId, auth0UserId);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/api/unregisterForQuest")
+    public Boolean unregisterForQuest(Long questId, String auth0UserId) {
+        return questService.unregisterForQuest(questId, auth0UserId);
     }
 }

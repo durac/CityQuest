@@ -44,14 +44,17 @@ export const getData = (value, onSuccess, onError, accessToken) => {
         });
 };
 
-export const postData = (value, onError, accessToken) => {
+export const postData = (value, onSuccess, onError, accessToken) => {
     const url = `http://192.168.178.60:8080/api/${value}`;
     fetch(url, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${accessToken}`
         }
-    }).then(checkStatus).catch(error => {
+    }).then(checkStatus)
+        .then(res => res.json())
+        .then(onSuccess)
+        .catch(error => {
             console.warn(error);
             defaultErrorMessage();
             onError(error);

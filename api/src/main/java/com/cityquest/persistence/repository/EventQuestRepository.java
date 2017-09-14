@@ -12,5 +12,5 @@ import java.util.List;
 public interface EventQuestRepository extends PagingAndSortingRepository<EventQuest, Long> {
 
     List<EventQuest> findByStatus(QuestStatus status);
-
+    
 }

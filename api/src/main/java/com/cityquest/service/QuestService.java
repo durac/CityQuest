@@ -18,5 +18,13 @@ public interface QuestService {
 
     List<EventQuestDto> findEventQuestsByStatus(QuestStatus status);
 
-    void registerForQuest(Long questId, String auth0UserId);
+    Boolean registerForQuest(Long questId, String auth0UserId);
+
+    Boolean unregisterForQuest(Long questId, String auth0UserId);
+
+    Boolean isRegistered(Long questId, String auth0UserId);
+
+    List<FixedQuestDto> findFixedQuestsOfUser(String auth0UserId);
+
+    List<EventQuestDto> findEventQuestsOfUser(String auth0UserId);
 }

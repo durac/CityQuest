@@ -2,9 +2,7 @@ package com.cityquest.service.impl;
 
 import com.cityquest.dto.EventQuestDto;
 import com.cityquest.dto.FixedQuestDto;
-import com.cityquest.persistence.model.Quest;
-import com.cityquest.persistence.model.QuestStatus;
-import com.cityquest.persistence.model.User;
+import com.cityquest.persistence.model.*;
 import com.cityquest.persistence.repository.EventQuestRepository;
 import com.cityquest.persistence.repository.FixedQuestRepository;
 import com.cityquest.persistence.repository.QuestRepository;
@@ -55,18 +53,80 @@ public class QuestServiceImpl implements QuestService {
     }
 
     @Override
-    public void registerForQuest(Long questId, String auth0UserId) {
+    public Boolean registerForQuest(Long questId, String auth0UserId) {
         logger.info("register quest "+questId+" for auth0-user "+auth0UserId);
         Quest quest = questRepository.findOne(questId);
         User user = userRepository.findByAuth0Id(auth0UserId);
         if(user == null || quest == null) {
-            return;
+            return false;
         }
         List<Quest> questList = user.getQuests();
-        if(questList != null && !questList.contains(quest)){
-            user.getQuests().add(quest);
-            quest.getUsers().add(user);
-            userRepository.save(user);
+        if(questList == null || questList.contains(quest)){
+            return false;
         }
+        questList.add(quest);
+        userRepository.save(user);
+        return true;
+    }
+
+    @Override
+    public Boolean unregisterForQuest(Long questId, String auth0UserId) {
+        logger.info("unregister quest "+questId+" for auth0-user "+auth0UserId);
+        Quest quest = questRepository.findOne(questId);
+        User user = userRepository.findByAuth0Id(auth0UserId);
+        if(user == null || quest == null) {
+            return false;
+        }
+        List<Quest> questList = user.getQuests();
+        if(questList == null){
+            return false;
+        }
+        questList.remove(quest);
+        userRepository.save(user);
+        return true;
+    }
+
+    @Override
+    public Boolean isRegistered(Long questId, String auth0UserId) {
+        logger.info("is user "+auth0UserId+" registered for quest "+questId);
+        Quest quest = questRepository.findOne(questId);
+        User user = userRepository.findByAuth0Id(auth0UserId);
+        if(user == null || quest == null) {
+            //error
+            return false;
+        }
+        List<Quest> questList = user.getQuests();
+        if(questList != null && questList.contains(quest)){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<FixedQuestDto> findFixedQuestsOfUser(String auth0UserId) {
+        logger.info("find fixed quests of user " + auth0UserId);
+        User user = userRepository.findByAuth0Id(auth0UserId);
+        if(user == null) {
+            return null;
+        }
+        return user.getQuests()
+                .stream()
+                .filter(q -> q instanceof FixedQuest)
+                .map (q -> FixedQuestDto.of((FixedQuest) q))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EventQuestDto> findEventQuestsOfUser(String auth0UserId) {
+        logger.info("find event quests of user " + auth0UserId);
+        User user = userRepository.findByAuth0Id(auth0UserId);
+        if(user == null) {
+            return null;
+        }
+        return user.getQuests()
+                .stream()
+                .filter(q -> q instanceof EventQuest)
+                .map (q -> EventQuestDto.of((EventQuest) q))
+                .collect(Collectors.toList());
     }
 }
