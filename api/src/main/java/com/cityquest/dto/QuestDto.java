@@ -24,6 +24,8 @@ public class QuestDto {
 
     private Integer duration;
 
+    private Double distance;
+
     private String area;
 
     private String image;
@@ -44,6 +46,7 @@ public class QuestDto {
         questDto.setDescription(quest.getDescription());
         questDto.setDifficulty(quest.getDifficulty());
         questDto.setDuration(quest.getDuration());
+        questDto.setDistance(quest.getDistance());
         questDto.setArea(quest.getArea());
         questDto.setImage(quest.getImage());
 
@@ -96,6 +99,14 @@ public class QuestDto {
 
     public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 
     public String getArea() {

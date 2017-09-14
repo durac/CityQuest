@@ -21,8 +21,37 @@ export default StyleSheet.create({
     cardArrow: {
         fontSize: 30
     },
-    infoText: {
+    cardInfoText: {
         fontSize: 14
+    },
+    headerImage: {
+        height: 200,
+        resizeMode: 'cover'
+    },
+    detailsTitle: {
+        fontSize: 37,
+        lineHeight: 42,
+        fontWeight: "bold",
+        paddingLeft: 20,
+        paddingTop: 140,
+        color: "#fff"
+    },
+    description: {
+        paddingTop: 10,
+        color: "grey"
+    },
+    detailsInfoView: {
+        flexDirection: 'row',
+        justifyContent:'flex-start',
+        alignItems: 'center',
+        padding: 10
+    },
+    detailsInfoText: {
+        fontSize: 23,
+    },
+    detailsInfoIcon: {
+        fontSize: 22,
+        lineHeight: 25
     },
     difficultyIcon: {
         fontSize: 18

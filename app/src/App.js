@@ -54,10 +54,10 @@ export default class App extends Component {
                             </Body>
                         </Header>
                         <Content>
-                            <Icon name="thunderstorm" style={{fontSize: 80, color: 'grey', textAlign: 'center', marginTop: 30}} />
-                            <Text style={{fontSize: 18, color: 'grey', textAlign: 'center'}}>Offline</Text>
-                            <Text style={{marginTop: 50, fontSize: 18, color: 'grey', textAlign: 'center'}}>Für diese App wird eine</Text>
-                            <Text style={{fontSize: 18, color: 'grey', textAlign: 'center'}}>Internetverbindung benötigt.</Text>
+                            <Icon name="thunderstorm" style={{fontSize: 80, color: 'grey', textAlign: 'center', paddingTop: 60}} />
+                            <Text style={{fontSize: 20, color: 'grey', textAlign: 'center'}}>Offline</Text>
+                            <Text style={{paddingTop: 50, fontSize: 15, color: 'grey', textAlign: 'center'}}>Für die Nutzung dieser App wird eine</Text>
+                            <Text style={{fontSize: 15, color: 'grey', textAlign: 'center'}}>Internetverbindung benötigt.</Text>
                         </Content>
                     </Container>
                 </StyleProvider>

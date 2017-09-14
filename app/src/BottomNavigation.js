@@ -17,6 +17,8 @@ const BottomNavigation = TabNavigator(
     },
     {
         tabBarPosition: "bottom",
+        swipeEnabled: false,
+        animationEnabled: false,
         tabBarComponent: props => {
             return (
                 <Footer>
@@ -27,7 +29,7 @@ const BottomNavigation = TabNavigator(
                             onPress={() => props.navigation.navigate("QuestList")}
                         >
                             <Icon name="list" />
-                            <Text>Quests</Text>
+                            <Text uppercase={false}>Quests</Text>
                         </Button>
                         <Button
                             vertical
@@ -35,7 +37,7 @@ const BottomNavigation = TabNavigator(
                             onPress={() => props.navigation.navigate("MyQuests")}
                         >
                             <Icon name="bulb" />
-                            <Text>MyQuest</Text>
+                            <Text uppercase={false}>MyQuests</Text>
                         </Button>
                         <Button
                             vertical
@@ -43,7 +45,7 @@ const BottomNavigation = TabNavigator(
                             onPress={() => props.navigation.navigate("QRScanner")}
                         >
                             <Icon name="qr-scanner" />
-                            <Text>QR</Text>
+                            <Text uppercase={false}>QR</Text>
                         </Button>
                         <Button
                             vertical
@@ -51,7 +53,7 @@ const BottomNavigation = TabNavigator(
                             onPress={() => props.navigation.navigate("Profile")}
                         >
                             <Icon name="person" />
-                            <Text>Profil</Text>
+                            <Text uppercase={false}>Profil</Text>
                         </Button>
                     </FooterTab>
                 </Footer>

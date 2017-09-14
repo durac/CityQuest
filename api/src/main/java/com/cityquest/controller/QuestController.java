@@ -34,4 +34,8 @@ public class QuestController {
         return questService.findEventQuestsByStatus(QuestStatus.REGISTRATION);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/api/registerForQuest")
+    public void registerForQuest(Long questId, String auth0UserId) {
+        questService.registerForQuest(questId, auth0UserId);
+    }
 }

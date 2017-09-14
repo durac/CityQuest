@@ -32,9 +32,9 @@ public class EventQuest extends Quest implements Serializable {
     }
 
     public EventQuest(String name, QuestStatus status, String description, QuestDifficulty difficulty, Integer duration,
-            String area, String image, Date startDate, Date endDate, Integer minStarter, Integer maxStarter, Date registrationStart,
-            Date registrationEnd, String prize) {
-        super(name, status, description, difficulty, duration, area, image);
+            Double distance, String area, String image, Date startDate, Date endDate, Integer minStarter, Integer maxStarter,
+            Date registrationStart, Date registrationEnd, String prize) {
+        super(name, status, description, difficulty, duration, distance, area, image);
         this.startDate = startDate;
         this.endDate = endDate;
         this.minStarter = minStarter;

@@ -36,6 +36,7 @@ public class EventQuestDto extends Quest {
         questDto.setDescription(quest.getDescription());
         questDto.setDifficulty(quest.getDifficulty());
         questDto.setDuration(quest.getDuration());
+        questDto.setDistance(quest.getDistance());
         questDto.setArea(quest.getArea());
         questDto.setImage(quest.getImage());
         questDto.setStartDate(quest.getStartDate());

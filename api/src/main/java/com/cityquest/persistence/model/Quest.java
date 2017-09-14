@@ -23,6 +23,8 @@ public class Quest implements Serializable {
 
     private Integer duration;
 
+    private Double distance;
+
     private String area;
 
     private String image;
@@ -42,12 +44,13 @@ public class Quest implements Serializable {
     }
 
     public Quest(String name, QuestStatus status, String description, QuestDifficulty difficulty, Integer duration,
-            String area, String image) {
+            Double distance, String area, String image) {
         this.name = name;
         this.status = status;
         this.description = description;
         this.difficulty = difficulty;
         this.duration = duration;
+        this.distance = distance;
         this.area = area;
         this.image = image;
     }
@@ -98,6 +101,14 @@ public class Quest implements Serializable {
 
     public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 
     public String getArea() {

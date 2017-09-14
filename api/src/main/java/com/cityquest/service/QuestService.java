@@ -17,4 +17,6 @@ public interface QuestService {
     List<FixedQuestDto> findFixedQuestsByStatus(QuestStatus status);
 
     List<EventQuestDto> findEventQuestsByStatus(QuestStatus status);
+
+    void registerForQuest(Long questId, String auth0UserId);
 }

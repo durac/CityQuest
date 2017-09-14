@@ -47,7 +47,7 @@ export default (variables = variable) => {
 					paddingRight: variables.listItemPadding + 5,
 				},
 			},
-			flex: 1.5,
+			flex: 2.5,
 			flexDirection: 'row',
 			alignItems: 'center',
 		},
@@ -93,7 +93,7 @@ export default (variables = variable) => {
 					alignSelf: 'stretch',
 				},
 			},
-			flex: 1.5,
+			flex: 3,
 			alignSelf: 'stretch',
 			alignItems: 'flex-start',
 		},
@@ -150,7 +150,7 @@ export default (variables = variable) => {
 			'NativeBase.Switch': {
 				alignSelf: null,
 			},
-			flex: 0.5,
+			flex: 0.2,
 		},
 		'.header': {
 			'NativeBase.Text': {

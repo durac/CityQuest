@@ -56,6 +56,7 @@ export class CityQuestHeader extends Component {
                         <MenuTrigger><Icon name="more" style={{padding: 10, color:"white"}}/></MenuTrigger>
                         <MenuOptions>
                             {this.loginOrLogout()}
+                            <MenuOption><Text style={s.popupMenuEntry}>Info</Text></MenuOption>
                             <MenuOption><Text style={s.popupMenuEntry}>Impressum</Text></MenuOption>
                         </MenuOptions>
                     </Menu>

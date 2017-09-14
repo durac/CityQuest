@@ -8,7 +8,7 @@ import {StackNavigator} from "react-navigation";
 import {Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Card, CardItem,
     Spinner, Thumbnail, H2, H3} from "native-base";
 import Moment from "moment";
-import {fetchData} from "../utils/Utils";
+import {getData} from "../utils/Utils";
 import s from "../style/Style";
 import {CityQuestHeader} from "../components/CityQuestHeader";
 
@@ -18,7 +18,7 @@ const auth0 = new Auth0(credentials);
 export default class QuestListScreen extends Component {
 
     static navigationOptions = ({navigation}) => ({
-        header: <CityQuestHeader title='Quest-Liste'/>
+        header: <CityQuestHeader title='CityQuest'/>
     });
 
     constructor(props) {
@@ -26,14 +26,9 @@ export default class QuestListScreen extends Component {
         this.state = {
             fixedQuests: [],
             eventQuests: [],
-            ready: false,
             loading: true,
             refreshing: false,
-            isLoggedIn: false,
-            accessToken: '',
-            userId: ''
         };
-        this.difficultyToSymbol = this.difficultyToSymbol.bind(this);
         this.fetchFixedQuests = this.fetchFixedQuests.bind(this);
         this.fetchEventQuests = this.fetchEventQuests.bind(this);
         this.onRefresh = this.onRefresh.bind(this);
@@ -48,7 +43,7 @@ export default class QuestListScreen extends Component {
     render() {
         const fixedQuests = this.state.fixedQuests.map((f, i) =>
             <Card key={i}>
-                <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {fixedQuest: f})}
+                <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {fixedQuest: f, title: f.name})}
                           style={s.cardItem}>
                     <Left>
                         <Thumbnail square
@@ -56,10 +51,14 @@ export default class QuestListScreen extends Component {
                                    source={{uri: f.image}}/>
                     </Left>
                     <Body>
-                    <H3 style={[s.h3, {marginTop : 10}]}>{f.name}</H3>
-                    <Text style={[s.infoText, {marginTop : 8}]}><Icon name="pin" style={s.infoText}/> {f.area}</Text>
-                    <Text style={s.infoText}><Icon name="time" style={s.infoText}/> {f.duration} min</Text>
-                    {this.difficultyToSymbol(f.difficulty)}
+                    <H3 style={[s.h3, {marginTop : 10, fontWeight: "bold"}]}>{f.name}</H3>
+                    <Text numberOfLines={1} style={[s.cardInfoText, {marginTop : 8}]}><Icon name="pin" style={s.cardInfoText}/> {f.area}</Text>
+                    <Text style={s.cardInfoText}><Icon name="time" style={s.cardInfoText}/> ~{f.duration} min</Text>
+                    <Text>
+                        <Icon name="school" style={s.difficultyIcon}/>
+                        <Icon name="school" style={[s.difficultyIcon, f.difficulty == 'EASY' ? {color: 'lightgrey'} : undefined]}/>
+                        <Icon name="school" style={[s.difficultyIcon, f.difficulty == 'HARD' ? undefined : {color: 'lightgrey'}]}/>
+                    </Text>
                     </Body>
                     <Right>
                         <Icon name="ios-arrow-forward" style={s.cardArrow}/>
@@ -69,7 +68,7 @@ export default class QuestListScreen extends Component {
         );
         const eventQuests = this.state.eventQuests.map((e, i) =>
             <Card key={i}>
-                <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {eventQuest: e})}
+                <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {eventQuest: e, title: e.name})}
                           style={s.cardItem}>
                     <Left>
                         <Thumbnail square
@@ -78,13 +77,15 @@ export default class QuestListScreen extends Component {
                         />
                     </Left>
                     <Body>
-                    <H3 style={[s.h3, {marginTop : 10}]}>{e.name}</H3>
-                    <Text style={[s.infoText, {marginTop : 3}]}><Icon name="play"
-                                                        style={s.infoText}/> {Moment(e.startDate).format('DD.MM.YYYY HH:mm')}
+                    <H3 numberOfLines={1} style={[s.h3, {marginTop : 10, fontWeight: "bold"}]}>{e.name}</H3>
+                    <Text style={[s.cardInfoText, {marginTop : 3}]}><Icon name="play"
+                                                                          style={s.cardInfoText}/> {Moment(e.startDate).format('DD.MM.YYYY - HH:mm')} Uhr
                     </Text>
-                    <Text style={s.infoText}><Icon name="pin" style={s.infoText}/> {e.area}</Text>
-                    <Text style={s.infoText}><Icon name="time" style={s.infoText}/> {e.duration} min</Text>
-                    {this.difficultyToSymbol(e.difficulty)}
+                    <Text numberOfLines={1} style={s.cardInfoText}><Icon name="pin" style={s.cardInfoText}/> {e.area}</Text>
+                    <Text style={s.cardInfoText}><Icon name="time" style={s.cardInfoText}/> ~{e.duration} min</Text>
+                    <Text><Icon name="school" style={s.difficultyIcon}/>
+                        <Icon name="school" style={[s.difficultyIcon, e.difficulty == 'EASY' ? {color: 'lightgrey'} : undefined]}/>
+                        <Icon name="school" style={[s.difficultyIcon, e.difficulty == 'HARD' ? undefined : {color: 'lightgrey'}]}/></Text>
                     </Body>
                     <Right>
                         <Icon name="ios-arrow-forward" style={s.cardArrow}/>
@@ -111,12 +112,6 @@ export default class QuestListScreen extends Component {
         );
     }
 
-    difficultyToSymbol(difficulty) {
-        return <Text><Icon name="school" style={s.difficultyIcon}/>
-            <Icon name="school" style={[s.difficultyIcon, (difficulty == 'EASY') ? {color: 'lightgrey'} : undefined]}/>
-            <Icon name="school" style={[s.difficultyIcon, difficulty == 'HARD' ? undefined : {color: 'lightgrey'}]}/></Text>;
-    }
-
     onRefresh() {
         this.setState({refreshing: true});
         this.fetchFixedQuests();
@@ -125,7 +120,7 @@ export default class QuestListScreen extends Component {
 
     fetchFixedQuests() {
         this.setState({loading: true});
-        fetchData('activeFixedQuests',
+        getData('activeFixedQuests',
             res => {
                 this.setState({
                     fixedQuests: res,
@@ -147,7 +142,7 @@ export default class QuestListScreen extends Component {
 
     fetchEventQuests() {
         this.setState({loading: true});
-        fetchData('openedEventQuests',
+        getData('openedEventQuests',
             res => {
                 this.setState({
                     eventQuests: res,

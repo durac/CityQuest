@@ -18,7 +18,17 @@ const checkStatus = (response) => {
     }
 };
 
-export const fetchData = (value, onSuccess, onError, accessToken) => {
+const defaultErrorMessage = () => {
+    Toast.show({
+        text: 'Ou! Das hat nicht geklappt. Verusuch es doch später noch einmal!',
+        type: 'danger',
+        buttonText: 'Okay',
+        position: 'bottom',
+        duration: 2000
+    });
+}
+
+export const getData = (value, onSuccess, onError, accessToken) => {
     const url = `http://192.168.178.60:8080/api/${value}`;
     fetch(url, {
         headers: {
@@ -29,6 +39,21 @@ export const fetchData = (value, onSuccess, onError, accessToken) => {
         .then(onSuccess)
         .catch(error => {
             console.warn(error);
+            defaultErrorMessage();
+            onError(error);
+        });
+};
+
+export const postData = (value, onError, accessToken) => {
+    const url = `http://192.168.178.60:8080/api/${value}`;
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    }).then(checkStatus).catch(error => {
+            console.warn(error);
+            defaultErrorMessage();
             onError(error);
         });
 };
@@ -37,7 +62,7 @@ export const login = (onSuccess) => {
     auth0
         .webAuth
         .authorize({
-            scope: 'openid profile read:riddles',
+            scope: 'openid profile create:register_for_quest',
             audience: 'https://cityquest.at/api/',
             responseType: 'token id_token'
         })
@@ -79,4 +104,4 @@ export const logout = (onSuccess) => {
         duration: 1500
     });
     onSuccess();
-}
+};

@@ -30,8 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/activeFixedQuests", "/api/openedEventQuests")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/riddles")
-                .hasAuthority("read:riddles")
+                .antMatchers(HttpMethod.POST, "/api/registerForQuest")
+                .hasAuthority("create:register_for_quest")
                 .anyRequest()
                 .authenticated();
     }
