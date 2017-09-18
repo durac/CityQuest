@@ -14,7 +14,7 @@ export class CityQuestHeader extends Component {
         super(props);
         this.state = {
             isLoggedIn: false
-        }
+        };
         this.loginOrLogout = this.loginOrLogout.bind(this);
     }
 
@@ -25,8 +25,7 @@ export class CityQuestHeader extends Component {
                 this.setState({
                     isLoggedIn: true
                 });
-            }
-            else {
+            } else {
                 this.setState({
                     isLoggedIn: false
                 });
@@ -57,6 +56,7 @@ export class CityQuestHeader extends Component {
                         <MenuOptions>
                             {this.loginOrLogout()}
                             <MenuOption><Text style={s.popupMenuEntry}>Info</Text></MenuOption>
+                            <MenuOption><Text style={s.popupMenuEntry}>Problem melden</Text></MenuOption>
                             <MenuOption><Text style={s.popupMenuEntry}>Impressum</Text></MenuOption>
                         </MenuOptions>
                     </Menu>

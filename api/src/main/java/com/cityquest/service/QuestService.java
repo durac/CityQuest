@@ -2,6 +2,7 @@ package com.cityquest.service;
 
 import com.cityquest.dto.EventQuestDto;
 import com.cityquest.dto.FixedQuestDto;
+import com.cityquest.exception.ApiException;
 import com.cityquest.persistence.model.QuestStatus;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +19,13 @@ public interface QuestService {
 
     List<EventQuestDto> findEventQuestsByStatus(QuestStatus status);
 
-    Boolean registerForQuest(Long questId, String auth0UserId);
+    Boolean registerForQuest(Long questId, String accessToken) throws ApiException;
 
-    Boolean unregisterForQuest(Long questId, String auth0UserId);
+    Boolean unregisterFromQuest(Long questId, String accessToken) throws ApiException;
 
-    Boolean isRegistered(Long questId, String auth0UserId);
+    Boolean isRegistered(Long questId, String accessToken) throws ApiException;
 
-    List<FixedQuestDto> findFixedQuestsOfUser(String auth0UserId);
+    List<FixedQuestDto> findFixedQuestsOfUser(String accessToken) throws ApiException;
 
-    List<EventQuestDto> findEventQuestsOfUser(String auth0UserId);
+    List<EventQuestDto> findEventQuestsOfUser(String accessToken) throws ApiException;
 }

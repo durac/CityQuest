@@ -2,8 +2,10 @@ package com.cityquest.controller;
 
 import com.cityquest.dto.EventQuestDto;
 import com.cityquest.dto.FixedQuestDto;
+import com.cityquest.exception.ApiException;
 import com.cityquest.persistence.model.QuestStatus;
 import com.cityquest.service.QuestService;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +36,18 @@ public class QuestController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/isRegistered")
-    public Boolean getOpenedEventQuests(Long questId, String auth0UserId) {
-        return questService.isRegistered(questId, auth0UserId);
+    public Boolean isRegistered(Long questId, HttpServletRequest request) throws ApiException {
+
+        return questService.isRegistered(questId, request.getHeader("Authorization"));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/registerForQuest")
-    public Boolean registerForQuest(Long questId, String auth0UserId) {
-        return questService.registerForQuest(questId, auth0UserId);
+    public Boolean registerForQuest(Long questId, HttpServletRequest request) throws ApiException {
+        return questService.registerForQuest(questId, request.getHeader("Authorization"));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/unregisterForQuest")
-    public Boolean unregisterForQuest(Long questId, String auth0UserId) {
-        return questService.unregisterForQuest(questId, auth0UserId);
+    @RequestMapping(method = RequestMethod.POST, value = "/api/unregisterFromQuest")
+    public Boolean unregisterFromQuest(Long questId, HttpServletRequest request) throws ApiException {
+        return questService.unregisterFromQuest(questId, request.getHeader("Authorization"));
     }
 }

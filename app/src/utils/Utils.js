@@ -1,7 +1,7 @@
 /**
  * Created by Dominik Schwarz on 26.07.2017.
  */
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, Platform } from "react-native";
 import Auth0 from "react-native-auth0";
 import { Toast } from "native-base";
 
@@ -53,11 +53,11 @@ export const postData = (value, onSuccess, onError, accessToken) => {
         }
     }).then(checkStatus)
         .then(res => res.json())
-        .then(onSuccess)
+        .then(res => typeof onSuccess === 'function' && onSuccess(res))
         .catch(error => {
             console.warn(error);
             defaultErrorMessage();
-            onError(error);
+            typeof onError === 'function' && onError(error);
         });
 };
 
@@ -67,31 +67,21 @@ export const login = (onSuccess) => {
         .authorize({
             scope: 'openid profile create:register_for_quest',
             audience: 'https://cityquest.at/api/',
-            responseType: 'token id_token'
+            responseType: 'token'
         })
         .then(credentials => {
-            auth0
-                .auth
-                .userInfo({token: credentials.accessToken})
-                .then(userinfo => {
-                    let user = {
-                        isLoggedIn: true,
-                        accessToken: credentials.accessToken,
-                        userId: userinfo.sub.split('|')[1]
-                    };
-                    AsyncStorage.setItem('userinfo', JSON.stringify(user));
-                    Toast.show({
-                        text: 'Anmeldung erfolgreich!',
-                        buttonText: 'Okay',
-                        position: 'bottom',
-                        duration: 1500
-                    });
-                    onSuccess(user);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-
+            let user = {
+                isLoggedIn: true,
+                accessToken: credentials.accessToken
+            };
+            AsyncStorage.setItem('userinfo', JSON.stringify(user));
+            Toast.show({
+                text: 'Anmeldung erfolgreich!',
+                buttonText: 'Okay',
+                position: 'bottom',
+                duration: 1500
+            });
+            typeof onSuccess === 'function' && onSuccess(user);
         })
         .catch(error => {
             console.log(error);
@@ -99,12 +89,31 @@ export const login = (onSuccess) => {
 };
 
 export const logout = (onSuccess) => {
-    AsyncStorage.removeItem('userinfo');
-    Toast.show({
-        text: 'Abmeldung erfolgreich!',
-        buttonText: 'Okay',
-        position: 'bottom',
-        duration: 1500
-    });
-    onSuccess();
+    if (Platform.OS === 'android') {
+        AsyncStorage.removeItem('userinfo');
+        Toast.show({
+            text: 'Abmeldung erfolgreich!',
+            buttonText: 'Okay',
+            position: 'bottom',
+            duration: 1500
+        });
+        typeof onSuccess === 'function' && onSuccess();
+    } else {
+        auth0.webAuth
+            .clearSession({})
+            .then(success => {
+                AsyncStorage.removeItem('userinfo');
+                Toast.show({
+                    text: 'Abmeldung erfolgreich!',
+                    buttonText: 'Okay',
+                    position: 'bottom',
+                    duration: 1500
+                });
+                typeof onSuccess === 'function' && onSuccess();
+            })
+            .catch(error => {
+                console.log(error)
+                defaultErrorMessage();
+            });
+    }
 };

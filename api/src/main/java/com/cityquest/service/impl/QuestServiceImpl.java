@@ -2,12 +2,14 @@ package com.cityquest.service.impl;
 
 import com.cityquest.dto.EventQuestDto;
 import com.cityquest.dto.FixedQuestDto;
+import com.cityquest.exception.ApiException;
 import com.cityquest.persistence.model.*;
 import com.cityquest.persistence.repository.EventQuestRepository;
 import com.cityquest.persistence.repository.FixedQuestRepository;
 import com.cityquest.persistence.repository.QuestRepository;
 import com.cityquest.persistence.repository.UserRepository;
 import com.cityquest.service.QuestService;
+import com.cityquest.util.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +55,16 @@ public class QuestServiceImpl implements QuestService {
     }
 
     @Override
-    public Boolean registerForQuest(Long questId, String auth0UserId) {
+    public Boolean registerForQuest(Long questId, String accessToken) throws ApiException {
+        String auth0UserId;
+        try {
+            auth0UserId = UserInfo.getAuth0UserId(accessToken);
+        } catch (Exception e){
+            throw new ApiException("Error while fetching user infos");
+        }
+
         logger.info("register quest "+questId+" for auth0-user "+auth0UserId);
+
         Quest quest = questRepository.findOne(questId);
         User user = userRepository.findByAuth0Id(auth0UserId);
         if(user == null || quest == null) {
@@ -70,8 +80,16 @@ public class QuestServiceImpl implements QuestService {
     }
 
     @Override
-    public Boolean unregisterForQuest(Long questId, String auth0UserId) {
+    public Boolean unregisterFromQuest(Long questId, String accessToken) throws ApiException {
+        String auth0UserId;
+        try {
+            auth0UserId = UserInfo.getAuth0UserId(accessToken);
+        } catch (Exception e){
+            throw new ApiException("Error while fetching user infos");
+        }
+
         logger.info("unregister quest "+questId+" for auth0-user "+auth0UserId);
+
         Quest quest = questRepository.findOne(questId);
         User user = userRepository.findByAuth0Id(auth0UserId);
         if(user == null || quest == null) {
@@ -87,8 +105,16 @@ public class QuestServiceImpl implements QuestService {
     }
 
     @Override
-    public Boolean isRegistered(Long questId, String auth0UserId) {
+    public Boolean isRegistered(Long questId, String accessToken) throws ApiException {
+        String auth0UserId;
+        try {
+            auth0UserId = UserInfo.getAuth0UserId(accessToken);
+        } catch (Exception e){
+            throw new ApiException("Error while fetching user infos");
+        }
+
         logger.info("is user "+auth0UserId+" registered for quest "+questId);
+
         Quest quest = questRepository.findOne(questId);
         User user = userRepository.findByAuth0Id(auth0UserId);
         if(user == null || quest == null) {
@@ -103,8 +129,16 @@ public class QuestServiceImpl implements QuestService {
     }
 
     @Override
-    public List<FixedQuestDto> findFixedQuestsOfUser(String auth0UserId) {
+    public List<FixedQuestDto> findFixedQuestsOfUser(String accessToken) throws ApiException {
+        String auth0UserId;
+        try {
+            auth0UserId = UserInfo.getAuth0UserId(accessToken);
+        } catch (Exception e){
+            throw new ApiException("Error while fetching user infos");
+        }
+
         logger.info("find fixed quests of user " + auth0UserId);
+
         User user = userRepository.findByAuth0Id(auth0UserId);
         if(user == null) {
             return null;
@@ -117,8 +151,16 @@ public class QuestServiceImpl implements QuestService {
     }
 
     @Override
-    public List<EventQuestDto> findEventQuestsOfUser(String auth0UserId) {
+    public List<EventQuestDto> findEventQuestsOfUser(String accessToken) throws ApiException {
+        String auth0UserId;
+        try {
+            auth0UserId = UserInfo.getAuth0UserId(accessToken);
+        } catch (Exception e){
+            throw new ApiException("Error while fetching user infos");
+        }
+
         logger.info("find event quests of user " + auth0UserId);
+
         User user = userRepository.findByAuth0Id(auth0UserId);
         if(user == null) {
             return null;

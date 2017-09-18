@@ -22,7 +22,7 @@ export default class QuestDetailsScreen extends Component {
             registered: false
         };
         this.registerForQuest = this.registerForQuest.bind(this);
-        this.unregisterForQuest = this.unregisterForQuest.bind(this);
+        this.unregisterFromQuest = this.unregisterFromQuest.bind(this);
         this.isRegistered = this.isRegistered.bind(this);
     }
 
@@ -43,7 +43,8 @@ export default class QuestDetailsScreen extends Component {
         AsyncStorage.getItem('userinfo', (err, result) => {
             const res = JSON.parse(result);
             if(res != undefined){
-                postData('registerForQuest?questId='+this.state.quest.id+'&auth0UserId='+res.userId, () =>{
+                postData('registerForQuest?questId='+this.state.quest.id, () =>{
+                    //TODO check response -> or error handling on server
                     this.setState({
                         registered: true
                     });
@@ -54,11 +55,12 @@ export default class QuestDetailsScreen extends Component {
         });
     }
 
-    unregisterForQuest(){
+    unregisterFromQuest(){
         AsyncStorage.getItem('userinfo', (err, result) => {
             const res = JSON.parse(result);
             if(res != undefined){
-                postData('unregisterForQuest?questId='+this.state.quest.id+'&auth0UserId='+res.userId, () => {
+                postData('unregisterFromQuest?questId='+this.state.quest.id, () => {
+                    //TODO check response -> or error handling on server
                     this.setState({
                         registered: false
                     });
@@ -71,8 +73,9 @@ export default class QuestDetailsScreen extends Component {
         AsyncStorage.getItem('userinfo', (err, result) => {
             const res = JSON.parse(result);
             if(res != undefined){
-                getData('isRegistered?questId='+this.state.quest.id+'&auth0UserId='+res.userId,
+                getData('isRegistered?questId='+this.state.quest.id,
                     apiRes => {
+                        //TODO check response -> or error handling on server
                         this.setState({
                             registered: apiRes
                         });
@@ -112,7 +115,7 @@ export default class QuestDetailsScreen extends Component {
                         </Grid>
                         {
                             this.state.registered ?
-                                <Button bordered danger block style={{marginTop: 50, borderRadius: 10}} onPress={this.unregisterForQuest}><Text>Abmelden</Text></Button>
+                                <Button bordered danger block style={{marginTop: 50, borderRadius: 10}} onPress={this.unregisterFromQuest}><Text>Abmelden</Text></Button>
                                 : <Button bordered block style={{marginTop: 50, borderRadius: 10}} onPress={this.registerForQuest}><Text>Los gehts!</Text></Button>
 
                         }
