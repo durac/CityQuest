@@ -19,9 +19,9 @@ public interface QuestService {
 
     List<EventQuestDto> findEventQuestsByStatus(QuestStatus status);
 
-    Boolean registerForQuest(Long questId, String accessToken) throws ApiException;
+    void registerForQuest(Long questId, String accessToken) throws ApiException;
 
-    Boolean unregisterFromQuest(Long questId, String accessToken) throws ApiException;
+    void unregisterFromQuest(Long questId, String accessToken) throws ApiException;
 
     Boolean isRegistered(Long questId, String accessToken) throws ApiException;
 

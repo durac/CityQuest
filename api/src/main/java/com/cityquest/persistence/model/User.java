@@ -9,7 +9,7 @@ import java.util.List;
  * @author Dominik Schwarz
  */
 @Entity
-@Table(name = "city_quest_user")
+@Table(name = "city_quest_user", indexes = {@Index(columnList = "auth0_id")})
 public class User implements Serializable {
 
     @Id @GeneratedValue private Long id;

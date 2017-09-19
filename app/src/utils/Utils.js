@@ -7,6 +7,7 @@ import { Toast } from "native-base";
 
 var credentials = require('./auth0-credentials');
 const auth0 = new Auth0(credentials);
+const apiUrl = `http://192.168.178.60:8080/api/`;
 
 const checkStatus = (response) => {
     if (response.status >= 200 && response.status < 300) {
@@ -26,37 +27,50 @@ const defaultErrorMessage = () => {
         position: 'bottom',
         duration: 2000
     });
-}
+};
+
+const errorMessage = (text, type) => {
+    Toast.show({
+        text: text,
+        type: type === undefined ? '' : type,
+        buttonText: 'Okay',
+        position: 'bottom',
+        duration: 2000
+    });
+};
+
 
 export const getData = (value, onSuccess, onError, accessToken) => {
-    const url = `http://192.168.178.60:8080/api/${value}`;
-    fetch(url, {
+    fetch(apiUrl+""+value, {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         }
     }).then(checkStatus)
-        .then(res => res.json())
-        .then(onSuccess)
+        .then((res) => res.text())
+        .then(text => text.length ? JSON.parse(text) : {})
+        .then(res => typeof onSuccess === 'function' && onSuccess(res))
         .catch(error => {
-            console.warn(error);
-            defaultErrorMessage();
-            onError(error);
+            console.log(error);
+            let resError = JSON.parse(error.response._bodyText);
+            errorMessage(resError.message, "warning");
+            typeof onError === 'function' && onError(error);
         });
 };
 
 export const postData = (value, onSuccess, onError, accessToken) => {
-    const url = `http://192.168.178.60:8080/api/${value}`;
-    fetch(url, {
+    fetch(apiUrl+""+value, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${accessToken}`
         }
     }).then(checkStatus)
-        .then(res => res.json())
+        .then((res) => res.text())
+        .then(text => text.length ? JSON.parse(text) : {})
         .then(res => typeof onSuccess === 'function' && onSuccess(res))
         .catch(error => {
-            console.warn(error);
-            defaultErrorMessage();
+            console.log(error);
+            let resError = JSON.parse(error.response._bodyText);
+            errorMessage(resError.message, "warning");
             typeof onError === 'function' && onError(error);
         });
 };
@@ -70,18 +84,18 @@ export const login = (onSuccess) => {
             responseType: 'token'
         })
         .then(credentials => {
-            let user = {
+            let authInfo = {
                 isLoggedIn: true,
                 accessToken: credentials.accessToken
             };
-            AsyncStorage.setItem('userinfo', JSON.stringify(user));
+            AsyncStorage.setItem('userinfo', JSON.stringify(authInfo));
             Toast.show({
                 text: 'Anmeldung erfolgreich!',
                 buttonText: 'Okay',
                 position: 'bottom',
                 duration: 1500
             });
-            typeof onSuccess === 'function' && onSuccess(user);
+            typeof onSuccess === 'function' && onSuccess(authInfo);
         })
         .catch(error => {
             console.log(error);

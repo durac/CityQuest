@@ -15,10 +15,10 @@ export class CityQuestHeader extends Component {
         this.state = {
             isLoggedIn: false
         };
-        this.loginOrLogout = this.loginOrLogout.bind(this);
+        this.renderLoginOrLogout = this.renderLoginOrLogout.bind(this);
     }
 
-    loginOrLogout() {
+    renderLoginOrLogout() {
         AsyncStorage.getItem('userinfo', (err, result) => {
             const res = JSON.parse(result);
             if(res && res.isLoggedIn) {
@@ -32,7 +32,7 @@ export class CityQuestHeader extends Component {
             }
         });
         return this.state.isLoggedIn ?
-            <MenuOption onSelect={() => logout(() => {})}><Text style={s.popupMenuEntry}>Logout</Text></MenuOption>
+            <MenuOption onSelect={() => logout()}><Text style={s.popupMenuEntry}>Logout</Text></MenuOption>
             : <MenuOption onSelect={() => login()}><Text style={s.popupMenuEntry}>Login</Text></MenuOption>;
     }
 
@@ -54,7 +54,7 @@ export class CityQuestHeader extends Component {
                     <Menu>
                         <MenuTrigger><Icon name="more" style={{padding: 10, color:"white"}}/></MenuTrigger>
                         <MenuOptions>
-                            {this.loginOrLogout()}
+                            {this.renderLoginOrLogout()}
                             <MenuOption><Text style={s.popupMenuEntry}>Info</Text></MenuOption>
                             <MenuOption><Text style={s.popupMenuEntry}>Problem melden</Text></MenuOption>
                             <MenuOption><Text style={s.popupMenuEntry}>Impressum</Text></MenuOption>
