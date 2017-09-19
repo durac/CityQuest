@@ -26,7 +26,7 @@ export default class QuestDetailsScreen extends Component {
         this.isRegistered = this.isRegistered.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.navigation.state.params.eventQuest == undefined) {
             this.setState({
                 quest: this.props.navigation.state.params.fixedQuest
@@ -44,7 +44,6 @@ export default class QuestDetailsScreen extends Component {
             const res = JSON.parse(result);
             if(res != undefined){
                 postData('registerForQuest?questId='+this.state.quest.id, () =>{
-                    //TODO check response -> or error handling on server
                     this.setState({
                         registered: true
                     });
@@ -60,7 +59,6 @@ export default class QuestDetailsScreen extends Component {
             const res = JSON.parse(result);
             if(res != undefined){
                 postData('unregisterFromQuest?questId='+this.state.quest.id, () => {
-                    //TODO check response -> or error handling on server
                     this.setState({
                         registered: false
                     });
@@ -75,7 +73,6 @@ export default class QuestDetailsScreen extends Component {
             if(res != undefined){
                 getData('isRegistered?questId='+this.state.quest.id,
                     apiRes => {
-                        //TODO check response -> or error handling on server
                         this.setState({
                             registered: apiRes
                         });

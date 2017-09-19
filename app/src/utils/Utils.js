@@ -79,7 +79,7 @@ export const login = (onSuccess) => {
     auth0
         .webAuth
         .authorize({
-            scope: 'openid profile create:register_for_quest',
+            scope: 'openid profile create:register_for_quest read:user_quests',
             audience: 'https://cityquest.at/api/',
             responseType: 'token'
         })

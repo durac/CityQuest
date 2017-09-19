@@ -48,4 +48,15 @@ public class QuestController {
     public void unregisterFromQuest(Long questId, HttpServletRequest request) {
         questService.unregisterFromQuest(questId, request.getHeader("Authorization"));
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/api/fixedQuestsOfUser")
+    public List<FixedQuestDto> getFixedQuestsOfUser(HttpServletRequest request) {
+        return questService.findFixedQuestsOfUser(request.getHeader("Authorization"));
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/api/eventQuestsOfUser")
+    public List<EventQuestDto> getEventQuestsOfUser(HttpServletRequest request) {
+        return questService.findEventQuestsOfUser(request.getHeader("Authorization"));
+    }
+
 }

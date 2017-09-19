@@ -3,11 +3,12 @@
  */
 import React, { Component } from "react";
 import QuestListScreen from "./QuestListScreen/index.js";
-import MyQuestsScreen from "./MyQuestsScreen/MyQuestsScreen.js";
+import MyQuestsScreen from "./MyQuestsScreen/index.js";
 import QRScannerScreen from "./QRScannerScreen/QRScannerScreen.js";
 import ProfileScreen from "./ProfileScreen/ProfileScreen.js";
 import { TabNavigator, TabView, TabBarBottom } from "react-navigation";
 import {Button, Text, Icon, Item, Footer, FooterTab, Label} from "native-base";
+
 const BottomNavigation = TabNavigator(
     {
         QuestList: { screen: QuestListScreen },

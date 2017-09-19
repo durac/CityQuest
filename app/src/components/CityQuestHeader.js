@@ -17,7 +17,7 @@ export class CityQuestHeader extends Component {
         };
         this.renderLoginOrLogout = this.renderLoginOrLogout.bind(this);
     }
-
+    
     renderLoginOrLogout() {
         AsyncStorage.getItem('userinfo', (err, result) => {
             const res = JSON.parse(result);
@@ -32,8 +32,8 @@ export class CityQuestHeader extends Component {
             }
         });
         return this.state.isLoggedIn ?
-            <MenuOption onSelect={() => logout()}><Text style={s.popupMenuEntry}>Logout</Text></MenuOption>
-            : <MenuOption onSelect={() => login()}><Text style={s.popupMenuEntry}>Login</Text></MenuOption>;
+            <MenuOption onSelect={() => logout(() => {this.setState({ isLoggedIn: false})})}><Text style={s.popupMenuEntry}>Logout</Text></MenuOption>
+            : <MenuOption onSelect={() => login(() => {this.setState({ isLoggedIn: true})})}><Text style={s.popupMenuEntry}>Login</Text></MenuOption>;
     }
 
     render() {

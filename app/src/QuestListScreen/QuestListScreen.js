@@ -3,14 +3,14 @@
  */
 import React, {Component} from "react";
 import Auth0 from "react-native-auth0";
-import {Alert, View, RefreshControl, AsyncStorage} from "react-native";
+import {View, RefreshControl, AsyncStorage} from "react-native";
 import {StackNavigator} from "react-navigation";
 import {Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Card, CardItem,
     Spinner, Thumbnail, H2, H3} from "native-base";
 import Moment from "moment";
+import {CityQuestHeader} from "../components/CityQuestHeader";
 import {getData} from "../utils/Utils";
 import s from "../style/Style";
-import {CityQuestHeader} from "../components/CityQuestHeader";
 
 var credentials = require("../utils/auth0-credentials");
 const auth0 = new Auth0(credentials);
@@ -18,7 +18,7 @@ const auth0 = new Auth0(credentials);
 export default class QuestListScreen extends Component {
 
     static navigationOptions = ({navigation}) => ({
-        header: <CityQuestHeader title='CityQuest'/>
+        header: null
     });
 
     constructor(props) {
@@ -34,16 +34,15 @@ export default class QuestListScreen extends Component {
         this.onRefresh = this.onRefresh.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.fetchFixedQuests();
         this.fetchEventQuests();
     }
 
-
     render() {
         const fixedQuests = this.state.fixedQuests.map((f, i) =>
             <Card key={i}>
-                <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {fixedQuest: f, title: f.name})}
+                <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {fixedQuest: f})}
                           style={s.cardItem}>
                     <Left>
                         <Thumbnail square
@@ -68,7 +67,7 @@ export default class QuestListScreen extends Component {
         );
         const eventQuests = this.state.eventQuests.map((e, i) =>
             <Card key={i}>
-                <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {eventQuest: e, title: e.name})}
+                <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {eventQuest: e})}
                           style={s.cardItem}>
                     <Left>
                         <Thumbnail square
@@ -95,6 +94,7 @@ export default class QuestListScreen extends Component {
         );
         return (
             <Container>
+                <CityQuestHeader title='CityQuest'/>
                 <Content refreshControl={
                     <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />
                 }>
@@ -102,7 +102,8 @@ export default class QuestListScreen extends Component {
                         <Spinner color='#634405'/>
                         : <View style={{padding: 7}}>
                             {fixedQuests}
-                            <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3>
+                            {this.state.eventQuests.length ?
+                                <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3> : undefined}
                             {eventQuests}
                             <Text style={{marginTop : 5}}></Text>
                         </View>
@@ -133,10 +134,6 @@ export default class QuestListScreen extends Component {
                     loading: false,
                     refreshing: false
                 });
-                Alert.alert(
-                    'Da stimmt was nicht!',
-                    'Leider konnten keine Daten empfangen werden. Bitte versuche es noch einmal.'
-                );
             });
     };
 
@@ -155,10 +152,6 @@ export default class QuestListScreen extends Component {
                     loading: false,
                     refreshing: false
                 });
-                Alert.alert(
-                    'Da stimmt was nicht!',
-                    'Leider konnten keine Daten empfangen werden. Bitte versuche es noch einmal.'
-                );
             });
     };
 }

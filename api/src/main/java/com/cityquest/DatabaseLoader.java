@@ -56,6 +56,8 @@ public class DatabaseLoader implements CommandLineRunner {
     private void saveUsers() throws Exception {
         List<FixedQuest> fixedQuests = new ArrayList<>();
         fixedQuestRepo.findAll().iterator().forEachRemaining(fixedQuests::add);
+        List<EventQuest> eventQuests = new ArrayList<>();
+        eventQuestRepo.findAll().iterator().forEachRemaining(eventQuests::add);
         List<QuestStation> questStations = new ArrayList<>();
         questStationRepo.findAll().iterator().forEachRemaining(questStations::add);
 
@@ -67,6 +69,7 @@ public class DatabaseLoader implements CommandLineRunner {
         User u6 = new User("59760bb5090f0405f833c780");
 
         u1.getQuests().add(fixedQuests.get(2));
+        u1.getQuests().add(eventQuests.get(2));
         u2.getQuests().add(fixedQuests.get(2));
         u3.getQuests().add(fixedQuests.get(2));
         u5.getQuests().add(fixedQuests.get(2));
@@ -84,6 +87,11 @@ public class DatabaseLoader implements CommandLineRunner {
         QuestStation qs4 = questStations.get(10);
         QuestStation qs5 = questStations.get(11);
 
+        QuestStation qs6 = questStations.get(34);
+        QuestStation qs7 = questStations.get(35);
+        QuestStation qs8 = questStations.get(36);
+        QuestStation qs9 = questStations.get(37);
+
         this.solvedQuestStationRepo.save(
                 new SolvedQuestStation(u1, qs1, dateFormat.parse("2017-09-02 17:00"), dateFormat.parse("2017-09-02 17:13")));
         this.solvedQuestStationRepo.save(
@@ -92,6 +100,16 @@ public class DatabaseLoader implements CommandLineRunner {
                 new SolvedQuestStation(u1, qs3, dateFormat.parse("2017-09-02 17:23"), dateFormat.parse("2017-09-02 17:40")));
         this.solvedQuestStationRepo.save(
                 new SolvedQuestStation(u1, qs4, dateFormat.parse("2017-09-02 17:41"), dateFormat.parse("2017-09-02 23:00")));
+
+        this.solvedQuestStationRepo.save(
+                new SolvedQuestStation(u1, qs6, dateFormat.parse("2017-09-12 18:00"), dateFormat.parse("2017-09-12 18:23")));
+        this.solvedQuestStationRepo.save(
+                new SolvedQuestStation(u1, qs7, dateFormat.parse("2017-09-12 18:23"), dateFormat.parse("2017-09-12 18:45")));
+        this.solvedQuestStationRepo.save(
+                new SolvedQuestStation(u1, qs8, dateFormat.parse("2017-09-12 18:45"), dateFormat.parse("2017-09-12 18:59")));
+        this.solvedQuestStationRepo.save(
+                new SolvedQuestStation(u1, qs9, dateFormat.parse("2017-09-12 18:59"), dateFormat.parse("2017-09-12 19:22")));
+
 
         this.solvedQuestStationRepo.save(
                 new SolvedQuestStation(u2, qs1, dateFormat.parse("2017-09-02 17:00"), dateFormat.parse("2017-09-02 17:16")));
@@ -139,6 +157,11 @@ public class DatabaseLoader implements CommandLineRunner {
                 "Entdecke den historischen und modernen Prater auf einer neuen Art und Weise. Viel Spaß!", QuestDifficulty.MEDIUM, 90, 3.5,
                 "Prater", "https://i.imgur.com/zeAllnU.png", dateFormat.parse("2017-10-10 18:00"), dateFormat.parse("2017-10-10 23:00"), 20, 200,
                 dateFormat.parse("2017-09-20 10:00"), dateFormat.parse("2017-10-11 15:00"), ""));
+        this.eventQuestRepo.save(new EventQuest("Testing Quest", QuestStatus.CLOSED,
+                "Bei dieser Quest müsst ihr eine Reihe kniffliger Logikrätsel lösen. Aufgeben ist keine Option!",
+                QuestDifficulty.HARD, 130, 7.0, "7. Bezirk", "https://i.imgur.com/3207Wla.png", dateFormat.parse("2017-09-12 18:00"),
+                dateFormat.parse("2017-09-13 00:00"), 10, 100, dateFormat.parse("2017-09-01 10:00"),
+                dateFormat.parse("2017-09-11 15:00"), ""));
         this.eventQuestRepo.save(new EventQuest("Test Quest", QuestStatus.DRAFT,
                 "Bei dieser Quest müsst ihr eine Reihe kniffliger Logikrätsel lösen. Aufgeben ist keine Option!",
                 QuestDifficulty.HARD, 150, 6.0, "7. Bezirk", "https://i.imgur.com/3207Wla.png", dateFormat.parse("2017-10-03 18:00"),
@@ -178,6 +201,11 @@ public class DatabaseLoader implements CommandLineRunner {
         for (int i = 1; i < 5; i++) {
             this.questStationRepo.save(
                     new QuestStation(i, "Test Quest #" + i, "", eventQuests.get(2), riddles.get(j), 0.0, 0.0, ""));
+            j++;
+        }
+        for (int i = 1; i < 2; i++) {
+            this.questStationRepo.save(
+                    new QuestStation(i, "Testing Quest #" + i, "", eventQuests.get(3), riddles.get(j), 0.0, 0.0, ""));
             j++;
         }
     }

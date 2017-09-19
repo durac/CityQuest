@@ -7,7 +7,7 @@ import { StackNavigator } from 'react-navigation';
 import {Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Spinner} from 'native-base';
 import {CityQuestHeader} from "../components/CityQuestHeader";
 
-export default class QRScannerScreen extends Component {
+export default class ProfileScreen extends Component {
 
     constructor(props) {
         super(props);
