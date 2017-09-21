@@ -6,15 +6,15 @@ import { MenuContext } from 'react-native-popup-menu';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware  } from 'redux'
 import thunk from 'redux-thunk'
+import api from './middleware/api'
 import rootReducer from './reducers/index.js';
-import auth from './reducers/auth.js';
 import Offline from './components/Offline'
 import getTheme from '../native-base-theme/components/index.js';
 import commonColor from '../native-base-theme/variables/commonColor';
 import BottomNavigation from "./BottomNavigation.js";
 
-const middleware = [ thunk ];
-let store = createStore(auth, applyMiddleware(...middleware));
+const middleware = [ thunk, api ];
+let store = createStore(rootReducer, applyMiddleware(...middleware));
 
 export default class App extends Component {
 

@@ -3,20 +3,33 @@
  */
 import React from "react";
 import {AsyncStorage} from "react-native";
-import * as ActionTypes from "../actions/index.js";
+import * as ActionTypes from "../actions/authActions.js";
 
 const jwtDecode = require('jwt-decode');
 
-const getAccessToken = async () => {
-    let userinfo = await AsyncStorage.getItem('userinfo');
-    if(userinfo) {
-        return JSON.parse(userinfo).accessToken;
-    }
-    return null;
+let initialState = {
+    accessToken: null,
+    isLoggedIn: false,
+    error: ''
 };
 
-const checkTokenExpiry = async () => {
-    let accessToken = await getAccessToken();
+
+//TODO get accessToken from persistent store
+/*
+const getInitialState = () => {
+    AsyncStorage.getItem('userinfo', (err,result) => {
+        const res = JSON.parse(result);
+        if (res) {
+            initialState.accessToken = res.accessToken;
+            initialState.isLoggedIn = true;
+        }
+    });
+    return initialState;
+};
+
+const checkTokenExpiry = (initialState) => {
+    getAccessToken(initialState);
+    let accessToken = initialState.accessToken;
     if (accessToken) {
         let jwtExp = jwtDecode(accessToken).exp;
         let expiryDate = new Date(0);
@@ -27,13 +40,9 @@ const checkTokenExpiry = async () => {
         }
     }
     return false;
-};
+};*/
 
-const auth = (state = {
-    isLoggedIn:  false, //TODO call checkTokenExpiry -> issue: async function
-    accessToken: null, //TODO call getAccessToken -> issue: async function
-    error: ''
-}, action) => {
+const auth = (state = initialState, action) => {
     switch (action.type) {
         case ActionTypes.LOGIN_SUCCESS:
             return Object.assign({}, state, {
@@ -48,11 +57,6 @@ const auth = (state = {
                 error: action.error
             });
         case ActionTypes.LOGOUT_SUCCESS:
-            console.log(Object.assign({}, state, {
-                isLoggedIn: false,
-                accessToken: null,
-                error: action.error
-            }));
             return Object.assign({}, state, {
                 isLoggedIn: false,
                 accessToken: null

@@ -3,7 +3,7 @@
  */
 import React from "react";
 import { connect } from 'react-redux';
-import { login, logout } from '../actions/index.js';
+import { login, logout } from '../actions/authActions.js';
 import DefaultHeader from './DefaultHeader';
 
 const mapStateToProps = (state, ownProps) => {
@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
         title: ownProps.title,
         includeBackIcon: ownProps.includeBackIcon,
         navigation: ownProps.navigation,
-        isLoggedIn: state.isLoggedIn
+        isLoggedIn: state.auth.isLoggedIn
     }
 };
 

@@ -2,17 +2,18 @@
  * Created by Dominik Schwarz on 08.09.2017.
  */
 import React, {Component} from "react";
-import Auth0 from "react-native-auth0";
 import {View, RefreshControl, AsyncStorage} from "react-native";
 import {StackNavigator} from "react-navigation";
 import {Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Card, CardItem,
     Spinner, Thumbnail, H2, H3} from "native-base";
+import { connect } from 'react-redux';
+import { loadFixedQuests } from '../../actions/questsActions.js';
 import Moment from "moment";
-import CityQuestHeader from "../components/CityQuestHeader";
-import {getData} from "../utils/Utils";
-import s from "../style/Style";
+import CityQuestHeader from "../../components/CityQuestHeader";
+import {getData} from "../../utils/Utils";
+import s from "../../style/Style";
 
-export default class QuestListScreen extends Component {
+class QuestListScreen extends Component {
 
     static navigationOptions = ({navigation}) => ({
         header: <CityQuestHeader title="CityQuest"/>
@@ -32,12 +33,55 @@ export default class QuestListScreen extends Component {
     }
 
     componentWillMount() {
-        this.fetchFixedQuests();
+        this.props.loadFixedQuests();
         this.fetchEventQuests();
     }
 
+    onRefresh() {
+        this.setState({refreshing: true});
+        this.props.loadFixedQuests();
+        this.fetchEventQuests();
+    }
+
+
+    fetchFixedQuests() {
+        this.setState({loading: true});
+        getData('activeFixedQuests',
+            res => {
+                this.setState({
+                    fixedQuests: res,
+                    loading: false,
+                    refreshing: false
+                });
+            },
+            error => {
+                this.setState({
+                    loading: false,
+                    refreshing: false
+                });
+            });
+    };
+
+    fetchEventQuests() {
+        this.setState({loading: true});
+        getData('openedEventQuests',
+            res => {
+                this.setState({
+                    eventQuests: res,
+                    loading: false,
+                    refreshing: false
+                });
+            },
+            error => {
+                this.setState({
+                    loading: false,
+                    refreshing: false
+                });
+            });
+    };
+
     render() {
-        const fixedQuests = this.state.fixedQuests.map((f, i) =>
+        const fixedQuests = this.props.fixedQuests.map((f, i) =>
             <Card key={i}>
                 <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {fixedQuest: f})}
                           style={s.cardItem}>
@@ -108,46 +152,25 @@ export default class QuestListScreen extends Component {
             </Container>
         );
     }
-
-    onRefresh() {
-        this.setState({refreshing: true});
-        this.fetchFixedQuests();
-        this.fetchEventQuests();
-    }
-
-    fetchFixedQuests() {
-        this.setState({loading: true});
-        getData('activeFixedQuests',
-            res => {
-                this.setState({
-                    fixedQuests: res,
-                    loading: false,
-                    refreshing: false
-                });
-            },
-            error => {
-                this.setState({
-                    loading: false,
-                    refreshing: false
-                });
-            });
-    };
-
-    fetchEventQuests() {
-        this.setState({loading: true});
-        getData('openedEventQuests',
-            res => {
-                this.setState({
-                    eventQuests: res,
-                    loading: false,
-                    refreshing: false
-                });
-            },
-            error => {
-                this.setState({
-                    loading: false,
-                    refreshing: false
-                });
-            });
-    };
 }
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        navigation: ownProps.navigation,
+        isLoggedIn: state.auth.isLoggedIn,
+        fixedQuests: state.fixedQuests.fixedQuests
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loadFixedQuests: () => {
+            dispatch(loadFixedQuests())
+        }
+    }
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(QuestListScreen);

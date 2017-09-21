@@ -23,9 +23,9 @@ import {
     H3
 } from "native-base";
 import Moment from "moment";
-import CityQuestHeader from "../components/CityQuestHeader";
-import {getData} from "../utils/Utils";
-import s from "../style/Style";
+import CityQuestHeader from "../../components/CityQuestHeader";
+import {getData} from "../../utils/Utils";
+import s from "../../style/Style";
 
 export default class MyQuestsScreen extends Component {
 
@@ -126,7 +126,7 @@ export default class MyQuestsScreen extends Component {
                         {this.state.eventQuests.length ?
                             <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3> : undefined}
                         {eventQuests}
-                        <Text style={{marginTop : 5}}> </Text>
+                        <Text style={{marginTop : 5}}></Text>
                     </View>
                     }
                 </Content>

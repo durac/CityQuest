@@ -1,4 +1,7 @@
 /**
+ * Created by Dominik Schwarz on 21.09.2017.
+ */
+/**
  * Created by Dominik Schwarz on 20.09.2017.
  */
 import { AsyncStorage} from "react-native";
@@ -7,7 +10,7 @@ import Auth0 from "react-native-auth0";
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 
-var credentials = require('../utils/auth0-credentials');
+let credentials = require('../utils/auth0-credentials');
 const auth0 = new Auth0(credentials);
 
 const loginSuccess = (accessToken) => {

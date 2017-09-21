@@ -23,9 +23,9 @@ const DefaultHeader = ({title, includeBackIcon, navigation, isLoggedIn, onLoginC
             <Menu>
                 <MenuTrigger><Icon name="more" style={{padding: 10, color:"white"}}/></MenuTrigger>
                 <MenuOptions>
-                    { isLoggedIn ?
-                    <MenuOption onSelect={onLogoutClick}><Text style={s.popupMenuEntry}>Logout</Text></MenuOption>
-                    : <MenuOption onSelect={onLoginClick}><Text style={s.popupMenuEntry}>Login</Text></MenuOption>}
+                    { isLoggedIn ? 
+                        <MenuOption onSelect={onLogoutClick}><Text style={s.popupMenuEntry}>Logout</Text></MenuOption> 
+                        : <MenuOption onSelect={onLoginClick}><Text style={s.popupMenuEntry}>Login</Text></MenuOption>}
                     <MenuOption><Text style={s.popupMenuEntry}>Info</Text></MenuOption>
                     <MenuOption><Text style={s.popupMenuEntry}>Problem melden</Text></MenuOption>
                     <MenuOption><Text style={s.popupMenuEntry}>Impressum</Text></MenuOption>

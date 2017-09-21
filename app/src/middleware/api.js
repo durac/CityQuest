@@ -7,17 +7,20 @@ export const API_ROOT = 'http://192.168.178.60:8080/api/'
 
 const callApi = (endpoint, authenticatedRequest) => {
 
-    let token = AsyncStorage.getItem('userinfo', err => null, result => result.accessToken);
     let config = {};
 
     if(authenticatedRequest) {
-        if(token) {
-            config = {
-                headers: { 'Authorization': `Bearer ${token}` }
+        AsyncStorage.getItem('userinfo', (err, result) => {
+            const res = JSON.parse(result);
+            if (res != undefined) {
+                config = {
+                    headers: {'Authorization': `Bearer ${res.accessToken}`}
+                }
             }
-        } else {
-            throw new Error("No token saved!")
-        }
+            else {
+                throw new Error("No token saved!")
+            }
+        });
     }
 
     return fetch(API_ROOT + endpoint, config)
@@ -30,19 +33,19 @@ const callApi = (endpoint, authenticatedRequest) => {
             }
             return resource
         })
-}
+};
 
-export const CALL_API = Symbol('Call API')
+export const CALL_API = 'Call API';
 
 export default store => next => action => {
 
-    const callAPI = action[CALL_API]
+    const callAPI = action[CALL_API];
 
     if (typeof callAPI === 'undefined') {
         return next(action)
     }
 
-    let { endpoint, types, authenticatedRequest } = callAPI
+    let { endpoint, types, authenticatedRequest } = callAPI;
 
     if (typeof endpoint !== 'string') {
         throw new Error('Specify a string endpoint URL.')
@@ -56,14 +59,14 @@ export default store => next => action => {
         throw new Error('Expected action types to be strings.')
     }
 
-    function actionWith(data) {
-        const finalAction = Object.assign({}, action, data)
-        delete finalAction[CALL_API]
+    const actionWith = (data) => {
+        const finalAction = Object.assign({}, action, data);
+        delete finalAction[CALL_API];
         return finalAction
-    }
+    };
 
-    const [ requestType, successType, failureType ] = types
-    next(actionWith({ type: requestType }))
+    const [ requestType, successType, failureType ] = types;
+    next(actionWith({ type: requestType }));
 
     return callApi(endpoint, authenticatedRequest).then(
         response => next(actionWith({
@@ -75,5 +78,5 @@ export default store => next => action => {
             type: failureType,
             error: error.message || 'Error!'
         }))
-    )
+    );
 }

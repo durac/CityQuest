@@ -7,7 +7,7 @@ import {StackNavigator} from "react-navigation";
 import {Container, Header, Title, Content, Button, Left, Right, Body, Icon} from "native-base";
 import Camera from "react-native-camera";
 import { withNavigationFocus } from 'react-navigation-is-focused-hoc'
-import CityQuestHeader from "../components/CityQuestHeader";
+import CityQuestHeader from "../../components/CityQuestHeader";
 
 class QRScannerScreen extends Component {
 

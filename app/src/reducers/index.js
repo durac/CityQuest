@@ -3,9 +3,11 @@
  */
 import { combineReducers } from 'redux';
 import auth from './auth';
+import {fixedQuests} from './quests';
 
 const rootReducer = combineReducers({
-    auth
+    auth,
+    fixedQuests
 });
 
 export default rootReducer;

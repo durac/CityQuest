@@ -2,10 +2,10 @@
  * Created by Dominik Schwarz on 08.09.2017.
  */
 import React, { Component } from "react";
-import QuestListScreen from "./QuestListScreen/index.js";
-import MyQuestsScreen from "./MyQuestsScreen/index.js";
-import QRScannerScreen from "./QRScannerScreen/QRScannerScreen.js";
-import ProfileScreen from "./ProfileScreen/ProfileScreen.js";
+import QuestListScreen from "./containers/QuestListScreen/index.js";
+import MyQuestsScreen from "./containers/MyQuestsScreen/index.js";
+import QRScannerScreen from "./containers/QRScannerScreen/QRScannerScreen.js";
+import ProfileScreen from "./containers/ProfileScreen/ProfileScreen.js";
 import { TabNavigator, TabView, TabBarBottom } from "react-navigation";
 import {Button, Text, Icon, Item, Footer, FooterTab, Label} from "native-base";
 
