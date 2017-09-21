@@ -1,19 +1,26 @@
 import React, { Component } from "react";
-import { NetInfo, AsyncStorage } from "react-native";
-import { Root, StyleProvider, Container, Header, Body, Title, Content, Icon, Text} from "native-base";
+import { NetInfo, AsyncStorage} from "react-native";
+import { Root, StyleProvider } from "native-base";
 import { updateFocus } from 'react-navigation-is-focused-hoc'
 import { MenuContext } from 'react-native-popup-menu';
-
-import getTheme from '../native-base-theme/components';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware  } from 'redux'
+import thunk from 'redux-thunk'
+import rootReducer from './reducers/index.js';
+import auth from './reducers/auth.js';
+import Offline from './components/Offline'
+import getTheme from '../native-base-theme/components/index.js';
 import commonColor from '../native-base-theme/variables/commonColor';
 import BottomNavigation from "./BottomNavigation.js";
+
+const middleware = [ thunk ];
+let store = createStore(auth, applyMiddleware(...middleware));
 
 export default class App extends Component {
 
     constructor() {
         super();
         this.state = {
-            isReady: false,
             isConnected: true
         };
         this.setIsConnected = this.setIsConnected.bind(this);
@@ -41,34 +48,18 @@ export default class App extends Component {
 
 
     render() {
-        if (!this.state.isReady) {
-            return <Text>Wait for it!</Text>
-        }
-        if(!this.state.isConnected) {
-            return (
-                <StyleProvider style={getTheme(commonColor)}>
-                    <Container>
-                        <Header>
-                            <Body>
-                                <Title>CityQuest</Title>
-                            </Body>
-                        </Header>
-                        <Content>
-                            <Icon name="thunderstorm" style={{fontSize: 80, color: 'grey', textAlign: 'center', paddingTop: 60}} />
-                            <Text style={{fontSize: 20, color: 'grey', textAlign: 'center'}}>Offline</Text>
-                            <Text style={{paddingTop: 50, fontSize: 15, color: 'grey', textAlign: 'center'}}>Für die Nutzung dieser App wird eine</Text>
-                            <Text style={{fontSize: 15, color: 'grey', textAlign: 'center'}}>Internetverbindung benötigt.</Text>
-                        </Content>
-                    </Container>
-                </StyleProvider>
-            )
-        }
         return (
             <Root>
                 <StyleProvider style={getTheme(commonColor)}>
-                    <MenuContext>
-                        <BottomNavigation onNavigationStateChange={(prevState, currentState) => { updateFocus(currentState)}}/>
-                    </MenuContext>
+                    { this.state.isConnected ?
+                        <MenuContext>
+                            <Provider store={store}>
+                                <BottomNavigation
+                                    onNavigationStateChange={(prevState, currentState) => { updateFocus(currentState)}}/>
+                            </Provider>
+                        </MenuContext>
+                        : <Offline />
+                    }
                 </StyleProvider>
             </Root>
         );

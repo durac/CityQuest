@@ -8,17 +8,14 @@ import {StackNavigator} from "react-navigation";
 import {Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Card, CardItem,
     Spinner, Thumbnail, H2, H3} from "native-base";
 import Moment from "moment";
-import {CityQuestHeader} from "../components/CityQuestHeader";
+import CityQuestHeader from "../components/CityQuestHeader";
 import {getData} from "../utils/Utils";
 import s from "../style/Style";
-
-var credentials = require("../utils/auth0-credentials");
-const auth0 = new Auth0(credentials);
 
 export default class QuestListScreen extends Component {
 
     static navigationOptions = ({navigation}) => ({
-        header: null
+        header: <CityQuestHeader title="CityQuest"/>
     });
 
     constructor(props) {
@@ -27,7 +24,7 @@ export default class QuestListScreen extends Component {
             fixedQuests: [],
             eventQuests: [],
             loading: true,
-            refreshing: false,
+            refreshing: false
         };
         this.fetchFixedQuests = this.fetchFixedQuests.bind(this);
         this.fetchEventQuests = this.fetchEventQuests.bind(this);
@@ -94,7 +91,6 @@ export default class QuestListScreen extends Component {
         );
         return (
             <Container>
-                <CityQuestHeader title='CityQuest'/>
                 <Content refreshControl={
                     <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />
                 }>

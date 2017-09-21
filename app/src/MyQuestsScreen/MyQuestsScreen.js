@@ -23,7 +23,7 @@ import {
     H3
 } from "native-base";
 import Moment from "moment";
-import {CityQuestHeader} from "../components/CityQuestHeader";
+import CityQuestHeader from "../components/CityQuestHeader";
 import {getData} from "../utils/Utils";
 import s from "../style/Style";
 
@@ -161,6 +161,7 @@ export default class MyQuestsScreen extends Component {
                     }, res.accessToken);
             } else {
                 this.setState({
+                    fixedQuests: [],
                     loading: false,
                     refreshing: false
                 });
@@ -189,6 +190,7 @@ export default class MyQuestsScreen extends Component {
                     }, res.accessToken);
             } else {
                 this.setState({
+                    eventQuests: [],
                     loading: false,
                     refreshing: false
                 });
