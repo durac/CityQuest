@@ -4,7 +4,7 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { login, logout } from '../actions/authActions.js';
-import DefaultHeader from './DefaultHeader';
+import DefaultHeader from '../components/DefaultHeader';
 
 const mapStateToProps = (state, ownProps) => {
     return {

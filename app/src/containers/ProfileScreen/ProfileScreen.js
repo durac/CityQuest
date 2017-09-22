@@ -5,7 +5,7 @@ import React, {Component} from "react";
 import { Alert} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import {Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Spinner} from 'native-base';
-import CityQuestHeader from "../../components/CityQuestHeader";
+import CityQuestHeader from "../CityQuestHeader";
 
 export default class ProfileScreen extends Component {
 

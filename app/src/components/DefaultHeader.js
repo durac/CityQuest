@@ -1,7 +1,8 @@
 /**
  * Created by Dominik Schwarz on 20.09.2017.
  */
-import React, {PropTypes} from "react";
+import React from "react";
+import PropTypes from 'prop-types';
 import {Header, Title, Left, Right, Body, Icon, Text, Button} from "native-base";
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu';
 import s from "../style/Style.js";
@@ -36,7 +37,7 @@ const DefaultHeader = ({title, includeBackIcon, navigation, isLoggedIn, onLoginC
 );
 
 DefaultHeader.propTypes = {
-    title: PropTypes.string,
+    title: PropTypes.string.isRequired,
     includeBackIcon: PropTypes.bool,
     navigation: PropTypes.object,
     isLoggedIn: PropTypes.bool,

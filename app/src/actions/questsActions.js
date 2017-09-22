@@ -20,3 +20,21 @@ const fetchFixedQuests = () => {
 export const loadFixedQuests = () => dispatch => {
     return dispatch(fetchFixedQuests())
 };
+
+export const EVENT_QUESTS_REQUEST = 'EVENT_QUESTS_REQUEST';
+export const EVENT_QUESTS_SUCCESS = 'EVENT_QUESTS_SUCCESS';
+export const EVENT_QUESTS_FAILURE = 'EVENT_QUESTS_FAILURE';
+
+const fetchEventQuests = () => {
+    return {
+        [CALL_API]: {
+            types: [ EVENT_QUESTS_REQUEST, EVENT_QUESTS_SUCCESS, EVENT_QUESTS_FAILURE ],
+            endpoint: 'openedEventQuests',
+            authenticatedRequest: false
+        }
+    }
+};
+
+export const loadEventQuests = () => dispatch => {
+    return dispatch(fetchEventQuests())
+};

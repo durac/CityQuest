@@ -2,16 +2,12 @@
  * Created by Dominik Schwarz on 08.09.2017.
  */
 import React, {Component} from "react";
-import {View, RefreshControl, AsyncStorage} from "react-native";
-import {StackNavigator} from "react-navigation";
-import {Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Card, CardItem,
-    Spinner, Thumbnail, H2, H3} from "native-base";
-import { connect } from 'react-redux';
-import { loadFixedQuests } from '../../actions/questsActions.js';
-import Moment from "moment";
-import CityQuestHeader from "../../components/CityQuestHeader";
-import {getData} from "../../utils/Utils";
-import s from "../../style/Style";
+import { View, RefreshControl } from "react-native";
+import { Container, Header, Title, Content, Text, Spinner, H3 } from "native-base";
+import CityQuestHeader from "../CityQuestHeader";
+import QuestList from "../../components/QuestList";
+import { connect } from "react-redux";
+import { loadFixedQuests, loadEventQuests } from "../../actions/questsActions.js";
 
 class QuestListScreen extends Component {
 
@@ -22,129 +18,36 @@ class QuestListScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fixedQuests: [],
-            eventQuests: [],
-            loading: true,
-            refreshing: false
+            isRefreshing: false
         };
-        this.fetchFixedQuests = this.fetchFixedQuests.bind(this);
-        this.fetchEventQuests = this.fetchEventQuests.bind(this);
         this.onRefresh = this.onRefresh.bind(this);
     }
 
     componentWillMount() {
         this.props.loadFixedQuests();
-        this.fetchEventQuests();
+        this.props.loadEventQuests();
     }
 
     onRefresh() {
-        this.setState({refreshing: true});
+        this.setState({isRefreshing: true});
         this.props.loadFixedQuests();
-        this.fetchEventQuests();
+        this.props.loadEventQuests();
+        this.setState({isRefreshing: false});
     }
 
-
-    fetchFixedQuests() {
-        this.setState({loading: true});
-        getData('activeFixedQuests',
-            res => {
-                this.setState({
-                    fixedQuests: res,
-                    loading: false,
-                    refreshing: false
-                });
-            },
-            error => {
-                this.setState({
-                    loading: false,
-                    refreshing: false
-                });
-            });
-    };
-
-    fetchEventQuests() {
-        this.setState({loading: true});
-        getData('openedEventQuests',
-            res => {
-                this.setState({
-                    eventQuests: res,
-                    loading: false,
-                    refreshing: false
-                });
-            },
-            error => {
-                this.setState({
-                    loading: false,
-                    refreshing: false
-                });
-            });
-    };
-
     render() {
-        const fixedQuests = this.props.fixedQuests.map((f, i) =>
-            <Card key={i}>
-                <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {fixedQuest: f})}
-                          style={s.cardItem}>
-                    <Left>
-                        <Thumbnail square
-                                   style={s.thumbnail}
-                                   source={{uri: f.image}}/>
-                    </Left>
-                    <Body>
-                    <H3 style={[s.h3, {marginTop : 10, fontWeight: "bold"}]}>{f.name}</H3>
-                    <Text numberOfLines={1} style={[s.cardInfoText, {marginTop : 8}]}><Icon name="pin" style={s.cardInfoText}/> {f.area}</Text>
-                    <Text style={s.cardInfoText}><Icon name="time" style={s.cardInfoText}/> ~{f.duration} min</Text>
-                    <Text>
-                        <Icon name="school" style={s.difficultyIcon}/>
-                        <Icon name="school" style={[s.difficultyIcon, f.difficulty == 'EASY' ? {color: 'lightgrey'} : undefined]}/>
-                        <Icon name="school" style={[s.difficultyIcon, f.difficulty == 'HARD' ? undefined : {color: 'lightgrey'}]}/>
-                    </Text>
-                    </Body>
-                    <Right>
-                        <Icon name="ios-arrow-forward" style={s.cardArrow}/>
-                    </Right>
-                </CardItem>
-            </Card>
-        );
-        const eventQuests = this.state.eventQuests.map((e, i) =>
-            <Card key={i}>
-                <CardItem button onPress={() => this.props.navigation.navigate('QuestDetails', {eventQuest: e})}
-                          style={s.cardItem}>
-                    <Left>
-                        <Thumbnail square
-                                   style={s.thumbnail}
-                                   source={{uri: e.image}}
-                        />
-                    </Left>
-                    <Body>
-                    <H3 numberOfLines={1} style={[s.h3, {marginTop : 10, fontWeight: "bold"}]}>{e.name}</H3>
-                    <Text style={[s.cardInfoText, {marginTop : 3}]}><Icon name="play"
-                                                                          style={s.cardInfoText}/> {Moment(e.startDate).format('DD.MM.YYYY - HH:mm')} Uhr
-                    </Text>
-                    <Text numberOfLines={1} style={s.cardInfoText}><Icon name="pin" style={s.cardInfoText}/> {e.area}</Text>
-                    <Text style={s.cardInfoText}><Icon name="time" style={s.cardInfoText}/> ~{e.duration} min</Text>
-                    <Text><Icon name="school" style={s.difficultyIcon}/>
-                        <Icon name="school" style={[s.difficultyIcon, e.difficulty == 'EASY' ? {color: 'lightgrey'} : undefined]}/>
-                        <Icon name="school" style={[s.difficultyIcon, e.difficulty == 'HARD' ? undefined : {color: 'lightgrey'}]}/></Text>
-                    </Body>
-                    <Right>
-                        <Icon name="ios-arrow-forward" style={s.cardArrow}/>
-                    </Right>
-                </CardItem>
-            </Card>
-        );
         return (
             <Container>
                 <Content refreshControl={
-                    <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />
+                    <RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.onRefresh} />
                 }>
-                    { this.state.loading ?
+                    { this.props.isFetching ?
                         <Spinner color='#634405'/>
                         : <View style={{padding: 7}}>
-                            {fixedQuests}
-                            {this.state.eventQuests.length ?
+                            <QuestList quests={this.props.fixedQuests} onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {fixedQuest: quest})} />
+                            {this.props.eventQuests.length ?
                                 <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3> : undefined}
-                            {eventQuests}
+                            <QuestList quests={this.props.eventQuests} isEvent={true} onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {eventQuest: quest})} />
                             <Text style={{marginTop : 5}}></Text>
                         </View>
                     }
@@ -154,11 +57,12 @@ class QuestListScreen extends Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
-        navigation: ownProps.navigation,
-        isLoggedIn: state.auth.isLoggedIn,
-        fixedQuests: state.fixedQuests.fixedQuests
+        fixedQuests: state.quests.fixedQuests,
+        eventQuests: state.quests.eventQuests,
+        error: state.quests.error,
+        isFetching: state.quests.isFetching
     }
 };
 
@@ -166,6 +70,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         loadFixedQuests: () => {
             dispatch(loadFixedQuests())
+        },
+        loadEventQuests: () => {
+            dispatch(loadEventQuests())
         }
     }
 };

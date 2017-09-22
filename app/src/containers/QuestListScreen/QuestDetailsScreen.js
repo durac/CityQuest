@@ -6,7 +6,7 @@ import {Alert, Image, AsyncStorage, View, StatusBar} from "react-native";
 import {StackNavigator} from "react-navigation";
 import {Container, Header, Title, Content, Button, Icon, Text, H1, H2, Grid, Col, Left} from "native-base";
 import Moment from "moment";
-import CityQuestHeader from "../../components/CityQuestHeader";
+import CityQuestHeader from "../CityQuestHeader";
 import s from "../../style/Style";
 import {getData, postData, login} from "../../utils/Utils.js";
 export default class QuestDetailsScreen extends Component {

@@ -23,7 +23,7 @@ import {
     H3
 } from "native-base";
 import Moment from "moment";
-import CityQuestHeader from "../../components/CityQuestHeader";
+import CityQuestHeader from "../CityQuestHeader";
 import {getData} from "../../utils/Utils";
 import s from "../../style/Style";
 
