@@ -4,7 +4,7 @@
 import React from "react";
 import { View } from "react-native";
 import PropTypes from 'prop-types';
-import {Container, Left, Right, Body, Icon, Text, Card, CardItem, Thumbnail, H3 } from "native-base";
+import { Left, Right, Body, Icon, Text, Card, CardItem, Thumbnail, H3 } from "native-base";
 import s from "../style/Style";
 import Moment from "moment";
 
@@ -21,12 +21,11 @@ const QuestList = ({quests, isEvent, onQuestClick}) => (
                     </Left>
                     <Body>
                     <H3 style={[s.h3, {marginTop : 10, fontWeight: "bold"}]}>{quest.name}</H3>
-                    { isEvent ?
+                    { isEvent &&
                         <Text style={[s.cardInfoText, {marginTop : 3}]}>
                             <Icon name="play" style={s.cardInfoText}/>
                             {Moment(quest.startDate).format('DD.MM.YYYY - HH:mm')} Uhr
                         </Text>
-                        : undefined
                     }
                     <Text numberOfLines={1} style={[s.cardInfoText, {marginTop : 8}]}><Icon name="pin"
                                                                                             style={s.cardInfoText}/> {quest.area}

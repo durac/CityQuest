@@ -45,3 +45,46 @@ export const quests = (state = {
             return state
     }
 };
+
+export const userQuests = (state = {
+    isFetching: false,
+    fixedQuests: [],
+    eventQuests: [],
+    error: ''
+}, action) => {
+    switch (action.type) {
+        case ActionTypes.USER_FIXED_QUESTS_REQUEST:
+            return Object.assign({}, state, {
+                isFetching: true
+            });
+        case ActionTypes.USER_FIXED_QUESTS_SUCCESS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                fixedQuests: action.response,
+                error: ''
+            });
+        case ActionTypes.USER_FIXED_QUESTS_FAILURE:
+            return Object.assign({}, state, {
+                isFetching: false,
+                error: action.error
+            });
+        case ActionTypes.USER_EVENT_QUESTS_REQUEST:
+            return Object.assign({}, state, {
+                isFetching: true
+            });
+        case ActionTypes.USER_EVENT_QUESTS_SUCCESS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                eventQuests: action.response,
+                error: ''
+            });
+        case ActionTypes.USER_EVENT_QUESTS_FAILURE:
+            return Object.assign({}, state, {
+                isFetching: false,
+                error: action.error
+            });
+        default:
+            return state
+    }
+};
+

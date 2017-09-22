@@ -45,10 +45,10 @@ class QuestListScreen extends Component {
                         <Spinner color='#634405'/>
                         : <View style={{padding: 7}}>
                             <QuestList quests={this.props.fixedQuests} onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {fixedQuest: quest})} />
-                            {this.props.eventQuests.length ?
-                                <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3> : undefined}
+                            {this.props.eventQuests.length > 0 &&
+                                <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3>}
                             <QuestList quests={this.props.eventQuests} isEvent={true} onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {eventQuest: quest})} />
-                            <Text style={{marginTop : 5}}></Text>
+                            <View style={{marginTop : 5}} />
                         </View>
                     }
                 </Content>

@@ -38,3 +38,40 @@ const fetchEventQuests = () => {
 export const loadEventQuests = () => dispatch => {
     return dispatch(fetchEventQuests())
 };
+
+export const USER_FIXED_QUESTS_REQUEST = 'USER_FIXED_QUESTS_REQUEST';
+export const USER_FIXED_QUESTS_SUCCESS = 'USER_FIXED_QUESTS_SUCCESS';
+export const USER_FIXED_QUESTS_FAILURE = 'USER_FIXED_QUESTS_FAILURE';
+
+const fetchUserFixedQuests = () => {
+    return {
+        [CALL_API]: {
+            types: [ USER_FIXED_QUESTS_REQUEST, USER_FIXED_QUESTS_SUCCESS, USER_FIXED_QUESTS_FAILURE ],
+            endpoint: 'fixedQuestsOfUser',
+            authenticatedRequest: true
+        }
+    }
+};
+
+export const loadUserFixedQuests = () => dispatch => {
+    return dispatch(fetchUserFixedQuests())
+};
+
+
+export const USER_EVENT_QUESTS_REQUEST = 'USER_EVENT_QUESTS_REQUEST';
+export const USER_EVENT_QUESTS_SUCCESS = 'USER_EVENT_QUESTS_SUCCESS';
+export const USER_EVENT_QUESTS_FAILURE = 'USER_EVENT_QUESTS_FAILURE';
+
+const fetchUserEventQuests = () => {
+    return {
+        [CALL_API]: {
+            types: [ USER_EVENT_QUESTS_REQUEST, USER_EVENT_QUESTS_SUCCESS, USER_EVENT_QUESTS_FAILURE ],
+            endpoint: 'eventQuestsOfUser',
+            authenticatedRequest: true
+        }
+    }
+};
+
+export const loadUserEventQuests = () => dispatch => {
+    return dispatch(fetchUserEventQuests())
+};

@@ -9,13 +9,12 @@ import s from "../style/Style.js";
 
 const DefaultHeader = ({title, includeBackIcon, navigation, isLoggedIn, onLoginClick, onLogoutClick}) => (
     <Header>
-        { includeBackIcon ?
+        { includeBackIcon &&
             <Left>
                 <Button transparent onPress={() => navigation.goBack()}>
                     <Icon name="arrow-back"/>
                 </Button>
             </Left>
-            : undefined
         }
         <Body>
             <Title>{title}</Title>

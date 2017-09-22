@@ -3,24 +3,20 @@
  */
 import { AsyncStorage} from "react-native";
 
-export const API_ROOT = 'http://192.168.178.60:8080/api/'
+export const API_ROOT = 'http://192.168.178.60:8080/api/';
 
-const callApi = (endpoint, authenticatedRequest) => {
+const callApi = (endpoint, authenticatedRequest, accessToken) => {
 
     let config = {};
 
     if(authenticatedRequest) {
-        AsyncStorage.getItem('userinfo', (err, result) => {
-            const res = JSON.parse(result);
-            if (res != undefined) {
-                config = {
-                    headers: {'Authorization': `Bearer ${res.accessToken}`}
-                }
+        if(accessToken){
+            config = {
+                headers: {'Authorization': `Bearer ${accessToken}`}
             }
-            else {
-                throw new Error("No token saved!")
-            }
-        });
+        } else {
+            throw new Error("No token specified!")
+        }
     }
 
     return fetch(API_ROOT + endpoint, config)
@@ -68,7 +64,12 @@ export default store => next => action => {
     const [ requestType, successType, failureType ] = types;
     next(actionWith({ type: requestType }));
 
-    return callApi(endpoint, authenticatedRequest).then(
+    let accessToken = null;
+    if(authenticatedRequest) {
+        accessToken = store.getState().auth.accessToken;
+    }
+
+    return callApi(endpoint, authenticatedRequest, accessToken).then(
         response => next(actionWith({
             response,
             authenticatedRequest,

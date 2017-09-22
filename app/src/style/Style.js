@@ -61,5 +61,10 @@ export default StyleSheet.create({
     },
     popupMenuEntry: {
         padding: 10
+    },
+    placeholderText: {
+        fontSize: 18,
+        color: 'grey', 
+        textAlign: 'center'
     }
 });
