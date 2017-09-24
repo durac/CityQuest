@@ -2,6 +2,7 @@ package com.cityquest.service.impl;
 
 import com.cityquest.dto.EventQuestDto;
 import com.cityquest.dto.FixedQuestDto;
+import com.cityquest.dto.QuestDto;
 import com.cityquest.exception.ApiException;
 import com.cityquest.exception.BadRequestException;
 import com.cityquest.persistence.model.*;
@@ -51,7 +52,7 @@ public class QuestServiceImpl implements QuestService {
     }
 
     @Override
-    public void registerForQuest(Long questId, String accessToken) throws ApiException, BadRequestException {
+    public QuestDto registerForQuest(Long questId, String accessToken) throws ApiException, BadRequestException {
         String auth0UserId;
         try {
             auth0UserId = UserInfo.getAuth0UserId(accessToken);
@@ -75,10 +76,14 @@ public class QuestServiceImpl implements QuestService {
         }
         questList.add(quest);
         userRepository.save(user);
+
+        QuestDto registeredQuest = QuestDto.of(quest);
+        registeredQuest.setRegistered(true);
+        return registeredQuest;
     }
 
     @Override
-    public void unregisterFromQuest(Long questId, String accessToken) throws ApiException, BadRequestException{
+    public QuestDto unregisterFromQuest(Long questId, String accessToken) throws ApiException, BadRequestException{
         String auth0UserId;
         try {
             auth0UserId = UserInfo.getAuth0UserId(accessToken);
@@ -101,6 +106,10 @@ public class QuestServiceImpl implements QuestService {
         }
         questList.remove(quest);
         userRepository.save(user);
+
+        QuestDto unregisteredQuest = QuestDto.of(quest);
+        unregisteredQuest.setRegistered(false);
+        return unregisteredQuest;
     }
 
     private void checkRegistrationPeriod(Quest quest) {
@@ -131,10 +140,7 @@ public class QuestServiceImpl implements QuestService {
             throw new BadRequestException("Can't find quest or user");
         }
         List<Quest> questList = user.getQuests();
-        if (questList != null && questList.contains(quest)) {
-            return true;
-        }
-        return false;
+        return questList != null && questList.contains(quest);
     }
 
     @Override
@@ -156,7 +162,11 @@ public class QuestServiceImpl implements QuestService {
         return user.getQuests()
                 .stream()
                 .filter(q -> q instanceof FixedQuest)
-                .map(q -> FixedQuestDto.of((FixedQuest) q))
+                .map(q -> {
+                    FixedQuestDto questDto = FixedQuestDto.of((FixedQuest) q);
+                    questDto.setRegistered(true);
+                    return questDto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -179,7 +189,11 @@ public class QuestServiceImpl implements QuestService {
         return user.getQuests()
                 .stream()
                 .filter(q -> q instanceof EventQuest)
-                .map(q -> EventQuestDto.of((EventQuest) q))
+                .map(q -> {
+                    EventQuestDto questDto = EventQuestDto.of((EventQuest) q);
+                    questDto.setRegistered(true);
+                    return questDto;
+                })
                 .collect(Collectors.toList());
     }
 }

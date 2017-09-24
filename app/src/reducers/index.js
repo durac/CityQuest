@@ -3,12 +3,11 @@
  */
 import { combineReducers } from 'redux';
 import auth from './auth';
-import { quests, userQuests } from './quests';
+import quests from './quests';
 
 const rootReducer = combineReducers({
     auth,
-    quests,
-    userQuests
+    quests
 });
 
 export default rootReducer;

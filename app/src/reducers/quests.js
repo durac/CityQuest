@@ -3,88 +3,150 @@
  */
 import React from "react";
 import * as ActionTypes from "../actions/questsActions.js";
+import { combineReducers } from 'redux';
 
-export const quests = (state = {
+const byId = (state = {}, action) => {
+    if (action.response) {
+        return {
+            ...state,
+            ...action.response.entities.quests
+        };
+    }
+    return state;
+};
+
+const availableQuests = (state = {
     isFetching: false,
-    fixedQuests: [],
-    eventQuests: [],
+    fixedQuestIds: [],
+    eventQuestIds: [],
     error: ''
 }, action) => {
     switch (action.type) {
-        case ActionTypes.FIXED_QUESTS_REQUEST:
+        case ActionTypes.AVAILABLE_QUESTS_REQUEST:
             return Object.assign({}, state, {
                 isFetching: true
+            });
+        case ActionTypes.AVAILABLE_QUESTS_FAILURE:
+            return Object.assign({}, state, {
+                isFetching: false,
+                error: action.error
             });
         case ActionTypes.FIXED_QUESTS_SUCCESS:
             return Object.assign({}, state, {
                 isFetching: false,
-                fixedQuests: action.response,
+                fixedQuestIds: action.response.result,
                 error: ''
-            });
-        case ActionTypes.FIXED_QUESTS_FAILURE:
-            return Object.assign({}, state, {
-                isFetching: false,
-                error: action.error
-            });
-        case ActionTypes.EVENT_QUESTS_REQUEST:
-            return Object.assign({}, state, {
-                isFetching: true
             });
         case ActionTypes.EVENT_QUESTS_SUCCESS:
             return Object.assign({}, state, {
                 isFetching: false,
-                eventQuests: action.response,
+                eventQuestIds: action.response.result,
                 error: ''
-            });
-        case ActionTypes.EVENT_QUESTS_FAILURE:
-            return Object.assign({}, state, {
-                isFetching: false,
-                error: action.error
             });
         default:
             return state
     }
 };
 
-export const userQuests = (state = {
+const handleRegistering = (state, action) => {
+    const {result: registeredQuestId, entities} = action.response;
+    let newState = {
+        isFetching: false,
+        error: ''
+    };
+    if(entities.quests[registeredQuestId].startDate){
+        newState.eventQuestIds = [ ...state.eventQuestIds, registeredQuestId ];
+        newState.fixedQuestIds = state.fixedQuestIds;
+    } else {
+        newState.fixedQuestIds = [ ...state.fixedQuestIds, registeredQuestId ];
+        newState.eventQuestIds = state.eventQuestIds;
+    }
+    return newState;
+};
+
+const handleUnregistering = (state, action) => {
+    const {result: registeredQuestId, entities} = action.response;
+    let newState = {
+        isFetching: false,
+        error: ''
+    };
+    if(entities.quests[registeredQuestId].startDate){
+        newState.eventQuestIds = state.eventQuestIds.filter(id => id !== registeredQuestId);
+        newState.fixedQuestIds = state.fixedQuestIds;
+    } else {
+        newState.fixedQuestIds =  state.fixedQuestIds.filter(id => id !== registeredQuestId);
+        newState.eventQuestIds = state.eventQuestIds;
+    }
+    return newState;
+};
+
+const userQuests = (state = {
     isFetching: false,
-    fixedQuests: [],
-    eventQuests: [],
+    fixedQuestIds: [],
+    eventQuestIds: [],
     error: ''
 }, action) => {
     switch (action.type) {
-        case ActionTypes.USER_FIXED_QUESTS_REQUEST:
+        case ActionTypes.USER_QUESTS_REQUEST:
             return Object.assign({}, state, {
                 isFetching: true
+            });
+        case ActionTypes.USER_QUESTS_FAILURE:
+            return Object.assign({}, state, {
+                isFetching: false,
+                error: action.error
             });
         case ActionTypes.USER_FIXED_QUESTS_SUCCESS:
             return Object.assign({}, state, {
                 isFetching: false,
-                fixedQuests: action.response,
+                fixedQuestIds: action.response.result,
                 error: ''
-            });
-        case ActionTypes.USER_FIXED_QUESTS_FAILURE:
-            return Object.assign({}, state, {
-                isFetching: false,
-                error: action.error
-            });
-        case ActionTypes.USER_EVENT_QUESTS_REQUEST:
-            return Object.assign({}, state, {
-                isFetching: true
             });
         case ActionTypes.USER_EVENT_QUESTS_SUCCESS:
             return Object.assign({}, state, {
                 isFetching: false,
-                eventQuests: action.response,
+                eventQuestIds: action.response.result,
                 error: ''
             });
-        case ActionTypes.USER_EVENT_QUESTS_FAILURE:
-            return Object.assign({}, state, {
-                isFetching: false,
-                error: action.error
-            });
+        case ActionTypes.REGISTER_QUEST_SUCCESS:
+            return handleRegistering(state, action);
+        case ActionTypes.UNREGISTER_QUEST_SUCCESS:
+            return handleUnregistering(state, action);
         default:
             return state
     }
 };
 
+const quests = combineReducers({
+    byId,
+    availableQuests,
+    userQuests
+});
+
+export default quests;
+
+export const getQuest = (state, id) => state.quests.byId[id];
+
+// getters for availableQuests
+export const getAvailableFixedQuests = (state) => {
+    const ids = state.quests.availableQuests.fixedQuestIds;
+    return ids.map(id => getQuest(state,id))
+};
+export const getAvailableEventQuests = (state) => {
+    const ids = state.quests.availableQuests.eventQuestIds;
+    return ids.map(id => getQuest(state,id))
+};
+export const getAvailableQuestsIsFetching = (state) => state.quests.availableQuests.isFetching;
+export const getAvailableQuestsErrorMessage = (state)=> state.quests.availableQuests.error;
+
+// getters for userQuests
+export const getUserFixedQuests = (state) => {
+    const ids = state.quests.userQuests.fixedQuestIds;
+    return ids.map(id => getQuest(state,id))
+};
+export const getUserEventQuests = (state) => {
+    const ids = state.quests.userQuests.eventQuestIds;
+    return ids.map(id => getQuest(state,id))
+};
+export const getUserQuestsIsFetching = (state) => state.quests.userQuests.isFetching;
+export const getUserQuestsErrorMessage = (state)=> state.quests.userQuests.error;

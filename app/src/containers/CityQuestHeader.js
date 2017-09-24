@@ -10,7 +10,6 @@ const mapStateToProps = (state, ownProps) => {
     return {
         title: ownProps.title,
         includeBackIcon: ownProps.includeBackIcon,
-        navigation: ownProps.navigation,
         isLoggedIn: state.auth.isLoggedIn
     }
 };

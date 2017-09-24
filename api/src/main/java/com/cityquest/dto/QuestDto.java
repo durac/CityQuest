@@ -1,8 +1,6 @@
 package com.cityquest.dto;
 
-import com.cityquest.persistence.model.Quest;
-import com.cityquest.persistence.model.QuestDifficulty;
-import com.cityquest.persistence.model.QuestStatus;
+import com.cityquest.persistence.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,23 +32,18 @@ public class QuestDto {
 
     private List<UserDto> users = new ArrayList<>();
 
+    private Boolean isRegistered;
+
     public static QuestDto of(Quest quest) {
+
         if (quest == null) {
             return null;
         }
+        if (quest instanceof FixedQuest) {
+            return FixedQuestDto.of((FixedQuest) quest);
+        }
 
-        QuestDto questDto = new QuestDto();
-        questDto.setId(quest.getId());
-        questDto.setName(quest.getName());
-        questDto.setStatus(quest.getStatus());
-        questDto.setDescription(quest.getDescription());
-        questDto.setDifficulty(quest.getDifficulty());
-        questDto.setDuration(quest.getDuration());
-        questDto.setDistance(quest.getDistance());
-        questDto.setArea(quest.getArea());
-        questDto.setImage(quest.getImage());
-
-        return questDto;
+        return EventQuestDto.of((EventQuest) quest);
     }
 
     public Long getId() {
@@ -139,5 +132,13 @@ public class QuestDto {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Boolean getRegistered() {
+        return isRegistered;
+    }
+
+    public void setRegistered(Boolean registered) {
+        isRegistered = registered;
     }
 }

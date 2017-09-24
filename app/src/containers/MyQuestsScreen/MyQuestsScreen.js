@@ -9,6 +9,13 @@ import QuestList from "../../components/QuestList";
 import LoginPlaceholder from "../../components/LoginPlaceholder";
 import { connect } from "react-redux";
 import { loadUserFixedQuests, loadUserEventQuests } from "../../actions/questsActions.js";
+import {
+    getUserFixedQuests,
+    getUserEventQuests,
+    getUserQuestsIsFetching,
+    getUserQuestsErrorMessage
+} from "../../reducers/quests";
+
 
 class MyQuestsScreen extends Component {
 
@@ -60,11 +67,11 @@ class MyQuestsScreen extends Component {
                         <Spinner color='#634405'/>
                         :<View style={{padding: 7}}>
                             <QuestList quests={this.props.fixedQuests}
-                                   onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {fixedQuest: quest})}/>
+                                   onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {questId: quest.id})}/>
                             {this.props.eventQuests.length > 0 &&
                             <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3>}
                             <QuestList quests={this.props.eventQuests}
-                                   onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {eventQuest: quest})}/>
+                                   onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {questId: quest.id})}/>
                             <View style={{marginTop : 5}}/>
                         </View>
                     }
@@ -76,10 +83,10 @@ class MyQuestsScreen extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        fixedQuests: state.userQuests.fixedQuests,
-        eventQuests: state.userQuests.eventQuests,
-        error: state.userQuests.error,
-        isFetching: state.userQuests.isFetching,
+        fixedQuests: getUserFixedQuests(state),
+        eventQuests: getUserEventQuests(state),
+        error: getUserQuestsErrorMessage(state),
+        isFetching: getUserQuestsIsFetching(state),
         isLoggedIn: state.auth.isLoggedIn
     }
 };

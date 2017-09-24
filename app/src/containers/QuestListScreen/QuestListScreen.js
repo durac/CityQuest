@@ -2,12 +2,18 @@
  * Created by Dominik Schwarz on 08.09.2017.
  */
 import React, {Component} from "react";
-import { View, RefreshControl } from "react-native";
-import { Container, Header, Title, Content, Text, Spinner, H3 } from "native-base";
+import {View, RefreshControl} from "react-native";
+import {Container, Header, Title, Content, Text, Spinner, H3} from "native-base";
 import CityQuestHeader from "../CityQuestHeader";
 import QuestList from "../../components/QuestList";
-import { connect } from "react-redux";
-import { loadFixedQuests, loadEventQuests } from "../../actions/questsActions.js";
+import {connect} from "react-redux";
+import {loadFixedQuests, loadEventQuests} from "../../actions/questsActions";
+import {
+    getAvailableFixedQuests,
+    getAvailableEventQuests,
+    getAvailableQuestsIsFetching,
+    getAvailableQuestsErrorMessage
+} from "../../reducers/quests";
 
 class QuestListScreen extends Component {
 
@@ -44,10 +50,10 @@ class QuestListScreen extends Component {
                     { this.props.isFetching ?
                         <Spinner color='#634405'/>
                         : <View style={{padding: 7}}>
-                            <QuestList quests={this.props.fixedQuests} onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {fixedQuest: quest})} />
+                            <QuestList quests={this.props.fixedQuests} onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {questId: quest.id})} />
                             {this.props.eventQuests.length > 0 &&
                                 <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3>}
-                            <QuestList quests={this.props.eventQuests} isEvent={true} onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {eventQuest: quest})} />
+                            <QuestList quests={this.props.eventQuests} isEvent={true} onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {questId: quest.id})} />
                             <View style={{marginTop : 5}} />
                         </View>
                     }
@@ -59,10 +65,10 @@ class QuestListScreen extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        fixedQuests: state.quests.fixedQuests,
-        eventQuests: state.quests.eventQuests,
-        error: state.quests.error,
-        isFetching: state.quests.isFetching
+        fixedQuests: getAvailableFixedQuests(state),
+        eventQuests: getAvailableEventQuests(state),
+        error: getAvailableQuestsErrorMessage(state),
+        isFetching: getAvailableQuestsIsFetching(state)
     }
 };
 

@@ -2,18 +2,19 @@
  * Created by Dominik Schwarz on 21.09.2017.
  */
 import { AsyncStorage} from "react-native";
+import { normalize } from 'normalizr';
 
 export const API_ROOT = 'http://192.168.178.60:8080/api/';
 
-const callApi = (endpoint, authenticatedRequest, accessToken) => {
+const callApi = (endpoint, method, authenticatedRequest, accessToken) => {
 
-    let config = {};
+    let config = {
+        method: method
+    };
 
     if(authenticatedRequest) {
         if(accessToken){
-            config = {
-                headers: {'Authorization': `Bearer ${accessToken}`}
-            }
+            config.headers = {'Authorization': `Bearer ${accessToken}`}
         } else {
             throw new Error("No token specified!")
         }
@@ -41,10 +42,14 @@ export default store => next => action => {
         return next(action)
     }
 
-    let { endpoint, types, authenticatedRequest } = callAPI;
+    let { endpoint, method, schema,  types, authenticatedRequest } = callAPI;
 
     if (typeof endpoint !== 'string') {
         throw new Error('Specify a string endpoint URL.')
+    }
+
+    if (method !== 'GET' && method !== 'POST') {
+        throw new Error('Expected GET or POST as method')
     }
 
     if (!Array.isArray(types) || types.length !== 3) {
@@ -69,15 +74,15 @@ export default store => next => action => {
         accessToken = store.getState().auth.accessToken;
     }
 
-    return callApi(endpoint, authenticatedRequest, accessToken).then(
+    return callApi(endpoint, method, authenticatedRequest, accessToken).then(
         response => next(actionWith({
-            response,
+            response: schema ? normalize(response,schema) : response,
             authenticatedRequest,
             type: successType
         })),
         error => next(actionWith({
             type: failureType,
-            error: error.message || 'Error!'
+            error: error.message || 'Something went wrong. Please try again!'
         }))
     );
 }

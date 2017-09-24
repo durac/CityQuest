@@ -23,11 +23,10 @@ const QuestList = ({quests, isEvent, onQuestClick}) => (
                     <H3 style={[s.h3, {marginTop : 10, fontWeight: "bold"}]}>{quest.name}</H3>
                     { isEvent &&
                         <Text style={[s.cardInfoText, {marginTop : 3}]}>
-                            <Icon name="play" style={s.cardInfoText}/>
-                            {Moment(quest.startDate).format('DD.MM.YYYY - HH:mm')} Uhr
+                            <Icon name="play" style={s.cardInfoText}/> {Moment(quest.startDate).format('DD.MM.YYYY - HH:mm')} Uhr
                         </Text>
                     }
-                    <Text numberOfLines={1} style={[s.cardInfoText, {marginTop : 8}]}><Icon name="pin"
+                    <Text numberOfLines={1} style={[s.cardInfoText, {marginTop : isEvent ? 0 : 8 }]}><Icon name="pin"
                                                                                             style={s.cardInfoText}/> {quest.area}
                     </Text>
                     <Text style={s.cardInfoText}><Icon name="time" style={s.cardInfoText}/> ~{quest.duration} min</Text>

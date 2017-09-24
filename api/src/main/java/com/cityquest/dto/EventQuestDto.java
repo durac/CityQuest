@@ -1,14 +1,13 @@
 package com.cityquest.dto;
 
 import com.cityquest.persistence.model.EventQuest;
-import com.cityquest.persistence.model.Quest;
 
 import java.util.Date;
 
 /**
  * @author Dominik Schwarz
  */
-public class EventQuestDto extends Quest {
+public class EventQuestDto extends QuestDto {
 
     private Date startDate;
 

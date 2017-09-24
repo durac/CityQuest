@@ -1,19 +1,20 @@
 import React, { Component } from "react";
 import { NetInfo, AsyncStorage} from "react-native";
 import { Root, StyleProvider } from "native-base";
-import { updateFocus } from 'react-navigation-is-focused-hoc'
+import { updateFocus } from 'react-navigation-is-focused-hoc';
 import { MenuContext } from 'react-native-popup-menu';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware  } from 'redux'
-import thunk from 'redux-thunk'
-import api from './middleware/api'
+import { createStore, applyMiddleware  } from 'redux';
+import { createLogger } from 'redux-logger';
+import thunk from 'redux-thunk';
+import api from './middleware/api';
 import rootReducer from './reducers/index.js';
-import Offline from './components/Offline'
+import Offline from './components/Offline';
 import getTheme from '../native-base-theme/components/index.js';
 import commonColor from '../native-base-theme/variables/commonColor';
 import BottomNavigation from "./BottomNavigation.js";
 
-const middleware = [ thunk, api ];
+const middleware = [ thunk, api, createLogger() ];
 let store = createStore(rootReducer, applyMiddleware(...middleware));
 
 export default class App extends Component {
