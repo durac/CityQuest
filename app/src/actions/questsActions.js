@@ -8,37 +8,37 @@ export const AVAILABLE_QUESTS_REQUEST = 'AVAILABLE_QUESTS_REQUEST';
 export const AVAILABLE_QUESTS_FAILURE = 'AVAILABLE_QUESTS_FAILURE';
 
 export const FIXED_QUESTS_SUCCESS = 'FIXED_QUESTS_SUCCESS';
-const fetchFixedQuests = () => {
+const fetchFixedQuests = (isLoggedIn) => {
     return {
         [CALL_API]: {
             types: [ AVAILABLE_QUESTS_REQUEST, FIXED_QUESTS_SUCCESS, AVAILABLE_QUESTS_FAILURE ],
             endpoint: 'activeFixedQuests',
             method: 'GET',
             schema: schema.arrayOfQuests,
-            authenticatedRequest: false
+            authenticatedRequest: isLoggedIn
         }
     }
 };
 
-export const loadFixedQuests = () => dispatch => {
-    return dispatch(fetchFixedQuests())
+export const loadFixedQuests = (isLoggedIn) => dispatch => {
+    return dispatch(fetchFixedQuests(isLoggedIn))
 };
 
 export const EVENT_QUESTS_SUCCESS = 'EVENT_QUESTS_SUCCESS';
-const fetchEventQuests = () => {
+const fetchEventQuests = (isLoggedIn) => {
     return {
         [CALL_API]: {
             types: [ AVAILABLE_QUESTS_REQUEST, EVENT_QUESTS_SUCCESS, AVAILABLE_QUESTS_FAILURE ],
             endpoint: 'openedEventQuests',
             method: 'GET',
             schema: schema.arrayOfQuests,
-            authenticatedRequest: false
+            authenticatedRequest: isLoggedIn
         }
     }
 };
 
-export const loadEventQuests = () => dispatch => {
-    return dispatch(fetchEventQuests())
+export const loadEventQuests = (isLoggedIn) => dispatch => {
+    return dispatch(fetchEventQuests(isLoggedIn))
 };
 
 export const USER_QUESTS_REQUEST = 'USER_QUESTS_REQUEST';

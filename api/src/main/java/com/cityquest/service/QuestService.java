@@ -20,11 +20,13 @@ public interface QuestService {
 
     List<EventQuestDto> findEventQuestsByStatus(QuestStatus status);
 
+    List<FixedQuestDto> findFixedQuestsByStatus(QuestStatus status, String accessToken);
+
+    List<EventQuestDto> findEventQuestsByStatus(QuestStatus status, String accessToken);
+
     QuestDto registerForQuest(Long questId, String accessToken) throws ApiException;
 
     QuestDto unregisterFromQuest(Long questId, String accessToken) throws ApiException;
-
-    Boolean isRegistered(Long questId, String accessToken) throws ApiException;
 
     List<FixedQuestDto> findFixedQuestsOfUser(String accessToken) throws ApiException;
 

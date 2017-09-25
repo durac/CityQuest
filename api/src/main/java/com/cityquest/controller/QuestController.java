@@ -26,18 +26,22 @@ public class QuestController {
     @Autowired private QuestService questService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/activeFixedQuests")
-    public List<FixedQuestDto> getActiveFixedQuests() {
-        return questService.findFixedQuestsByStatus(QuestStatus.ACTIVE);
+    public List<FixedQuestDto> getActiveFixedQuests(HttpServletRequest request) {
+        if (request.getHeader("Authorization") == null) {
+            return questService.findFixedQuestsByStatus(QuestStatus.ACTIVE);
+        } else {
+            return questService.findFixedQuestsByStatus(QuestStatus.ACTIVE, request.getHeader("Authorization"));
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/openedEventQuests")
-    public List<EventQuestDto> getOpenedEventQuests() {
-        return questService.findEventQuestsByStatus(QuestStatus.REGISTRATION);
-    }
+    public List<EventQuestDto> getOpenedEventQuests(HttpServletRequest request) {
+        if (request.getHeader("Authorization") == null) {
+            return questService.findEventQuestsByStatus(QuestStatus.REGISTRATION);
+        } else {
+            return questService.findEventQuestsByStatus(QuestStatus.REGISTRATION, request.getHeader("Authorization"));
+        }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/isRegistered")
-    public Boolean isRegistered(Long questId, HttpServletRequest request) {
-        return questService.isRegistered(questId, request.getHeader("Authorization"));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/registerForQuest")

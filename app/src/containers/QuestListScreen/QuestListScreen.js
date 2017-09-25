@@ -76,22 +76,27 @@ const mapStateToProps = (state) => {
         fixedQuests: getAvailableFixedQuests(state),
         eventQuests: getAvailableEventQuests(state),
         error: getAvailableQuestsErrorMessage(state),
-        isFetching: getAvailableQuestsIsFetching(state)
+        isFetching: getAvailableQuestsIsFetching(state),
+        isLoggedIn: state.auth.isLoggedIn
     }
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+    const { dispatch } = dispatchProps;
+    const { isLoggedIn } = stateProps;
     return {
+        ...stateProps,
+        ...ownProps,
         loadFixedQuests: () => {
-            dispatch(loadFixedQuests())
+            dispatch(loadFixedQuests(isLoggedIn))
         },
         loadEventQuests: () => {
-            dispatch(loadEventQuests())
+            dispatch(loadEventQuests(isLoggedIn))
         }
     }
 };
-
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    null,
+    mergeProps
 )(QuestListScreen);
