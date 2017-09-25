@@ -40,7 +40,6 @@ public class QuestServiceImpl implements QuestService {
     @Override
     public List<FixedQuestDto> findFixedQuestsByStatus(QuestStatus status) {
         logger.info("find fixed quests by status " + status);
-
         return fixedQuestRepository.findByStatus(status).stream().map(s -> FixedQuestDto.of(s)).collect(Collectors.toList());
     }
 

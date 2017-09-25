@@ -80,10 +80,11 @@ export const loadUserEventQuests = () => dispatch => {
 };
 
 export const REGISTER_QUEST_SUCCESS = 'REGISTER_QUEST_SUCCESS';
+export const REGISTER_QUEST_FAILURE = 'REGISTER_QUEST_FAILURE';
 const registerForQuest = (questId) => {
     return {
         [CALL_API]: {
-            types: [ USER_QUESTS_REQUEST, REGISTER_QUEST_SUCCESS, USER_QUESTS_FAILURE ],
+            types: [ USER_QUESTS_REQUEST, REGISTER_QUEST_SUCCESS, REGISTER_QUEST_FAILURE ],
             endpoint: 'registerForQuest?questId='+questId,
             method: 'POST',
             schema: schema.quest,
@@ -100,7 +101,7 @@ export const UNREGISTER_QUEST_SUCCESS = 'UNREGISTER_QUEST_SUCCESS';
 const unregisterFromQuest = (questId) => {
     return {
         [CALL_API]: {
-            types: [ USER_QUESTS_REQUEST, UNREGISTER_QUEST_SUCCESS, USER_QUESTS_FAILURE ],
+            types: [ USER_QUESTS_REQUEST, UNREGISTER_QUEST_SUCCESS, REGISTER_QUEST_FAILURE ],
             endpoint: 'unregisterFromQuest?questId='+questId,
             method: 'POST',
             schema: schema.quest,

@@ -8,10 +8,11 @@ import {Container, Header, Title, Content, Button, Icon, Text, H1, H2, Grid, Col
 import Moment from "moment";
 import CityQuestHeader from "../CityQuestHeader";
 import s from "../../style/Style";
-import {getData, postData, login} from "../../utils/Utils.js";
 import { postRegisterForQuest, postUnregisterFromQuest } from "../../actions/questsActions.js";
+import { login } from '../../actions/authActions.js';
+import { getQuest, getRegisterErrorMessage } from "../../reducers/quests";
 import { connect } from "react-redux";
-import { getQuest, getUserQuestsErrorMessage } from "../../reducers/quests";
+import { errorMessage } from "../../utils/Utils"
 
 class QuestDetailsScreen extends Component {
 
@@ -21,6 +22,25 @@ class QuestDetailsScreen extends Component {
 
     constructor(props) {
         super(props);
+        this.ensureLoggedInRegistering = this.ensureLoggedInRegistering.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.error) {
+            errorMessage(nextProps.error, 'danger', 'Okay');
+        }
+    }
+
+    ensureLoggedInRegistering(register, questId) {
+        if (!this.props.isLoggedIn) {
+            this.props.login();
+        } else {
+            if (register) {
+                this.props.registerForQuest(questId)
+            } else {
+                this.props.unregisterFromQuest(questId);
+            }
+        }
     }
 
     render() {
@@ -55,8 +75,8 @@ class QuestDetailsScreen extends Component {
                         </Grid>
                         {
                             quest.registered ?
-                                <Button bordered danger block style={{marginTop: 50, borderRadius: 10}} onPress={() => this.props.unregisterFromQuest(quest.id)}><Text>Abmelden</Text></Button>
-                                : <Button bordered block style={{marginTop: 50, borderRadius: 10}} onPress={() => this.props.registerForQuest(quest.id)}><Text>Los gehts!</Text></Button>
+                                <Button bordered danger block style={{marginTop: 50, borderRadius: 10}} onPress={() => this.ensureLoggedInRegistering(false, quest.id)}><Text>Abmelden</Text></Button>
+                                : <Button bordered block style={{marginTop: 50, borderRadius: 10}} onPress={() => this.ensureLoggedInRegistering(true, quest.id)}><Text>Los gehts!</Text></Button>
 
                         }
                 </Content>
@@ -68,13 +88,17 @@ class QuestDetailsScreen extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
+        isLoggedIn: state.auth.isLoggedIn,
         quest: getQuest(state,ownProps.navigation.state.params.questId),
-        error: getUserQuestsErrorMessage(state)
+        error: getRegisterErrorMessage(state)
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        login: () => {
+            dispatch(login())
+        },
         registerForQuest: (questId) => {
             dispatch(postRegisterForQuest(questId))
         },

@@ -48,12 +48,17 @@ const availableQuests = (state = {
     }
 };
 
+const userQuestsInitialState = {
+    isFetching: false,
+    fixedQuestIds: [],
+    eventQuestIds: [],
+    error: '',
+    registerError: ''
+};
+
 const handleRegistering = (state, action) => {
     const {result: registeredQuestId, entities} = action.response;
-    let newState = {
-        isFetching: false,
-        error: ''
-    };
+    let newState = userQuestsInitialState;
     if(entities.quests[registeredQuestId].startDate){
         newState.eventQuestIds = [ ...state.eventQuestIds, registeredQuestId ];
         newState.fixedQuestIds = state.fixedQuestIds;
@@ -66,10 +71,7 @@ const handleRegistering = (state, action) => {
 
 const handleUnregistering = (state, action) => {
     const {result: registeredQuestId, entities} = action.response;
-    let newState = {
-        isFetching: false,
-        error: ''
-    };
+    let newState = userQuestsInitialState;
     if(entities.quests[registeredQuestId].startDate){
         newState.eventQuestIds = state.eventQuestIds.filter(id => id !== registeredQuestId);
         newState.fixedQuestIds = state.fixedQuestIds;
@@ -80,12 +82,7 @@ const handleUnregistering = (state, action) => {
     return newState;
 };
 
-const userQuests = (state = {
-    isFetching: false,
-    fixedQuestIds: [],
-    eventQuestIds: [],
-    error: ''
-}, action) => {
+const userQuests = (state = userQuestsInitialState, action) => {
     switch (action.type) {
         case ActionTypes.USER_QUESTS_REQUEST:
             return Object.assign({}, state, {
@@ -96,17 +93,24 @@ const userQuests = (state = {
                 isFetching: false,
                 error: action.error
             });
+        case ActionTypes.REGISTER_QUEST_FAILURE:
+            return Object.assign({}, state, {
+                isFetching: false,
+                registerError: action.error
+            });
         case ActionTypes.USER_FIXED_QUESTS_SUCCESS:
             return Object.assign({}, state, {
                 isFetching: false,
                 fixedQuestIds: action.response.result,
-                error: ''
+                error: '',
+                registerError: ''
             });
         case ActionTypes.USER_EVENT_QUESTS_SUCCESS:
             return Object.assign({}, state, {
                 isFetching: false,
                 eventQuestIds: action.response.result,
-                error: ''
+                error: '',
+                registerError: ''
             });
         case ActionTypes.REGISTER_QUEST_SUCCESS:
             return handleRegistering(state, action);
@@ -150,3 +154,4 @@ export const getUserEventQuests = (state) => {
 };
 export const getUserQuestsIsFetching = (state) => state.quests.userQuests.isFetching;
 export const getUserQuestsErrorMessage = (state)=> state.quests.userQuests.error;
+export const getRegisterErrorMessage = (state)=> state.quests.userQuests.registerError;

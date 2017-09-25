@@ -15,6 +15,7 @@ import {
     getUserQuestsIsFetching,
     getUserQuestsErrorMessage
 } from "../../reducers/quests";
+import { errorMessage } from "../../utils/Utils"
 
 
 class MyQuestsScreen extends Component {
@@ -28,12 +29,10 @@ class MyQuestsScreen extends Component {
         this.state = {
             refreshing: false
         };
-        this.loadData = this.loadData.bind(this);
-        this.onRefresh = this.onRefresh.bind(this);
     }
 
     componentDidMount() {
-        this.loadData();
+        this.fetchData();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -41,15 +40,18 @@ class MyQuestsScreen extends Component {
             this.props.loadUserFixedQuests();
             this.props.loadUserEventQuests();
         }
+        if (nextProps.error) {
+            errorMessage(nextProps.error, 'danger', 'Retry', () => this.fetchData());
+        }
     }
 
     onRefresh() {
         this.setState({refreshing: true});
-        this.loadData();
+        this.fetchData();
         this.setState({refreshing: false});
     }
 
-    loadData(){
+    fetchData(){
         if (this.props.isLoggedIn) {
             this.props.loadUserFixedQuests();
             this.props.loadUserEventQuests();
@@ -57,24 +59,25 @@ class MyQuestsScreen extends Component {
     }
 
     render() {
-        if (!this.props.isLoggedIn) {
+        const { isLoggedIn, isFetching, error, fixedQuests, eventQuests, navigation } = this.props;
+        if (!isLoggedIn) {
             return <LoginPlaceholder />
+        }
+        if (isFetching && !fixedQuests.length && !eventQuests.length) {
+            return <Spinner color='#634405'/>;
         }
         return (
             <Container>
-                <Content refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}>
-                    { this.props.isFetching ?
-                        <Spinner color='#634405'/>
-                        :<View style={{padding: 7}}>
-                            <QuestList quests={this.props.fixedQuests}
-                                   onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {questId: quest.id})}/>
-                            {this.props.eventQuests.length > 0 &&
-                            <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3>}
-                            <QuestList quests={this.props.eventQuests}
-                                   onQuestClick={(quest) => this.props.navigation.navigate('QuestDetails', {questId: quest.id})}/>
-                            <View style={{marginTop : 5}}/>
-                        </View>
-                    }
+                <Content refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={() => this.onRefresh()} />}>
+                    <View style={{padding: 7}}>
+                        <QuestList quests={fixedQuests}
+                                   onQuestClick={(quest) => navigation.navigate('QuestDetails', {questId: quest.id})}/>
+                        {this.props.eventQuests.length > 0 &&
+                        <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3>}
+                        <QuestList quests={eventQuests}
+                                   onQuestClick={(quest) => navigation.navigate('QuestDetails', {questId: quest.id})}/>
+                        <View style={{marginTop : 5}}/>
+                    </View>
                 </Content>
             </Container>
         );
