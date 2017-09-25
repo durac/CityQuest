@@ -5,7 +5,6 @@ package com.cityquest.persistence.model;
  */
 public enum QuestStatus {
     DRAFT,
-    REGISTRATION,
     ACTIVE,
     CLOSED
 }

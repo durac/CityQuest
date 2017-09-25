@@ -34,7 +34,8 @@ public class RiddleDto {
         riddleDto.setId(riddle.getId());
         riddleDto.setName(riddle.getName());
         riddleDto.setDescription(riddle.getDescription());
-        riddleDto.setSolution(riddle.getSolution());
+        //Do not send solution to client
+        //riddleDto.setSolution(riddle.getSolution());
         riddleDto.setType(riddle.getType());
         riddleDto.setCategory(riddle.getCategory());
         riddleDto.setAttachement(riddle.getAttachement());

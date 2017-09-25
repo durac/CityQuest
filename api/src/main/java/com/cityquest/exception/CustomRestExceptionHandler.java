@@ -160,6 +160,14 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    @ExceptionHandler({ WrongSolutionException.class })
+    public ResponseEntity<Object> handleWrongSolution(final WrongSolutionException ex, final WebRequest request) {
+        logger.info(ex.getClass().getName());
+
+        final ApiError apiError = new ApiError(HttpStatus.NOT_ACCEPTABLE, ex.getLocalizedMessage(), "error occurred");
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
     @ExceptionHandler({ ApiException.class })
     public ResponseEntity<Object> handleApiError(final ApiException ex, final WebRequest request) {
         logger.info(ex.getClass().getName());

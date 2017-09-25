@@ -23,9 +23,10 @@ public class SolvedQuestStation implements Serializable {
     public SolvedQuestStation() {
     }
 
-    public SolvedQuestStation(User user, QuestStation questStation) {
+    public SolvedQuestStation(User user, QuestStation questStation, Date startDate) {
         this.user = user;
         this.questStation = questStation;
+        this.startDate = startDate;
         this.id = new SolvedQuestStationId(user.getId(), questStation.getId());
     }
 

@@ -18,11 +18,11 @@ public interface QuestService {
 
     List<FixedQuestDto> findFixedQuestsByStatus(QuestStatus status);
 
-    List<EventQuestDto> findEventQuestsByStatus(QuestStatus status);
+    List<EventQuestDto> findOpenedEventQuests();
 
     List<FixedQuestDto> findFixedQuestsByStatus(QuestStatus status, String accessToken);
 
-    List<EventQuestDto> findEventQuestsByStatus(QuestStatus status, String accessToken);
+    List<EventQuestDto> findOpenedEventQuests(String accessToken);
 
     QuestDto registerForQuest(Long questId, String accessToken) throws ApiException;
 

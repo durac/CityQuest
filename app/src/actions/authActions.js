@@ -28,7 +28,7 @@ export const login = () => dispatch => {
     return auth0
         .webAuth
         .authorize({
-            scope: 'openid profile create:register_for_quest read:user_quests',
+            scope: 'openid profile register_for_quest user_quests quest_stations',
             audience: 'https://cityquest.at/api/',
             responseType: 'token'
         })

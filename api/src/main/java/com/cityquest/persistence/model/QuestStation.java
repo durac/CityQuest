@@ -12,6 +12,9 @@ import java.util.List;
  * @author Dominik Schwarz
  */
 @Entity
+@Table(uniqueConstraints={
+        @UniqueConstraint(columnNames = {"seq_nr", "quest_id"})
+})
 public class QuestStation implements Serializable {
 
     @Id @GeneratedValue private Long id;

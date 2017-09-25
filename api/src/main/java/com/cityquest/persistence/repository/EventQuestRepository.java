@@ -1,7 +1,7 @@
 package com.cityquest.persistence.repository;
 
 import com.cityquest.persistence.model.EventQuest;
-import com.cityquest.persistence.model.QuestStatus;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
@@ -11,6 +11,9 @@ import java.util.List;
  */
 public interface EventQuestRepository extends PagingAndSortingRepository<EventQuest, Long> {
 
-    List<EventQuest> findByStatus(QuestStatus status);
-    
+    @Query(value="select q from EventQuest q where q.status = com.cityquest.persistence.model.QuestStatus.ACTIVE and "
+            + "q.registrationStart < CURRENT_DATE and q.registrationEnd > CURRENT_DATE")
+    List<EventQuest> findOpenedForRegistration();
+
+
 }

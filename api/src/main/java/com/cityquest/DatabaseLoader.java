@@ -99,7 +99,7 @@ public class DatabaseLoader implements CommandLineRunner {
         this.solvedQuestStationRepo.save(
                 new SolvedQuestStation(u1, qs3, dateFormat.parse("2017-09-02 17:23"), dateFormat.parse("2017-09-02 17:40")));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u1, qs4, dateFormat.parse("2017-09-02 17:41"), dateFormat.parse("2017-09-02 23:00")));
+                new SolvedQuestStation(u1, qs4, dateFormat.parse("2017-09-02 17:41")));
 
         this.solvedQuestStationRepo.save(
                 new SolvedQuestStation(u1, qs6, dateFormat.parse("2017-09-12 18:00"), dateFormat.parse("2017-09-12 18:23")));
@@ -127,12 +127,12 @@ public class DatabaseLoader implements CommandLineRunner {
         this.solvedQuestStationRepo.save(
                 new SolvedQuestStation(u3, qs2, dateFormat.parse("2017-09-02 17:23"), dateFormat.parse("2017-09-02 17:45")));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u3, qs3, dateFormat.parse("2017-09-02 17:46"), dateFormat.parse("2017-09-02 23:00")));
+                new SolvedQuestStation(u3, qs3, dateFormat.parse("2017-09-02 17:46")));
 
         this.solvedQuestStationRepo.save(
                 new SolvedQuestStation(u5, qs1, dateFormat.parse("2017-09-02 17:00"), dateFormat.parse("2017-09-02 17:32")));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u5, qs2, dateFormat.parse("2017-09-02 17:33"), dateFormat.parse("2017-09-02 23:00")));
+                new SolvedQuestStation(u5, qs2, dateFormat.parse("2017-09-02 17:33")));
     }
 
     private void saveFixedQuests() {
@@ -148,12 +148,12 @@ public class DatabaseLoader implements CommandLineRunner {
     }
 
     private void saveEventQuests() throws Exception {
-        this.eventQuestRepo.save(new EventQuest("Logic Quest", QuestStatus.REGISTRATION,
+        this.eventQuestRepo.save(new EventQuest("Logic Quest", QuestStatus.ACTIVE,
                 "Eine Reihe kniffliger Logikrätsel wartet auf euch. Seit ihr bereit? Aufgeben ist keine Option!",
                 QuestDifficulty.HARD, 120, 2.0, "Stadtpark", "https://i.imgur.com/3207Wla.png", dateFormat.parse("2017-10-01 18:00"),
                 dateFormat.parse("2017-10-02 00:00"), 10, 100, dateFormat.parse("2017-09-15 10:00"),
                 dateFormat.parse("2017-10-01 15:00"), ""));
-        this.eventQuestRepo.save(new EventQuest("Prater Gaudi", QuestStatus.REGISTRATION,
+        this.eventQuestRepo.save(new EventQuest("Prater Gaudi", QuestStatus.ACTIVE,
                 "Entdecke den historischen und modernen Prater auf einer neuen Art und Weise. Viel Spaß!", QuestDifficulty.MEDIUM, 90, 3.5,
                 "Prater", "https://i.imgur.com/zeAllnU.png", dateFormat.parse("2017-10-10 18:00"), dateFormat.parse("2017-10-10 23:00"), 20, 200,
                 dateFormat.parse("2017-09-20 10:00"), dateFormat.parse("2017-10-11 15:00"), ""));
