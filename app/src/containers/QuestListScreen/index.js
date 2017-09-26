@@ -5,10 +5,14 @@ import { StackNavigator } from "react-navigation";
 
 import QuestListScreen from "./QuestListScreen.js";
 import QuestDetailsScreen from "./QuestDetailsScreen.js";
+import QuestStationScreen from "../MyQuestsScreen/QuestStationScreen";
+import RiddleScreen from "../MyQuestsScreen/RiddleScreen";
 
 export default (DrawNav = StackNavigator({
 
     QuestList: { screen: QuestListScreen },
-    QuestDetails: { screen: QuestDetailsScreen }
+    QuestDetails: { screen: QuestDetailsScreen },
+    Riddle: { screen: RiddleScreen },
+    QuestStation: { screen: QuestStationScreen }
 
 }));

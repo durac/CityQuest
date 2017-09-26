@@ -1,6 +1,7 @@
 package com.cityquest.service.impl;
 
 import com.cityquest.dto.QuestStationDto;
+import com.cityquest.dto.RiddleDto;
 import com.cityquest.exception.ApiException;
 import com.cityquest.exception.BadRequestException;
 import com.cityquest.exception.WrongSolutionException;
@@ -44,11 +45,11 @@ public class QuestStationServiceImpl implements QuestStationService{
 
         Quest quest = questRepo.findOne(questId);
         User user = userRepo.findByAuth0Id(auth0UserId);
-        if(!questService.isRegistered(quest, user)) {
-            throw new BadRequestException("User is not registered for quest");
-        }
 
-        return QuestStationDto.of(currentStation(quest,user));
+        QuestStation current = currentStation(quest,user);
+        QuestStationDto currentDto = QuestStationDto.of(current);
+
+        return currentDto;
     }
 
     @Override
@@ -63,17 +64,12 @@ public class QuestStationServiceImpl implements QuestStationService{
         Quest quest = questRepo.findOne(questId);
         User user = userRepo.findByAuth0Id(auth0UserId);
         isActive(quest);
-        if(!questService.isRegistered(quest, user)) {
-            throw new BadRequestException("User is not registered for quest");
-        }
-
         QuestStation current = currentStation(quest, user);
         if(current == null) {
             return null;
         }
         //Compare answer with solution
         String solution = current.getRiddle().getSolution();
-        System.out.println(answer);
         if(!solution.replace(" ","").equalsIgnoreCase(answer.replace(" ",""))) {
             throw new WrongSolutionException("Unfortunately, this isn't correct!");
         }
@@ -91,6 +87,27 @@ public class QuestStationServiceImpl implements QuestStationService{
         return QuestStationDto.of(next);
     }
 
+    @Override
+    public QuestStationDto nextRiddle(Long questId, String qrCode, String accessToken) throws ApiException {
+        String auth0UserId = UserInfo.getAuth0UserId(accessToken);
+        logger.info("current quest station for quest "+ questId +" and user "+ auth0UserId +"with code: "+ qrCode);
+
+        Quest quest = questRepo.findOne(questId);
+        User user = userRepo.findByAuth0Id(auth0UserId);
+        isActive(quest);
+        QuestStation current = currentStation(quest, user);
+        if(current == null) {
+            return null;
+        }
+        if (current.getSeqNr() != 1 && !qrCode.equalsIgnoreCase(current.getQrcode())) {
+            throw new BadRequestException("Wrong quest station!");
+        }
+
+        QuestStationDto currentDto = QuestStationDto.of(current);
+        currentDto.setRiddle(RiddleDto.of(current.getRiddle()));
+        return currentDto;
+    }
+
     private void isActive(Quest quest) {
         if (quest.getStatus() != QuestStatus.ACTIVE)
             throw new BadRequestException("Quest is not active");
@@ -104,6 +121,10 @@ public class QuestStationServiceImpl implements QuestStationService{
     }
 
     private QuestStation currentStation(Quest quest, User user){
+        if(!questService.isRegistered(quest, user)) {
+            throw new BadRequestException("User is not registered for quest");
+        }
+
         List<QuestStation> questStations = questStationRepo.findByQuestOrderBySeqNrAsc(quest);
         for (QuestStation station : questStations) {
             for(SolvedQuestStation solved : station.getUsers()) {

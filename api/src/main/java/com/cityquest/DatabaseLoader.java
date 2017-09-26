@@ -180,32 +180,32 @@ public class DatabaseLoader implements CommandLineRunner {
         int j = 0;
         for (int i = 1; i < 8; i++) {
             this.questStationRepo.save(
-                    new QuestStation(i, "History Walk #" + i, "", fixedQuests.get(0), riddles.get(j), 0.0, 0.0, ""));
+                    new QuestStation(i, "History Walk #" + i, "", fixedQuests.get(0), riddles.get(j), 0.0, 0.0, "code"+j));
             j++;
         }
         for (int i = 1; i < 6; i++) {
             this.questStationRepo.save(
-                    new QuestStation(i, "Already Closed #" + i, "", fixedQuests.get(2), riddles.get(j), 0.0, 0.0, ""));
+                    new QuestStation(i, "Already Closed #" + i, "", fixedQuests.get(2), riddles.get(j), 0.0, 0.0, "code"+j));
             j++;
         }
         for (int i = 1; i < 11; i++) {
             this.questStationRepo.save(
-                    new QuestStation(i, "Logic Quest #" + i, "", eventQuests.get(0), riddles.get(j), 0.0, 0.0, ""));
+                    new QuestStation(i, "Logic Quest #" + i, "", eventQuests.get(0), riddles.get(j), 0.0, 0.0, "code"+j));
             j++;
         }
         for (int i = 1; i < 13; i++) {
             this.questStationRepo.save(
-                    new QuestStation(i, "Prater Gaudi #" + i, "", eventQuests.get(1), riddles.get(j), 0.0, 0.0, ""));
+                    new QuestStation(i, "Prater Gaudi #" + i, "", eventQuests.get(1), riddles.get(j), 0.0, 0.0, "code"+j));
             j++;
         }
         for (int i = 1; i < 5; i++) {
             this.questStationRepo.save(
-                    new QuestStation(i, "Test Quest #" + i, "", eventQuests.get(2), riddles.get(j), 0.0, 0.0, ""));
+                    new QuestStation(i, "Test Quest #" + i, "", eventQuests.get(2), riddles.get(j), 0.0, 0.0, "code"+j));
             j++;
         }
         for (int i = 1; i < 2; i++) {
             this.questStationRepo.save(
-                    new QuestStation(i, "Testing Quest #" + i, "", eventQuests.get(3), riddles.get(j), 0.0, 0.0, ""));
+                    new QuestStation(i, "Testing Quest #" + i, "", eventQuests.get(3), riddles.get(j), 0.0, 0.0, "code"+j));
             j++;
         }
     }

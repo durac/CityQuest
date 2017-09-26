@@ -34,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAuthority("register_for_quest")
                 .antMatchers(HttpMethod.GET, "/api/fixedQuestsOfUser", "/api/eventQuestsOfUser")
                 .hasAuthority("user_quests")
-                .antMatchers(HttpMethod.GET, "/api/currentQuestStation", "/api/nextQuestStation")
+                .antMatchers(HttpMethod.GET, "/api/currentQuestStation", "/api/nextQuestStation", "/api/nextRiddle")
                 .hasAuthority("quest_stations")
                 .anyRequest()
                 .authenticated();

@@ -40,8 +40,6 @@ public class QuestStationDto {
         questStationDto.setDescription(questStation.getDescription());
         questStationDto.setLatitude(questStation.getLatitude());
         questStationDto.setLongitude(questStation.getLongitude());
-        questStationDto.setQrcode(questStation.getQrcode());
-        questStationDto.setRiddle(RiddleDto.of(questStation.getRiddle()));
 
         return questStationDto;
     }

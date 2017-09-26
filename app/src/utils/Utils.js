@@ -2,6 +2,7 @@
  * Created by Dominik Schwarz on 26.07.2017.
  */
 import { Toast } from "native-base";
+import { NavigationActions } from "react-navigation";
 
 export const defaultErrorMessage = () => {
     Toast.show({
@@ -21,4 +22,15 @@ export const errorMessage = (message, type, buttonText, onButtonClick) => {
         position: 'bottom',
         onClose: onButtonClick
     });
+};
+
+export const resetNavigation = (targetRoute, questId, navigation) => {
+    const resetAction = NavigationActions.reset({
+        index: 1,
+        actions: [
+            NavigationActions.navigate({ routeName: "QuestList"}),
+            NavigationActions.navigate({ routeName: targetRoute, params: {questId: questId}})
+        ]
+    });
+    navigation.dispatch(resetAction);
 };

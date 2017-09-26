@@ -4,7 +4,7 @@
 import React, {Component} from "react";
 import {Alert, Image, AsyncStorage, View, StatusBar} from "react-native";
 import {StackNavigator} from "react-navigation";
-import {Container, Header, Title, Content, Button, Icon, Text, H1, H2, Grid, Col, Left} from "native-base";
+import {Container, Content, Button, Icon, Text, H1, H2, Grid, Col} from "native-base";
 import Moment from "moment";
 import CityQuestHeader from "../CityQuestHeader";
 import s from "../../style/Style";
@@ -12,7 +12,7 @@ import { postRegisterForQuest, postUnregisterFromQuest } from "../../actions/que
 import { login } from '../../actions/authActions.js';
 import { getQuest, getRegisterErrorMessage } from "../../reducers/quests";
 import { connect } from "react-redux";
-import { errorMessage } from "../../utils/Utils"
+import { errorMessage, resetNavigation } from "../../utils/Utils"
 
 class QuestDetailsScreen extends Component {
 
@@ -31,14 +31,17 @@ class QuestDetailsScreen extends Component {
         }
     }
 
-    ensureLoggedInRegistering(register, questId) {
+    ensureLoggedInRegistering(quest) {
         if (!this.props.isLoggedIn) {
             this.props.login();
         } else {
-            if (register) {
-                this.props.registerForQuest(questId)
+            if (!quest.registered) {
+                this.props.registerForQuest(quest.id);
+                if (!quest.startDate) {
+                    resetNavigation('Riddle', quest.id, this.props.navigation);
+                }
             } else {
-                this.props.unregisterFromQuest(questId);
+                this.props.unregisterFromQuest(quest.id);
             }
         }
     }
@@ -75,8 +78,8 @@ class QuestDetailsScreen extends Component {
                         </Grid>
                         {
                             quest.registered ?
-                                <Button bordered danger block style={{marginTop: 50, borderRadius: 10}} onPress={() => this.ensureLoggedInRegistering(false, quest.id)}><Text>Abmelden</Text></Button>
-                                : <Button bordered block style={{marginTop: 50, borderRadius: 10}} onPress={() => this.ensureLoggedInRegistering(true, quest.id)}><Text>Los gehts!</Text></Button>
+                                <Button bordered danger block style={{marginTop: 50, borderRadius: 10}} onPress={() => this.ensureLoggedInRegistering(quest)}><Text>Abmelden</Text></Button>
+                                : <Button bordered block style={{marginTop: 50, borderRadius: 10}} onPress={() => this.ensureLoggedInRegistering(quest)}><Text>Los gehts!</Text></Button>
 
                         }
                 </Content>
