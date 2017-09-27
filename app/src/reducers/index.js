@@ -7,9 +7,9 @@ import quests from './quests';
 import questStation from './questStation';
 
 const rootReducer = combineReducers({
+    questStation,
     auth,
-    quests,
-    questStation
+    quests
 });
 
 export default rootReducer;

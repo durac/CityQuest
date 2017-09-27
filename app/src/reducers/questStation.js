@@ -10,9 +10,11 @@ const byId = (state = {
     riddle: {}
 }, action) => {
     if (action.response) {
+        const questStations = action.response.entities.questStations;
+        const riddles = action.response.entities.riddles;
         return {
-            questStation: action.response.entities.questStations,
-            riddle: action.response.entities.riddles
+            questStation: questStations ? questStations : state.questStation,
+            riddle: riddles ? riddles : state.riddle
         };
     }
     return state;
@@ -27,6 +29,7 @@ const currentQuestStation = (state = {
         case ActionTypes.QUEST_STATION_REQUEST:
         case ActionTypes.NEXT_RIDDLE_REQUEST:
             return Object.assign({}, state, {
+                error: '',
                 isFetching: true
             });
         case ActionTypes.QUEST_STATION_FAILURE:
@@ -39,9 +42,9 @@ const currentQuestStation = (state = {
         case ActionTypes.NEXT_QUEST_STATION_SUCCESS:
         case ActionTypes.NEXT_RIDDLE_SUCCESS:
             return Object.assign({}, state, {
-                isFetching: false,
                 id: action.response.result,
-                error: ''
+                error: '',
+                isFetching: false
             });
         default:
             return state
@@ -57,6 +60,7 @@ export default questStation;
 
 export const getCurrentQuestStation = (state) => {
     const questStationId = state.questStation.currentQuestStation.id;
+
     if(questStationId < 0) {
         return null;
     }

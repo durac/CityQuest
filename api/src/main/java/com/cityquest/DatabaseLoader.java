@@ -93,46 +93,46 @@ public class DatabaseLoader implements CommandLineRunner {
         QuestStation qs9 = questStations.get(37);
 
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u1, qs1, dateFormat.parse("2017-09-02 17:00"), dateFormat.parse("2017-09-02 17:13")));
+                new SolvedQuestStation(u1, qs1, dateFormat.parse("2017-09-02 17:00"), dateFormat.parse("2017-09-02 17:13"), true));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u1, qs2, dateFormat.parse("2017-09-02 17:14"), dateFormat.parse("2017-09-02 17:22")));
+                new SolvedQuestStation(u1, qs2, dateFormat.parse("2017-09-02 17:14"), dateFormat.parse("2017-09-02 17:22"), true));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u1, qs3, dateFormat.parse("2017-09-02 17:23"), dateFormat.parse("2017-09-02 17:40")));
+                new SolvedQuestStation(u1, qs3, dateFormat.parse("2017-09-02 17:23"), dateFormat.parse("2017-09-02 17:40"), true));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u1, qs4, dateFormat.parse("2017-09-02 17:41")));
+                new SolvedQuestStation(u1, qs4, dateFormat.parse("2017-09-02 17:41"), true));
 
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u1, qs6, dateFormat.parse("2017-09-12 18:00"), dateFormat.parse("2017-09-12 18:23")));
+                new SolvedQuestStation(u1, qs6, dateFormat.parse("2017-09-12 18:00"), dateFormat.parse("2017-09-12 18:23"), true));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u1, qs7, dateFormat.parse("2017-09-12 18:23"), dateFormat.parse("2017-09-12 18:45")));
+                new SolvedQuestStation(u1, qs7, dateFormat.parse("2017-09-12 18:23"), dateFormat.parse("2017-09-12 18:45"), true));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u1, qs8, dateFormat.parse("2017-09-12 18:45"), dateFormat.parse("2017-09-12 18:59")));
+                new SolvedQuestStation(u1, qs8, dateFormat.parse("2017-09-12 18:45"), dateFormat.parse("2017-09-12 18:59"), true));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u1, qs9, dateFormat.parse("2017-09-12 18:59"), dateFormat.parse("2017-09-12 19:22")));
+                new SolvedQuestStation(u1, qs9, dateFormat.parse("2017-09-12 18:59"), dateFormat.parse("2017-09-12 19:22"), true));
 
 
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u2, qs1, dateFormat.parse("2017-09-02 17:00"), dateFormat.parse("2017-09-02 17:16")));
+                new SolvedQuestStation(u2, qs1, dateFormat.parse("2017-09-02 17:00"), dateFormat.parse("2017-09-02 17:16"), true));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u2, qs2, dateFormat.parse("2017-09-02 17:17"), dateFormat.parse("2017-09-02 17:31")));
+                new SolvedQuestStation(u2, qs2, dateFormat.parse("2017-09-02 17:17"), dateFormat.parse("2017-09-02 17:31"), true));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u2, qs3, dateFormat.parse("2017-09-02 17:32"), dateFormat.parse("2017-09-02 17:45")));
+                new SolvedQuestStation(u2, qs3, dateFormat.parse("2017-09-02 17:32"), dateFormat.parse("2017-09-02 17:45"), true));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u2, qs4, dateFormat.parse("2017-09-02 17:46"), dateFormat.parse("2017-09-02 17:58")));
+                new SolvedQuestStation(u2, qs4, dateFormat.parse("2017-09-02 17:46"), dateFormat.parse("2017-09-02 17:58"), true));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u2, qs5, dateFormat.parse("2017-09-02 17:59"), dateFormat.parse("2017-09-02 18:13")));
+                new SolvedQuestStation(u2, qs5, dateFormat.parse("2017-09-02 17:59"), dateFormat.parse("2017-09-02 18:13"), true));
 
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u3, qs1, dateFormat.parse("2017-09-02 17:00"), dateFormat.parse("2017-09-02 17:22")));
+                new SolvedQuestStation(u3, qs1, dateFormat.parse("2017-09-02 17:00"), dateFormat.parse("2017-09-02 17:22"), true));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u3, qs2, dateFormat.parse("2017-09-02 17:23"), dateFormat.parse("2017-09-02 17:45")));
+                new SolvedQuestStation(u3, qs2, dateFormat.parse("2017-09-02 17:23"), dateFormat.parse("2017-09-02 17:45"), true));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u3, qs3, dateFormat.parse("2017-09-02 17:46")));
+                new SolvedQuestStation(u3, qs3, dateFormat.parse("2017-09-02 17:46"), false));
 
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u5, qs1, dateFormat.parse("2017-09-02 17:00"), dateFormat.parse("2017-09-02 17:32")));
+                new SolvedQuestStation(u5, qs1, dateFormat.parse("2017-09-02 17:00"), dateFormat.parse("2017-09-02 17:32"), true));
         this.solvedQuestStationRepo.save(
-                new SolvedQuestStation(u5, qs2, dateFormat.parse("2017-09-02 17:33")));
+                new SolvedQuestStation(u5, qs2, dateFormat.parse("2017-09-02 17:33"), true));
     }
 
     private void saveFixedQuests() {

@@ -99,7 +99,7 @@ public class QuestServiceImpl implements QuestService {
         if(quest instanceof FixedQuest) {
             List<QuestStation> stations = questStationRepo.findByQuestOrderBySeqNrAsc(quest);
             if(!stations.isEmpty()){
-                SolvedQuestStation start = new SolvedQuestStation(user, stations.get(0), new Date());
+                SolvedQuestStation start = new SolvedQuestStation(user, stations.get(0), new Date(), true);
                 solvedQuestStationRepo.save(start);
             }
         }

@@ -32,7 +32,7 @@ public class QuestDto {
 
     private List<UserDto> users = new ArrayList<>();
 
-    private Boolean isRegistered;
+    private Boolean registered;
 
     public static QuestDto of(Quest quest) {
 
@@ -135,10 +135,11 @@ public class QuestDto {
     }
 
     public Boolean getRegistered() {
-        return isRegistered;
+        return registered;
     }
 
     public void setRegistered(Boolean registered) {
-        isRegistered = registered;
+        this.registered = registered;
     }
+
 }

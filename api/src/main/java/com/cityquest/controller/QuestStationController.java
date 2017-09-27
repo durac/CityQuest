@@ -27,7 +27,7 @@ public class QuestStationController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/nextRiddle")
-    public QuestStationDto nextRiddle(Long questId, String qrCode, HttpServletRequest request) {
-        return questStationService.nextRiddle(questId, qrCode, request.getHeader("Authorization"));
+    public QuestStationDto nextRiddle(Long questId, String code, HttpServletRequest request) {
+        return questStationService.nextRiddle(questId, code, request.getHeader("Authorization"));
     }
 }

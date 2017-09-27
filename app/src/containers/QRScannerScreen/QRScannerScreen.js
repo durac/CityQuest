@@ -2,12 +2,15 @@
  * Created by Dominik Schwarz on 08.09.2017.
  */
 import React, {Component} from "react";
-import {Alert, InteractionManager} from "react-native";
-import {StackNavigator} from "react-navigation";
-import {Container, Header, Title, Content, Button, Left, Right, Body, Icon} from "native-base";
+import { Alert, InteractionManager } from "react-native";
+import { Container, Content, Spinner } from "native-base";
 import Camera from "react-native-camera";
-import { withNavigationFocus } from 'react-navigation-is-focused-hoc'
+import { withNavigationFocus } from "react-navigation-is-focused-hoc";
 import CityQuestHeader from "../CityQuestHeader";
+import { connect } from 'react-redux';
+import { errorMessage } from "../../utils/Utils";
+import { loadNextRiddle } from "../../actions/questStationActions";
+import { getErrorMessage, getIsFetching} from "../../reducers/questStation";
 
 class QRScannerScreen extends Component {
 
@@ -15,12 +18,38 @@ class QRScannerScreen extends Component {
         super(props);
         this.state = {
             dimensions: undefined,
-            ready: false
+            ready: false,
+            questId: undefined
         };
     }
 
-    onQrCodeRead() {
-        alert("hey spotted barcode!");
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.error && nextProps.error) {
+            errorMessage(nextProps.error, 'danger', 'Okay');
+        }
+        /*if (this.props.isFetching && !nextProps.isFetching && !nextProps.error) {
+            this.props.navigation.navigate('QuestStation', {questId: this.state.questId});
+        }*/
+    }
+
+    onQrCodeRead(data) {
+        if(!this.props.isLoggedIn) {
+            errorMessage("Bitte logge dich ein!", '', 'Okay');
+            return;
+        }
+        const questId1 = data.lastIndexOf("questId=");
+        const questId2 = data.lastIndexOf("&");
+        const code1 = data.lastIndexOf("code=");
+        if(questId1 > 0 && questId2 > 0 && code1 > 0) {
+            const questId = data.slice(questId1+8,questId2);
+            const code = data.slice(code1+5);
+            if(questId && code) {
+                this.setState({questId: questId});
+                this.props.submitQRCode(questId,code);
+            }
+        } else {
+            errorMessage("Wrong QR Code!", 'danger', 'Okay');
+        }
     }
 
     componentDidMount() {
@@ -29,8 +58,18 @@ class QRScannerScreen extends Component {
 
     render() {
         if (this.state.dimensions) {
-            var {dimensions} = this.state;
-            var {width, height} = dimensions
+            var { dimensions } = this.state;
+            var { width, height } = dimensions
+        }
+        if (this.props.isFetching) {
+            return (
+                <Container>
+                    <CityQuestHeader title='Scan QR-Code'/>
+                    <Content onLayout={this.onLayout} style={{backgroundColor: 'black'}}>
+                        <Spinner color='#634405'/>
+                    </Content>
+                </Container>
+            )
         }
         return (
             <Container>
@@ -44,7 +83,7 @@ class QRScannerScreen extends Component {
                                     }}
                                 style={{height}}
                                 aspect={Camera.constants.Aspect.full}
-                                onBarCodeRead={()=>{this.onQrCodeRead()}}
+                                onBarCodeRead={(data)=>{this.onQrCodeRead(data.data)}}
                                 barCodeTypes={[Camera.constants.BarCodeType.qr]}/>
                             : undefined
                     }
@@ -61,6 +100,24 @@ class QRScannerScreen extends Component {
         });
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        isFetching: getIsFetching(state),
+        error: getErrorMessage(state),
+        isLoggedIn: state.auth.isLoggedIn
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        submitQRCode: (questId, code) => {
+            dispatch(loadNextRiddle(questId, code))
+        }
+    }
+};
+
+QRScannerScreen = connect(mapStateToProps,mapDispatchToProps)(QRScannerScreen);
 
 export default withNavigationFocus(QRScannerScreen, 'QRScanner')
 

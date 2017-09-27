@@ -17,6 +17,8 @@ public class SolvedQuestStationDto {
 
     private Date endDate;
 
+    private Boolean scannedQR;
+
     public static SolvedQuestStationDto of(SolvedQuestStation solvedQuestStation) {
         if (solvedQuestStation == null) {
             return null;
@@ -27,6 +29,7 @@ public class SolvedQuestStationDto {
         solvedQuestStationDto.setQuestStation(QuestStationDto.of(solvedQuestStation.getQuestStation()));
         solvedQuestStationDto.setStartDate(solvedQuestStation.getStartDate());
         solvedQuestStationDto.setEndDate(solvedQuestStation.getEndDate());
+        solvedQuestStationDto.setScannedQR(solvedQuestStation.getScannedQR());
 
         return solvedQuestStationDto;
     }
@@ -61,5 +64,13 @@ public class SolvedQuestStationDto {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Boolean getScannedQR() {
+        return scannedQR;
+    }
+
+    public void setScannedQR(Boolean scannedQR) {
+        this.scannedQR = scannedQR;
     }
 }

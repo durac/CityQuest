@@ -8,13 +8,14 @@ import CityQuestHeader from "../CityQuestHeader";
 import QuestList from "../../components/QuestList";
 import {connect} from "react-redux";
 import { loadFixedQuests, loadEventQuests } from "../../actions/questsActions";
+import { loadCurrentQuestStation } from "../../actions/questStationActions";
 import {
     getAvailableFixedQuests,
     getAvailableEventQuests,
     getAvailableQuestsIsFetching,
     getAvailableQuestsErrorMessage
 } from "../../reducers/quests";
-import { errorMessage } from "../../utils/Utils"
+import { errorMessage, resetNavigation } from "../../utils/Utils"
 
 class QuestListScreen extends Component {
 
@@ -29,20 +30,20 @@ class QuestListScreen extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.fetchData();
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.error) {
+        if (!this.props.error && nextProps.error) {
             errorMessage(nextProps.error, 'danger', 'Retry', () => this.fetchData());
         }
+        this.setState({isRefreshing: false});
     }
 
     onRefresh() {
         this.setState({isRefreshing: true});
         this.fetchData();
-        this.setState({isRefreshing: false});
     }
 
     fetchData() {
@@ -50,19 +51,39 @@ class QuestListScreen extends Component {
         this.props.loadEventQuests();
     }
 
+    onFixedQuestClick(quest) {
+        const { navigation, currenQuestStation, isLoggedIn } = this.props;
+        if (quest.registered && isLoggedIn) {
+            currenQuestStation(quest.id);
+            navigation.navigate('QuestStation', {questId: quest.id});
+        } else {
+            navigation.navigate('QuestDetails', {questId: quest.id});
+        }
+    }
+
+    onEventQuestClick(quest) {
+        this.props.navigation.navigate('QuestDetails', {questId: quest.id});
+    }
+
     render() {
-        const { isFetching, fixedQuests, eventQuests, navigation } = this.props;
+        const { isFetching, fixedQuests, eventQuests } = this.props;
         if (isFetching && !fixedQuests.length && !eventQuests.length) {
-            return <Spinner color='#634405'/>;
+            return (
+                <Container>
+                    <Content>
+                        <Spinner color='#634405'/>
+                    </Content>
+                </Container>
+            )
         }
         return (
             <Container>
                 <Content refreshControl={
                     <RefreshControl refreshing={this.state.isRefreshing} onRefresh={() => this.onRefresh()} />}>
                     <View style={{padding: 7}}>
-                        <QuestList quests={fixedQuests} onQuestClick={(quest) => navigation.navigate('QuestDetails', {questId: quest.id})} />
+                        <QuestList quests={fixedQuests} onQuestClick={(quest) => this.onFixedQuestClick(quest)} />
                         {eventQuests.length > 0 && <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3>}
-                        <QuestList quests={eventQuests} isEvent={true} onQuestClick={(quest) => navigation.navigate('QuestDetails', {questId: quest.id})} />
+                        <QuestList quests={eventQuests} isEvent={true} onQuestClick={(quest) => this.onEventQuestClick(quest)} />
                         <View style={{marginTop : 5}} />
                     </View>
                 </Content>
@@ -73,10 +94,10 @@ class QuestListScreen extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        isFetching: getAvailableQuestsIsFetching(state),
         fixedQuests: getAvailableFixedQuests(state),
         eventQuests: getAvailableEventQuests(state),
         error: getAvailableQuestsErrorMessage(state),
-        isFetching: getAvailableQuestsIsFetching(state),
         isLoggedIn: state.auth.isLoggedIn
     }
 };
@@ -92,6 +113,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
         },
         loadEventQuests: () => {
             dispatch(loadEventQuests(isLoggedIn))
+        },
+        currenQuestStation: (questId) => {
+            dispatch(loadCurrentQuestStation(questId))
         }
     }
 };

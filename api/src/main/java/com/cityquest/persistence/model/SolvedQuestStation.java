@@ -20,22 +20,26 @@ public class SolvedQuestStation implements Serializable {
 
     private Date endDate;
 
+    private Boolean scannedQR = false;
+
     public SolvedQuestStation() {
     }
 
-    public SolvedQuestStation(User user, QuestStation questStation, Date startDate) {
+    public SolvedQuestStation(User user, QuestStation questStation, Date startDate, Boolean scannedQR) {
         this.user = user;
         this.questStation = questStation;
         this.startDate = startDate;
+        this.scannedQR = scannedQR;
         this.id = new SolvedQuestStationId(user.getId(), questStation.getId());
     }
 
     /* Only for testing */
-    public SolvedQuestStation(User user, QuestStation questStation, Date startDate, Date endDate) {
+    public SolvedQuestStation(User user, QuestStation questStation, Date startDate, Date endDate, Boolean scannedQR) {
         this.user = user;
         this.questStation = questStation;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.scannedQR = scannedQR;
         this.id = new SolvedQuestStationId(user.getId(), questStation.getId());
     }
 
@@ -77,5 +81,13 @@ public class SolvedQuestStation implements Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Boolean getScannedQR() {
+        return scannedQR;
+    }
+
+    public void setScannedQR(Boolean scannedQR) {
+        this.scannedQR = scannedQR;
     }
 }

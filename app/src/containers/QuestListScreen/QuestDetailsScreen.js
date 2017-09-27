@@ -8,8 +8,9 @@ import {Container, Content, Button, Icon, Text, H1, H2, Grid, Col} from "native-
 import Moment from "moment";
 import CityQuestHeader from "../CityQuestHeader";
 import s from "../../style/Style";
-import { postRegisterForQuest, postUnregisterFromQuest } from "../../actions/questsActions.js";
-import { login } from '../../actions/authActions.js';
+import { postRegisterForQuest, postUnregisterFromQuest } from "../../actions/questsActions";
+import { loadCurrentQuestStation } from "../../actions/questStationActions";
+import { login } from '../../actions/authActions';
 import { getQuest, getRegisterErrorMessage } from "../../reducers/quests";
 import { connect } from "react-redux";
 import { errorMessage, resetNavigation } from "../../utils/Utils"
@@ -26,8 +27,15 @@ class QuestDetailsScreen extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.error) {
+        const { quest, error, firstRiddle, navigation, isLoggedIn } = this.props;
+        if (!error && nextProps.error) {
             errorMessage(nextProps.error, 'danger', 'Okay');
+        }
+        if (!quest.startDate) {
+            if((!quest.registered && nextProps.quest.registered) || (isLoggedIn && quest.registered)) {
+                firstRiddle(quest.id);
+                resetNavigation(navigation, 'QLQuestStation', 'QuestList', quest.id);
+            }
         }
     }
 
@@ -37,9 +45,6 @@ class QuestDetailsScreen extends Component {
         } else {
             if (!quest.registered) {
                 this.props.registerForQuest(quest.id);
-                if (!quest.startDate) {
-                    resetNavigation('Riddle', quest.id, this.props.navigation);
-                }
             } else {
                 this.props.unregisterFromQuest(quest.id);
             }
@@ -47,7 +52,7 @@ class QuestDetailsScreen extends Component {
     }
 
     render() {
-        const {quest} = this.props;
+        const { quest } = this.props;
         return (
             <Container>
                 <Content>
@@ -107,6 +112,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         unregisterFromQuest: (questId) => {
             dispatch(postUnregisterFromQuest(questId))
+        },
+        firstRiddle: (questId) => {
+            dispatch(loadCurrentQuestStation(questId))
         }
     }
 };

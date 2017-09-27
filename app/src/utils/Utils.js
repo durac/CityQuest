@@ -20,15 +20,16 @@ export const errorMessage = (message, type, buttonText, onButtonClick) => {
         type: type || '',
         buttonText: buttonText || 'Okay',
         position: 'bottom',
-        onClose: onButtonClick
+        onClose: onButtonClick,
+        duration: 3000
     });
 };
 
-export const resetNavigation = (targetRoute, questId, navigation) => {
+export const resetNavigation = (navigation, targetRoute, baseRoute, questId) => {
     const resetAction = NavigationActions.reset({
         index: 1,
         actions: [
-            NavigationActions.navigate({ routeName: "QuestList"}),
+            NavigationActions.navigate({ routeName: baseRoute}),
             NavigationActions.navigate({ routeName: targetRoute, params: {questId: questId}})
         ]
     });
