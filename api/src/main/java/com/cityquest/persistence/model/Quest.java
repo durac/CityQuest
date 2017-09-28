@@ -31,8 +31,7 @@ public class Quest implements Serializable {
 
     @OneToMany(mappedBy = "quest") private List<QuestStation> questStations = new ArrayList<>();
 
-    @ManyToMany(
-            mappedBy = "quests") private List<User> users = new ArrayList<>();
+    @ManyToMany(mappedBy = "quests") private List<User> users = new ArrayList<>();
 
     public Quest() {
     }

@@ -28,6 +28,8 @@ public class QuestStationDto {
 
     private RiddleDto riddle;
 
+    private Boolean finished;
+
     public static QuestStationDto of(QuestStation questStation) {
         if (questStation == null) {
             return null;
@@ -40,6 +42,7 @@ public class QuestStationDto {
         questStationDto.setDescription(questStation.getDescription());
         questStationDto.setLatitude(questStation.getLatitude());
         questStationDto.setLongitude(questStation.getLongitude());
+        questStationDto.finished = false;
 
         return questStationDto;
     }
@@ -126,4 +129,11 @@ public class QuestStationDto {
         this.users = users;
     }
 
+    public Boolean getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Boolean finished) {
+        this.finished = finished;
+    }
 }

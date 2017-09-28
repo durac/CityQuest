@@ -16,8 +16,8 @@ import {
     getUserQuestsIsFetching,
     getUserQuestsErrorMessage
 } from "../../reducers/quests";
-import { errorMessage, resetNavigation } from "../../utils/Utils"
-
+import { errorMessage } from "../../utils/Utils"
+import s from "../../style/Style";
 
 class MyQuestsScreen extends Component {
 
@@ -42,7 +42,7 @@ class MyQuestsScreen extends Component {
             this.props.loadUserEventQuests();
         }
         if (!this.props.error && nextProps.error) {
-            errorMessage(nextProps.error, 'danger', 'Retry', () => this.fetchData());
+            errorMessage(nextProps.error, 'danger', 'Okay');
         }
     }
 
@@ -61,16 +61,16 @@ class MyQuestsScreen extends Component {
 
     onFixedQuestClick(quest) {
         const { navigation, currenQuestStation } = this.props;
-        if (quest.registered) {
+        if (quest.registered && quest.status == 'ACTIVE') {
             currenQuestStation(quest.id);
             navigation.navigate('QuestStation', {questId: quest.id});
         } else {
-            navigation.navigate('QuestDetails', {questId: quest.id});
+            navigation.navigate('MyQuestDetails', {questId: quest.id});
         }
     }
 
     onEventQuestClick(quest) {
-        this.props.navigation.navigate('QuestDetails', {questId: quest.id});
+        this.props.navigation.navigate('MyQuestDetails', {questId: quest.id});
     }
     
     render() {
@@ -79,13 +79,7 @@ class MyQuestsScreen extends Component {
             return <LoginPlaceholder />
         }
         if (isFetching && !fixedQuests.length && !eventQuests.length) {
-            return (
-                <Container>
-                    <Content>
-                        <Spinner color='#634405'/>
-                    </Content>
-                </Container>
-            )
+            return <View style={s.contentView}><Spinner color='#634405'/></View>;
         }
         return (
             <Container>

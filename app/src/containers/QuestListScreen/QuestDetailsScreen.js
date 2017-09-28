@@ -4,16 +4,16 @@
 import React, {Component} from "react";
 import {Alert, Image, AsyncStorage, View, StatusBar} from "react-native";
 import {StackNavigator} from "react-navigation";
-import {Container, Content, Button, Icon, Text, H1, H2, Grid, Col} from "native-base";
+import {Container, Content, Spinner, Button, Icon, Text, H1, H2, Grid, Col} from "native-base";
 import Moment from "moment";
 import CityQuestHeader from "../CityQuestHeader";
-import s from "../../style/Style";
 import { postRegisterForQuest, postUnregisterFromQuest } from "../../actions/questsActions";
 import { loadCurrentQuestStation } from "../../actions/questStationActions";
 import { login } from '../../actions/authActions';
-import { getQuest, getRegisterErrorMessage } from "../../reducers/quests";
+import { getQuest, getRegisterErrorMessage, getUserQuestsIsFetching } from "../../reducers/quests";
 import { connect } from "react-redux";
-import { errorMessage, resetNavigation } from "../../utils/Utils"
+import { errorMessage, resetNavigation } from "../../utils/Utils";
+import s from "../../style/Style";
 
 class QuestDetailsScreen extends Component {
 
@@ -52,7 +52,10 @@ class QuestDetailsScreen extends Component {
     }
 
     render() {
-        const { quest } = this.props;
+        const { quest, isFetching } = this.props;
+        if (isFetching) {
+            return <View style={s.contentView}><Spinner color='#634405'/></View>;
+        }
         return (
             <Container>
                 <Content>
@@ -97,6 +100,7 @@ class QuestDetailsScreen extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         isLoggedIn: state.auth.isLoggedIn,
+        isFetching: getUserQuestsIsFetching(state),
         quest: getQuest(state,ownProps.navigation.state.params.questId),
         error: getRegisterErrorMessage(state)
     }

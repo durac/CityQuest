@@ -10,7 +10,7 @@ import QuestDetailsScreen from "../QuestListScreen/QuestDetailsScreen";
 export default (DrawNav = StackNavigator({
 
     MyQuests: { screen: MyQuestsScreen },
-    QuestDetails: { screen: QuestDetailsScreen },
+    MyQuestDetails: { screen: QuestDetailsScreen },
     QuestStation: { screen: QuestStationScreen }
 
 }));

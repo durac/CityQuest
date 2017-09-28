@@ -2,8 +2,20 @@
  * Created by Dominik Schwarz on 13.09.2017.
  */
 import {StyleSheet} from 'react-native';
+import MapView from 'react-native-maps';
 
 export default StyleSheet.create({
+    contentView: {
+        backgroundColor: 'white',
+        flex: 1
+    },
+    placeholderView: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white'
+    },
     cardItem: {
         marginLeft: 0,
         paddingLeft: 0,

@@ -28,6 +28,7 @@ export const errorMessage = (message, type, buttonText, onButtonClick) => {
 export const resetNavigation = (navigation, targetRoute, baseRoute, questId) => {
     const resetAction = NavigationActions.reset({
         index: 1,
+        key: null,
         actions: [
             NavigationActions.navigate({ routeName: baseRoute}),
             NavigationActions.navigate({ routeName: targetRoute, params: {questId: questId}})

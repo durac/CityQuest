@@ -15,12 +15,13 @@ import {
     getAvailableQuestsIsFetching,
     getAvailableQuestsErrorMessage
 } from "../../reducers/quests";
-import { errorMessage, resetNavigation } from "../../utils/Utils"
+import { errorMessage, resetNavigation } from "../../utils/Utils";
+import s from "../../style/Style";
 
 class QuestListScreen extends Component {
 
     static navigationOptions = ({navigation}) => ({
-        header: <CityQuestHeader title="CityQuest"/>
+        header: <CityQuestHeader title="Verfügbare Quests"/>
     });
 
     constructor(props) {
@@ -36,7 +37,7 @@ class QuestListScreen extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (!this.props.error && nextProps.error) {
-            errorMessage(nextProps.error, 'danger', 'Retry', () => this.fetchData());
+            errorMessage(nextProps.error, 'danger', 'Okay');
         }
         this.setState({isRefreshing: false});
     }
@@ -68,13 +69,7 @@ class QuestListScreen extends Component {
     render() {
         const { isFetching, fixedQuests, eventQuests } = this.props;
         if (isFetching && !fixedQuests.length && !eventQuests.length) {
-            return (
-                <Container>
-                    <Content>
-                        <Spinner color='#634405'/>
-                    </Content>
-                </Container>
-            )
+            return <View style={s.contentView}><Spinner color='#634405'/></View>;
         }
         return (
             <Container>

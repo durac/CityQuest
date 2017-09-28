@@ -2,15 +2,15 @@
  * Created by Dominik Schwarz on 08.09.2017.
  */
 import React, {Component} from "react";
-import { Alert, InteractionManager } from "react-native";
-import { Container, Content, Spinner } from "native-base";
+import { InteractionManager, View } from "react-native";
+import { Container, Content, Header, Spinner } from "native-base";
 import Camera from "react-native-camera";
 import { withNavigationFocus } from "react-navigation-is-focused-hoc";
 import CityQuestHeader from "../CityQuestHeader";
 import { connect } from 'react-redux';
-import { errorMessage } from "../../utils/Utils";
+import { errorMessage, resetNavigation } from "../../utils/Utils";
 import { loadNextRiddle } from "../../actions/questStationActions";
-import { getErrorMessage, getIsFetching} from "../../reducers/questStation";
+import { getCurrentQuestStation, getErrorMessage, getIsFetching } from "../../reducers/questStation";
 
 class QRScannerScreen extends Component {
 
@@ -27,9 +27,9 @@ class QRScannerScreen extends Component {
         if (!this.props.error && nextProps.error) {
             errorMessage(nextProps.error, 'danger', 'Okay');
         }
-        /*if (this.props.isFetching && !nextProps.isFetching && !nextProps.error) {
-            this.props.navigation.navigate('QuestStation', {questId: this.state.questId});
-        }*/
+        if (this.props.questStation && !this.props.questStation.riddle && nextProps.questStation.riddle) {
+            resetNavigation(this.props.navigation, 'QLQuestStation', 'QuestList', this.state.questId);
+        }
     }
 
     onQrCodeRead(data) {
@@ -57,47 +57,25 @@ class QRScannerScreen extends Component {
     }
 
     render() {
-        if (this.state.dimensions) {
-            var { dimensions } = this.state;
-            var { width, height } = dimensions
-        }
-        if (this.props.isFetching) {
-            return (
-                <Container>
-                    <CityQuestHeader title='Scan QR-Code'/>
-                    <Content onLayout={this.onLayout} style={{backgroundColor: 'black'}}>
-                        <Spinner color='#634405'/>
-                    </Content>
-                </Container>
-            )
-        }
         return (
             <Container>
                 <CityQuestHeader title='Scan QR-Code'/>
-                <Content onLayout={this.onLayout} style={{backgroundColor: 'black'}}>
+                <View style={{flex: 1, backgroundColor: 'black'}}>
                     {
-                        this.state.dimensions && this.props.isFocused && this.state.ready ?
+                        !this.props.isFetching && this.props.isFocused && this.state.ready ?
                             <Camera
                                 ref={(cam) => {
                                         this.camera = cam;
                                     }}
-                                style={{height}}
+                                style={{flex: 1}}
                                 aspect={Camera.constants.Aspect.full}
                                 onBarCodeRead={(data)=>{this.onQrCodeRead(data.data)}}
                                 barCodeTypes={[Camera.constants.BarCodeType.qr]}/>
                             : undefined
                     }
-                </Content>
+                </View>
             </Container>
         );
-    }
-
-    onLayout = event => {
-        if (this.state.dimensions) return; // layout was already called
-        let {width, height} = event.nativeEvent.layout;
-        this.setState({
-            dimensions: {width, height}
-        });
     }
 }
 
@@ -105,6 +83,7 @@ const mapStateToProps = (state) => {
     return {
         isFetching: getIsFetching(state),
         error: getErrorMessage(state),
+        questStation: getCurrentQuestStation(state),
         isLoggedIn: state.auth.isLoggedIn
     }
 };
@@ -119,5 +98,5 @@ const mapDispatchToProps = (dispatch) => {
 
 QRScannerScreen = connect(mapStateToProps,mapDispatchToProps)(QRScannerScreen);
 
-export default withNavigationFocus(QRScannerScreen, 'QRScanner')
+export default withNavigationFocus(QRScannerScreen, 'QRScannerBottom')
 

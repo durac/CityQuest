@@ -11,10 +11,10 @@ import {Button, Text, Icon, Item, Footer, FooterTab, Label} from "native-base";
 
 const BottomNavigation = TabNavigator(
     {
-        QuestList: { screen: QuestListScreen },
-        MyQuests: { screen: MyQuestsScreen },
-        QRScanner: { screen: QRScannerScreen },
-        Profile: { screen: ProfileScreen }
+        QuestListBottom: { screen: QuestListScreen },
+        MyQuestsBottom: { screen: MyQuestsScreen },
+        QRScannerBottom: { screen: QRScannerScreen },
+        ProfileBottom: { screen: ProfileScreen }
     },
     {
         tabBarPosition: "bottom",
@@ -27,7 +27,7 @@ const BottomNavigation = TabNavigator(
                         <Button
                             vertical
                             active={props.navigationState.index === 0}
-                            onPress={() => props.navigation.navigate("QuestList")}
+                            onPress={() => props.navigation.navigate("QuestListBottom")}
                         >
                             <Icon name="list" />
                             <Text uppercase={false}>Quests</Text>
@@ -35,7 +35,7 @@ const BottomNavigation = TabNavigator(
                         <Button
                             vertical
                             active={props.navigationState.index === 1}
-                            onPress={() => props.navigation.navigate("MyQuests")}
+                            onPress={() => props.navigation.navigate("MyQuestsBottom")}
                         >
                             <Icon name="bulb" />
                             <Text uppercase={false}>MyQuests</Text>
@@ -43,7 +43,7 @@ const BottomNavigation = TabNavigator(
                         <Button
                             vertical
                             active={props.navigationState.index === 2}
-                            onPress={() => props.navigation.navigate("QRScanner")}
+                            onPress={() => props.navigation.navigate("QRScannerBottom")}
                         >
                             <Icon name="qr-scanner" />
                             <Text uppercase={false}>QR</Text>
@@ -51,7 +51,7 @@ const BottomNavigation = TabNavigator(
                         <Button
                             vertical
                             active={props.navigationState.index === 3}
-                            onPress={() => props.navigation.navigate("Profile")}
+                            onPress={() => props.navigation.navigate("ProfileBottom")}
                         >
                             <Icon name="person" />
                             <Text uppercase={false}>Profil</Text>

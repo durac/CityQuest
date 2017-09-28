@@ -63,7 +63,7 @@ public class QuestStationServiceImpl implements QuestStationService{
         isActive(quest);
         QuestStation current = currentStation(quest, user);
         if(current == null) {
-            return null;
+            throw new BadRequestException("You already finished the quest");
         }
         //Compare answer with solution
         String solution = current.getRiddle().getSolution();
@@ -76,25 +76,27 @@ public class QuestStationServiceImpl implements QuestStationService{
         solved.setEndDate(deliveryDate);
         solvedQuestStationRepo.save(solved);
         QuestStation next = questStationRepo.findByQuestAndSeqNr(quest, current.getSeqNr()+1);
-        if(next != null){
-            SolvedQuestStation start = new SolvedQuestStation(user, next, deliveryDate, false);
-            solvedQuestStationRepo.save(start);
+        if(next == null){
+            QuestStationDto currentDto = QuestStationDto.of(current);
+            currentDto.setFinished(true);
+            return currentDto;
         }
-
+        SolvedQuestStation start = new SolvedQuestStation(user, next, deliveryDate, false);
+        solvedQuestStationRepo.save(start);
         return QuestStationDto.of(next);
     }
 
     @Override
     public QuestStationDto nextRiddle(Long questId, String code, String accessToken) throws ApiException {
         String auth0UserId = UserInfo.getAuth0UserId(accessToken);
-        logger.info("riddle for quest "+ questId +" and user "+ auth0UserId +"with code: "+ code);
+        logger.info("riddle for quest "+ questId +" and user "+ auth0UserId +" with code: "+ code);
 
         Quest quest = questRepo.findOne(questId);
         User user = userRepo.findByAuth0Id(auth0UserId);
         isActive(quest);
         QuestStation current = currentStation(quest, user);
         if(current == null) {
-            return null;
+            throw new BadRequestException("You already finished the quest");
         }
         if (current.getSeqNr() != 1 && !code.equalsIgnoreCase(current.getQrcode())) {
             throw new BadRequestException("Wrong code!");
@@ -156,7 +158,11 @@ public class QuestStationServiceImpl implements QuestStationService{
                 }
             }
         }
-        return null;
+        QuestStationDto currentDto = QuestStationDto.of(questStations.get(questStations.size()-1));
+        if(currentDto != null) {
+            currentDto.setFinished(true);
+        }
+        return currentDto;
     }
 
 }

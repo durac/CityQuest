@@ -24,7 +24,8 @@ const availableQuests = (state = {
     switch (action.type) {
         case ActionTypes.AVAILABLE_QUESTS_REQUEST:
             return Object.assign({}, state, {
-                isFetching: true
+                isFetching: true,
+                error: ''
             });
         case ActionTypes.AVAILABLE_QUESTS_FAILURE:
             return Object.assign({}, state, {
@@ -86,7 +87,9 @@ const userQuests = (state = userQuestsInitialState, action) => {
     switch (action.type) {
         case ActionTypes.USER_QUESTS_REQUEST:
             return Object.assign({}, state, {
-                isFetching: true
+                isFetching: true,
+                error: '',
+                registerError: ''
             });
         case ActionTypes.USER_QUESTS_FAILURE:
             return Object.assign({}, state, {
