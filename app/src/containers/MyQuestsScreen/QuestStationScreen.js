@@ -47,7 +47,7 @@ class QuestStationScreen extends Component {
             return (
                 <Container>
                     <CityQuestHeader title='' includeBackIcon={true} navigation={navigation}/>
-                    <View style={s.contentView}><Spinner color='#634405'/></View>
+                    <View style={s.contentView}><Spinner/></View>
                 </Container>
             );
         }

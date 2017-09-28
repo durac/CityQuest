@@ -2,58 +2,96 @@
  * Created by Dominik Schwarz on 08.09.2017.
  */
 import React, {Component} from "react";
-import { StackNavigator } from 'react-navigation';
-import {Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, Spinner} from 'native-base';
+import { StyleSheet, View, Image } from "react-native";
+import {Container, Content, Icon, Text, Spinner, H1} from 'native-base';
 import CityQuestHeader from "../CityQuestHeader";
 import { connect } from 'react-redux';
 import LoginPlaceholder from "../../components/LoginPlaceholder";
+import { getUserinfo } from "../../actions/authActions"
+import s from "../../style/Style";
 
 class ProfileScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-        };
     }
 
     componentDidMount() {
+        const {isLoggedIn, accessToken, getUserinfo} = this.props;
+        if(isLoggedIn) {
+            getUserinfo(accessToken);
+        }
     }
 
+    componentWillReceiveProps(nextProps) {
+        const {isLoggedIn, accessToken, getUserinfo} = this.props;
+        if (nextProps.isLoggedIn && !isLoggedIn) {
+            getUserinfo(nextProps.accessToken);
+        }
+    }
 
     render() {
-        const { isLoggedIn } = this.props;
-        if (!isLoggedIn) {
-            return (
-                <Container>
+        const { isLoggedIn, isFetching, userinfo } = this.props;
+        if (isFetching) {
+            return <Container>
                     <CityQuestHeader title='Profil'/>
-                    <LoginPlaceholder />
-                </Container>
-            );
+                    <View style={s.contentView}><Spinner/></View>
+                </Container>;
         }
         return (
             <Container>
                 <CityQuestHeader title='Profil'/>
-                <Content>
-                    <Text>
-                        Profile
-                    </Text>
-                </Content>
+                {!isLoggedIn ? <LoginPlaceholder />
+                : <Content>
+                    <Image source={require('../../../assets/profileBG.png')} style={styles.profileBackground}>
+                        <Image source={{uri: userinfo.picture}} style={styles.avatar}/>
+                        <H1 style={styles.nameText}>{userinfo.nickname}</H1>
+                    </Image>
+                </Content>}
             </Container>
         );
     }
 }
 
+const styles = StyleSheet.create({
+    profileBackground: {
+        width: null,
+        height: 200,
+        justifyContent: 'flex-end',
+        alignItems: 'stretch',
+        backgroundColor: "lightgray"
+    },
+    avatar: {
+        width: 120,
+        height: 120,
+        borderRadius: 60,
+        alignSelf: 'center'
+    },
+    nameText: {
+        fontSize: 32,
+        lineHeight: 42,
+        fontWeight: "bold",
+        paddingLeft: 20,
+        color: "#fff",
+        paddingVertical: 10
+    }
+});
 
 const mapStateToProps = (state) => {
     return {
-        isLoggedIn: state.auth.isLoggedIn
+        isFetching: state.auth.isFetching,
+        isLoggedIn: state.auth.isLoggedIn,
+        accessToken: state.auth.accessToken,
+        userinfo: state.auth.userinfo
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        getUserinfo: (accessToken) => {
+            dispatch(getUserinfo(accessToken))
         }
+    }
 };
 
 export default connect(

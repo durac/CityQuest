@@ -8,8 +8,10 @@ import * as ActionTypes from "../actions/authActions.js";
 const jwtDecode = require('jwt-decode');
 
 let initialState = {
+    isFetching: false,
     accessToken: null,
     isLoggedIn: false,
+    userinfo: {},
     error: ''
 };
 
@@ -59,7 +61,24 @@ const auth = (state = initialState, action) => {
         case ActionTypes.LOGOUT_SUCCESS:
             return Object.assign({}, state, {
                 isLoggedIn: false,
-                accessToken: null
+                accessToken: null,
+                userinfo: {}
+            });
+        case ActionTypes.USERINFO_REQUEST:
+            return Object.assign({}, state, {
+                isFetching: true,
+                error: ''
+            });
+        case ActionTypes.USERINFO_SUCCESS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                userinfo: action.userinfo,
+                error: ''
+            });
+        case ActionTypes.USERINFO_ERROR:
+            return Object.assign({}, state, {
+                isFetching: false,
+                error: action.error
             });
         default:
             return state

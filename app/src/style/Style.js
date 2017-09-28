@@ -38,14 +38,15 @@ export default StyleSheet.create({
     },
     headerImage: {
         height: 200,
-        resizeMode: 'cover'
+        resizeMode: 'cover',
+        justifyContent: 'flex-end'
     },
     detailsTitle: {
         fontSize: 37,
         lineHeight: 42,
         fontWeight: "bold",
         paddingLeft: 20,
-        paddingTop: 140,
+        paddingVertical: 10,
         color: "#fff"
     },
     description: {

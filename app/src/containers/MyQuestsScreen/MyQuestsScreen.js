@@ -79,7 +79,7 @@ class MyQuestsScreen extends Component {
             return <LoginPlaceholder />
         }
         if (isFetching && !fixedQuests.length && !eventQuests.length) {
-            return <View style={s.contentView}><Spinner color='#634405'/></View>;
+            return <View style={s.contentView}><Spinner/></View>;
         }
         return (
             <Container>
