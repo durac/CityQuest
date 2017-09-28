@@ -48,7 +48,7 @@ const nextRiddle = (questId, code) => {
     return {
         [CALL_API]: {
             types: [ NEXT_RIDDLE_REQUEST, NEXT_RIDDLE_SUCCESS, NEXT_RIDDLE_FAILURE ],
-            endpoint: 'nextRiddle?questId='+questId+'&code='+code,
+            endpoint: 'getRiddle?questId='+questId+'&code='+code,
             method: 'GET',
             schema: schema.questStation,
             authenticatedRequest: true

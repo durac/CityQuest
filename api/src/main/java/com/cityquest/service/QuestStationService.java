@@ -14,5 +14,5 @@ public interface QuestStationService {
 
     QuestStationDto nextQuestStation(Long questId, String answer, String accessToken) throws ApiException;
 
-    QuestStationDto nextRiddle(Long questId, String code, String accessToken) throws ApiException;
+    QuestStationDto getRiddle(Long questId, String code, String accessToken) throws ApiException;
 }

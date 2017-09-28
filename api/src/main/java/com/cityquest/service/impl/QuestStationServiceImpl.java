@@ -87,7 +87,7 @@ public class QuestStationServiceImpl implements QuestStationService{
     }
 
     @Override
-    public QuestStationDto nextRiddle(Long questId, String code, String accessToken) throws ApiException {
+    public QuestStationDto getRiddle(Long questId, String code, String accessToken) throws ApiException {
         String auth0UserId = UserInfo.getAuth0UserId(accessToken);
         logger.info("riddle for quest "+ questId +" and user "+ auth0UserId +" with code: "+ code);
 
