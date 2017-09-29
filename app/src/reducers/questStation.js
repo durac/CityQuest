@@ -3,6 +3,7 @@
  */
 import React from "react";
 import * as ActionTypes from "../actions/questStationActions.js";
+import * as AuthActionTypes from "../actions/authActions.js";
 import { combineReducers } from 'redux';
 
 const byId = (state = {
@@ -45,6 +46,12 @@ const currentQuestStation = (state = {
                 id: action.response.result,
                 error: '',
                 isFetching: false
+            });
+        case AuthActionTypes.LOGOUT_SUCCESS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                id: -1,
+                error: ''
             });
         default:
             return state

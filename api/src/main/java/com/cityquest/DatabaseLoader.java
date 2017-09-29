@@ -150,8 +150,8 @@ public class DatabaseLoader implements CommandLineRunner {
     private void saveEventQuests() throws Exception {
         this.eventQuestRepo.save(new EventQuest("Logic Quest", QuestStatus.ACTIVE,
                 "Eine Reihe kniffliger Logikrätsel wartet auf euch. Seit ihr bereit? Aufgeben ist keine Option!",
-                QuestDifficulty.HARD, 120, 2.0, "Stadtpark", "https://i.imgur.com/3207Wla.png", dateFormat.parse("2017-10-01 18:00"),
-                dateFormat.parse("2017-10-02 00:00"), 10, 100, dateFormat.parse("2017-09-15 10:00"),
+                QuestDifficulty.HARD, 120, 2.0, "Stadtpark", "https://i.imgur.com/3207Wla.png", dateFormat.parse("2017-09-29 15:40"),
+                dateFormat.parse("2017-09-29 23:00"), 10, 100, dateFormat.parse("2017-09-15 10:00"),
                 dateFormat.parse("2017-10-01 15:00"), ""));
         this.eventQuestRepo.save(new EventQuest("Prater Gaudi", QuestStatus.ACTIVE,
                 "Entdecke den historischen und modernen Prater auf einer neuen Art und Weise. Viel Spaß!", QuestDifficulty.MEDIUM, 90, 3.5,

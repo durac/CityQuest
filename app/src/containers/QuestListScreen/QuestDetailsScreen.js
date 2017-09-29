@@ -8,7 +8,6 @@ import {Container, Content, Spinner, Button, Icon, Text, H1, H2, Grid, Col} from
 import Moment from "moment";
 import CityQuestHeader from "../../components/CQHeader";
 import { postRegisterForQuest, postUnregisterFromQuest } from "../../actions/questsActions";
-import { loadCurrentQuestStation } from "../../actions/questStationActions";
 import { login } from '../../actions/authActions';
 import { getQuest, getRegisterErrorMessage, getUserQuestsIsFetching } from "../../reducers/quests";
 import { connect } from "react-redux";
@@ -27,13 +26,12 @@ class QuestDetailsScreen extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { quest, error, firstRiddle, navigation, isLoggedIn } = this.props;
+        const {quest, error, navigation} = this.props;
         if (!error && nextProps.error) {
             errorMessage(nextProps.error, 'danger', 'Okay');
         }
-        if (!quest.startDate) {
-            if((!quest.registered && nextProps.quest.registered) || (isLoggedIn && quest.registered)) {
-                firstRiddle(quest.id);
+        if ((!quest.registered && nextProps.quest.registered) || (nextProps.isLoggedIn && quest.registered)) {
+            if (!quest.startDate || (Moment(quest.startDate) < Moment() && Moment(quest.endDate) > Moment())) {
                 resetNavigation(navigation, 'QLQuestStation', 'QuestList', quest.id);
             }
         }
@@ -85,10 +83,11 @@ class QuestDetailsScreen extends Component {
                             </Col>
                         </Grid>
                         {
-                            quest.registered ?
+                            !quest.registered ?
+                                <Button bordered block style={{marginTop: 50, borderRadius: 10}} onPress={() => this.ensureLoggedInRegistering(quest)}><Text>Los gehts!</Text></Button>
+                                : quest.status == 'ACTIVE' ?
                                 <Button bordered danger block style={{marginTop: 50, borderRadius: 10}} onPress={() => this.ensureLoggedInRegistering(quest)}><Text>Abmelden</Text></Button>
-                                : <Button bordered block style={{marginTop: 50, borderRadius: 10}} onPress={() => this.ensureLoggedInRegistering(quest)}><Text>Los gehts!</Text></Button>
-
+                                : undefined //quest closed
                         }
                 </Content>
                 </Content>
@@ -116,9 +115,6 @@ const mapDispatchToProps = (dispatch) => {
         },
         unregisterFromQuest: (questId) => {
             dispatch(postUnregisterFromQuest(questId))
-        },
-        firstRiddle: (questId) => {
-            dispatch(loadCurrentQuestStation(questId))
         }
     }
 };

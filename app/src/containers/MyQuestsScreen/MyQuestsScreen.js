@@ -9,7 +9,6 @@ import QuestList from "../../components/QuestList";
 import CQLoginPlaceholder from "../../components/CQLoginPlaceholder";
 import { connect } from "react-redux";
 import { loadUserFixedQuests, loadUserEventQuests } from "../../actions/questsActions.js";
-import { loadCurrentQuestStation } from "../../actions/questStationActions";
 import {
     getUserFixedQuests,
     getUserEventQuests,
@@ -18,6 +17,7 @@ import {
 } from "../../reducers/quests";
 import { errorMessage } from "../../utils/Utils"
 import s from "../../style/Style";
+import Moment from "moment";
 
 class MyQuestsScreen extends Component {
 
@@ -60,9 +60,8 @@ class MyQuestsScreen extends Component {
     }
 
     onFixedQuestClick(quest) {
-        const { navigation, currenQuestStation } = this.props;
+        const { navigation } = this.props;
         if (quest.registered && quest.status == 'ACTIVE') {
-            currenQuestStation(quest.id);
             navigation.navigate('QuestStation', {questId: quest.id});
         } else {
             navigation.navigate('MyQuestDetails', {questId: quest.id});
@@ -70,7 +69,13 @@ class MyQuestsScreen extends Component {
     }
 
     onEventQuestClick(quest) {
-        this.props.navigation.navigate('MyQuestDetails', {questId: quest.id});
+        const { navigation } = this.props;
+        const now = new Date();
+        if (quest.registered && quest.status == 'ACTIVE' && Moment(quest.startDate) < Moment() && Moment(quest.endDate) > Moment()) {
+            navigation.navigate('QuestStation', {questId: quest.id});
+        } else {
+            navigation.navigate('MyQuestDetails', {questId: quest.id});
+        }
     }
     
     render() {
@@ -89,7 +94,7 @@ class MyQuestsScreen extends Component {
                                    onQuestClick={(quest) => this.onFixedQuestClick(quest)}/>
                         {this.props.eventQuests.length > 0 &&
                         <H3 style={{marginLeft : 8, marginTop: 5}}>Event-Quests</H3>}
-                        <QuestList quests={eventQuests}
+                        <QuestList quests={eventQuests} isEvent={true}
                                    onQuestClick={(quest) => this.onEventQuestClick(quest)}/>
                         <View style={{marginTop : 5}}/>
                     </View>
@@ -116,9 +121,6 @@ const mapDispatchToProps = (dispatch) => {
         },
         loadUserEventQuests: () => {
             dispatch(loadUserEventQuests())
-        },
-        currenQuestStation: (questId) => {
-            dispatch(loadCurrentQuestStation(questId))
         }
     }
 };

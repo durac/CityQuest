@@ -52,11 +52,11 @@ class ProfileScreen extends Component {
                         <Col style={s.profileCol}>
                             <Row style={s.profileElement}>
                                 <Text style={{marginTop: 20}}>#Quests</Text>
-                                <H1 style={s.profileElementNumber}>{fixedQuestsNumber+eventQuestsNumber}</H1>
+                                <H1 style={s.profileElementNumber}> {fixedQuestsNumber+eventQuestsNumber} </H1>
                             </Row>
                             <Row style={s.profileElement}>
                                 <Text style={{marginTop: -30}}>#Fixed</Text>
-                                <H1 style={s.profileElementNumber}>{fixedQuestsNumber}</H1>
+                                <H1 style={s.profileElementNumber}> {fixedQuestsNumber} </H1>
                             </Row>
                         </Col>
                         <Col style={s.profileCol}>
@@ -66,7 +66,7 @@ class ProfileScreen extends Component {
                             </Row>
                             <Row style={s.profileElement}>
                                 <Text style={{marginTop: -30}}>#Events</Text>
-                                <H1 style={s.profileElementNumber}>{eventQuestsNumber}</H1>
+                                <H1 style={s.profileElementNumber}> {eventQuestsNumber} </H1>
                             </Row>
                         </Col>
                     </Grid>

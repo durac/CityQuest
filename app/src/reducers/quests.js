@@ -3,6 +3,7 @@
  */
 import React from "react";
 import * as ActionTypes from "../actions/questsActions.js";
+import * as AuthActionTypes from "../actions/authActions.js";
 import { combineReducers } from 'redux';
 
 const byId = (state = {}, action) => {
@@ -119,6 +120,14 @@ const userQuests = (state = userQuestsInitialState, action) => {
             return handleRegistering(state, action);
         case ActionTypes.UNREGISTER_QUEST_SUCCESS:
             return handleUnregistering(state, action);
+        case AuthActionTypes.LOGOUT_SUCCESS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                eventQuestIds: [],
+                fixedQuestIds: [],
+                error: '',
+                registerError: ''
+            });
         default:
             return state
     }

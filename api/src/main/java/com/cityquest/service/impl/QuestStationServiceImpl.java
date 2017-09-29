@@ -146,17 +146,23 @@ public class QuestStationServiceImpl implements QuestStationService{
         }
 
         List<QuestStation> questStations = questStationRepo.findByQuestOrderBySeqNrAsc(quest);
+        Boolean started = false;
         for (QuestStation station : questStations) {
             for(SolvedQuestStation solved : station.getUsers()) {
-                if(solved.getUser().equals(user) && solved.getStartDate() != null &&
-                        solved.getEndDate() == null) {
-                    QuestStationDto currentDto = QuestStationDto.of(station);
-                    if(solved.getScannedQR()) {
-                        currentDto.setRiddle(RiddleDto.of(station.getRiddle()));
+                if(solved.getUser().equals(user)) {
+                    started = true;
+                    if(solved.getStartDate() != null && solved.getEndDate() == null) {
+                        QuestStationDto currentDto = QuestStationDto.of(station);
+                        if(solved.getScannedQR()) {
+                            currentDto.setRiddle(RiddleDto.of(station.getRiddle()));
+                        }
+                        return currentDto;
                     }
-                    return currentDto;
                 }
             }
+        }
+        if(!started) {
+            throw new ApiException("No active quest station");
         }
         QuestStationDto currentDto = QuestStationDto.of(questStations.get(questStations.size()-1));
         if(currentDto != null) {

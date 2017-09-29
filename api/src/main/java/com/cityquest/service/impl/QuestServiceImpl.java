@@ -96,12 +96,14 @@ public class QuestServiceImpl implements QuestService {
         questList.add(quest);
         userRepo.save(user);
 
-        if(quest instanceof FixedQuest) {
-            List<QuestStation> stations = questStationRepo.findByQuestOrderBySeqNrAsc(quest);
-            if(!stations.isEmpty()){
-                SolvedQuestStation start = new SolvedQuestStation(user, stations.get(0), new Date(), true);
-                solvedQuestStationRepo.save(start);
+        List<QuestStation> stations = questStationRepo.findByQuestOrderBySeqNrAsc(quest);
+        if(!stations.isEmpty()){
+            Date startDate = new Date();
+            if(quest instanceof EventQuest) {
+                startDate = ((EventQuest) quest).getStartDate();
             }
+            SolvedQuestStation start = new SolvedQuestStation(user, stations.get(0), startDate, true);
+            solvedQuestStationRepo.save(start);
         }
 
         QuestDto registeredQuest = QuestDto.of(quest);

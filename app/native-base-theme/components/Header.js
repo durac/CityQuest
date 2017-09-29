@@ -195,7 +195,7 @@ export default (variables = variable) => {
 			alignItems: "flex-start",
 		},
 		"NativeBase.Body": {
-			flex: 1,
+			flex: 2.5,
 			alignItems: platform === "ios" && platformStyle !== "material" ? "center" : "flex-start",
 			alignSelf: "center",
 			"NativeBase.Segment": {

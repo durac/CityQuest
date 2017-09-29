@@ -8,15 +8,15 @@ import CityQuestHeader from "../../components/CQHeader";
 import QuestList from "../../components/QuestList";
 import {connect} from "react-redux";
 import { loadFixedQuests, loadEventQuests } from "../../actions/questsActions";
-import { loadCurrentQuestStation } from "../../actions/questStationActions";
 import {
     getAvailableFixedQuests,
     getAvailableEventQuests,
     getAvailableQuestsIsFetching,
     getAvailableQuestsErrorMessage
 } from "../../reducers/quests";
-import { errorMessage, resetNavigation } from "../../utils/Utils";
+import { errorMessage } from "../../utils/Utils";
 import s from "../../style/Style";
+import Moment from "moment";
 
 class QuestListScreen extends Component {
 
@@ -53,9 +53,8 @@ class QuestListScreen extends Component {
     }
 
     onFixedQuestClick(quest) {
-        const { navigation, currenQuestStation, isLoggedIn } = this.props;
-        if (quest.registered && isLoggedIn) {
-            currenQuestStation(quest.id);
+        const { navigation, isLoggedIn } = this.props;
+        if (isLoggedIn && quest.registered) {
             navigation.navigate('QuestStation', {questId: quest.id});
         } else {
             navigation.navigate('QuestDetails', {questId: quest.id});
@@ -63,7 +62,12 @@ class QuestListScreen extends Component {
     }
 
     onEventQuestClick(quest) {
-        this.props.navigation.navigate('QuestDetails', {questId: quest.id});
+        const { navigation, isLoggedIn } = this.props;
+        if (isLoggedIn && quest.registered && Moment(quest.startDate) < Moment() && Moment(quest.endDate) > Moment()) {
+            navigation.navigate('QuestStation', {questId: quest.id});
+        } else {
+            navigation.navigate('QuestDetails', {questId: quest.id});
+        }
     }
 
     render() {
@@ -108,9 +112,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
         },
         loadEventQuests: () => {
             dispatch(loadEventQuests(isLoggedIn))
-        },
-        currenQuestStation: (questId) => {
-            dispatch(loadCurrentQuestStation(questId))
         }
     }
 };

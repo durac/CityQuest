@@ -27,8 +27,10 @@ class QRScannerScreen extends Component {
         if (!this.props.error && nextProps.error) {
             errorMessage(nextProps.error, 'danger', 'Okay');
         }
-        if (this.props.questStation && !this.props.questStation.riddle && nextProps.questStation.riddle) {
+        if (this.state.questId && this.props.questStation && !this.props.questStation.riddle &&
+            nextProps.questStation && nextProps.questStation.riddle) {
             resetNavigation(this.props.navigation, 'QLQuestStation', 'QuestList', this.state.questId);
+            this.setState({questId: undefined});
         }
     }
 
@@ -98,5 +100,5 @@ const mapDispatchToProps = (dispatch) => {
 
 QRScannerScreen = connect(mapStateToProps,mapDispatchToProps)(QRScannerScreen);
 
-export default withNavigationFocus(QRScannerScreen, 'QRScannerBottom')
+export default withNavigationFocus(QRScannerScreen, 'QRScannerBottom', false)
 

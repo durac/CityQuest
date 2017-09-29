@@ -5,9 +5,9 @@ import React, {Component} from "react";
 import { View } from "react-native";
 import { Container, Spinner, Content, Button, Text, H1, H2, Form, Item, Input, Icon} from "native-base";
 import CityQuestHeader from "../../components/CQHeader";
-import { submitAnswer} from "../../actions/questStationActions.js";
 import { connect } from "react-redux";
 import { errorMessage } from "../../utils/Utils";
+import { submitAnswer, loadCurrentQuestStation} from "../../actions/questStationActions.js";
 import { getCurrentQuestStation, getCurrentRiddle, getErrorMessage, getIsFetching} from "../../reducers/questStation";
 import MapView from "react-native-maps";
 import s from "../../style/Style";
@@ -26,6 +26,7 @@ class QuestStationScreen extends Component {
     }
 
     componentDidMount() {
+        this.props.loadCurrentQuestStation(this.props.questId);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -43,7 +44,7 @@ class QuestStationScreen extends Component {
 
     render() {
         const { questStation, riddle, isFetching, navigation } = this.props;
-        if (isFetching) {
+        if (isFetching || !questStation) {
             return (
                 <Container>
                     <CityQuestHeader title='' includeBackIcon={true} navigation={navigation}/>
@@ -123,6 +124,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         submitAnswer: (questId, answer) => {
             dispatch(submitAnswer(questId, answer))
+        },
+        loadCurrentQuestStation: (questId) => {
+            dispatch(loadCurrentQuestStation(questId))
         }
     }
 };
