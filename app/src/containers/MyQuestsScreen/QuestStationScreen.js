@@ -4,7 +4,7 @@
 import React, {Component} from "react";
 import { View } from "react-native";
 import { Container, Spinner, Content, Button, Text, H1, H2, Form, Item, Input, Icon} from "native-base";
-import CityQuestHeader from "../CityQuestHeader";
+import CityQuestHeader from "../../components/CQHeader";
 import { submitAnswer} from "../../actions/questStationActions.js";
 import { connect } from "react-redux";
 import { errorMessage } from "../../utils/Utils";

@@ -4,7 +4,7 @@
 import React, {Component} from "react";
 import {View, RefreshControl} from "react-native";
 import {Container, Header, Title, Content, Text, Spinner, H3} from "native-base";
-import CityQuestHeader from "../CityQuestHeader";
+import CityQuestHeader from "../../components/CQHeader";
 import QuestList from "../../components/QuestList";
 import {connect} from "react-redux";
 import { loadFixedQuests, loadEventQuests } from "../../actions/questsActions";

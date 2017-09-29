@@ -79,5 +79,35 @@ export default StyleSheet.create({
         fontSize: 18,
         color: 'grey', 
         textAlign: 'center'
+    },
+    profileBackground: {
+        width: null,
+        height: 200,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        backgroundColor: '#4f3603'
+    },
+    profileAvatar: {
+        width: 120,
+        height: 120,
+        borderRadius: 60
+    },
+    profileNameText: {
+        fontSize: 32,
+        lineHeight: 42,
+        fontWeight: "bold",
+        color: "#fff",
+        paddingVertical: 10
+    },
+    profileCol: {
+        alignItems: 'center'
+    },
+    profileElement: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    profileElementNumber: {
+        paddingTop: 5
     }
 });

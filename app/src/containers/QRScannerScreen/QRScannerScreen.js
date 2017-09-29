@@ -6,7 +6,7 @@ import { InteractionManager, View } from "react-native";
 import { Container, Content, Header, Spinner } from "native-base";
 import Camera from "react-native-camera";
 import { withNavigationFocus } from "react-navigation-is-focused-hoc";
-import CityQuestHeader from "../CityQuestHeader";
+import CityQuestHeader from "../../components/CQHeader";
 import { connect } from 'react-redux';
 import { errorMessage, resetNavigation } from "../../utils/Utils";
 import { loadNextRiddle } from "../../actions/questStationActions";

@@ -4,9 +4,9 @@
 import React, {Component} from "react";
 import { RefreshControl, View } from "react-native";
 import { Container, Content, Text, Spinner, H3} from "native-base";
-import CityQuestHeader from "../CityQuestHeader";
+import CityQuestHeader from "../../components/CQHeader";
 import QuestList from "../../components/QuestList";
-import LoginPlaceholder from "../../components/LoginPlaceholder";
+import CQLoginPlaceholder from "../../components/CQLoginPlaceholder";
 import { connect } from "react-redux";
 import { loadUserFixedQuests, loadUserEventQuests } from "../../actions/questsActions.js";
 import { loadCurrentQuestStation } from "../../actions/questStationActions";
@@ -76,7 +76,7 @@ class MyQuestsScreen extends Component {
     render() {
         const { isLoggedIn, isFetching, fixedQuests, eventQuests } = this.props;
         if (!isLoggedIn) {
-            return <LoginPlaceholder />
+            return <CQLoginPlaceholder/>
         }
         if (isFetching && !fixedQuests.length && !eventQuests.length) {
             return <View style={s.contentView}><Spinner/></View>;

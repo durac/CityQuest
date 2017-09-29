@@ -6,7 +6,7 @@ import {Alert, Image, AsyncStorage, View, StatusBar} from "react-native";
 import {StackNavigator} from "react-navigation";
 import {Container, Content, Spinner, Button, Icon, Text, H1, H2, Grid, Col} from "native-base";
 import Moment from "moment";
-import CityQuestHeader from "../CityQuestHeader";
+import CityQuestHeader from "../../components/CQHeader";
 import { postRegisterForQuest, postUnregisterFromQuest } from "../../actions/questsActions";
 import { loadCurrentQuestStation } from "../../actions/questStationActions";
 import { login } from '../../actions/authActions';

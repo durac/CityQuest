@@ -155,6 +155,12 @@ export const getUserEventQuests = (state) => {
     const ids = state.quests.userQuests.eventQuestIds;
     return ids.map(id => getQuest(state,id))
 };
+export const getNumberOfFixedQuests = (state) => {
+    return state.quests.userQuests.fixedQuestIds.length;
+};
+export const getNumberOfEventQuests = (state) => {
+    return state.quests.userQuests.eventQuestIds.length;
+};
 export const getUserQuestsIsFetching = (state) => state.quests.userQuests.isFetching;
-export const getUserQuestsErrorMessage = (state)=> state.quests.userQuests.error;
-export const getRegisterErrorMessage = (state)=> state.quests.userQuests.registerError;
+export const getUserQuestsErrorMessage = (state) => state.quests.userQuests.error;
+export const getRegisterErrorMessage = (state) => state.quests.userQuests.registerError;
