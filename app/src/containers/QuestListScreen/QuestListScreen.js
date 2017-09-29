@@ -36,8 +36,13 @@ class QuestListScreen extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!this.props.error && nextProps.error) {
+        const { error, isLoggedIn } = this.props;
+        if (!error && nextProps.error) {
             errorMessage(nextProps.error, 'danger', 'Okay');
+        }
+        if (isLoggedIn && !nextProps.isLoggedIn) {
+            this.props.loadFixedQuests(nextProps.isLoggedIn);
+            this.props.loadEventQuests(nextProps.isLoggedIn);
         }
         this.setState({isRefreshing: false});
     }
@@ -48,8 +53,8 @@ class QuestListScreen extends Component {
     }
 
     fetchData() {
-        this.props.loadFixedQuests();
-        this.props.loadEventQuests();
+        this.props.loadFixedQuests(this.props.isLoggedIn);
+        this.props.loadEventQuests(this.props.isLoggedIn);
     }
 
     onFixedQuestClick(quest) {
@@ -101,22 +106,17 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-    const { dispatch } = dispatchProps;
-    const { isLoggedIn } = stateProps;
+const mapDispatchToProps = (dispatch) => {
     return {
-        ...stateProps,
-        ...ownProps,
-        loadFixedQuests: () => {
+        loadFixedQuests: (isLoggedIn) => {
             dispatch(loadFixedQuests(isLoggedIn))
         },
-        loadEventQuests: () => {
+        loadEventQuests: (isLoggedIn) => {
             dispatch(loadEventQuests(isLoggedIn))
         }
     }
 };
 export default connect(
     mapStateToProps,
-    null,
-    mergeProps
+    mapDispatchToProps,
 )(QuestListScreen);
