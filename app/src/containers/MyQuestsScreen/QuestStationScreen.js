@@ -94,7 +94,7 @@ class QuestStationScreen extends Component {
         return (
             <Container>
                 <CityQuestHeader title={questStation.name} includeBackIcon={true} navigation={navigation}/>
-                <Content style={{padding: 20}}>
+                <Content style={{padding: 20}} keyboardShouldPersistTaps={'handled'}>
                     <H1>{riddle.name}</H1>
                     <Text style={{marginTop: 20}}>{riddle.description}</Text>
                     <Form>
