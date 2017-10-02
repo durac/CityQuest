@@ -17,7 +17,6 @@ class QRScannerScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dimensions: undefined,
             ready: false,
             questId: undefined
         };
@@ -26,9 +25,9 @@ class QRScannerScreen extends Component {
     componentWillReceiveProps(nextProps) {
         if (!this.props.error && nextProps.error) {
             errorMessage(nextProps.error, 'danger', 'Okay');
+            this.setState({questId: undefined});
         }
-        if (this.state.questId && this.props.questStation && !this.props.questStation.riddle &&
-            nextProps.questStation && nextProps.questStation.riddle) {
+        if (this.state.questId && nextProps.questStation && nextProps.questStation.riddle) {
             resetNavigation(this.props.navigation, 'QLQuestStation', 'QuestList', this.state.questId);
             this.setState({questId: undefined});
         }
