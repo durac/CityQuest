@@ -51,9 +51,9 @@ class QuestDetailsScreen extends Component {
 
     render() {
         const { quest, isFetching } = this.props;
-        if (isFetching) {
+        /*if (isFetching) {
             return <View style={s.contentView}><Spinner/></View>;
-        }
+        }*/
         return (
             <Container>
                 <Content>

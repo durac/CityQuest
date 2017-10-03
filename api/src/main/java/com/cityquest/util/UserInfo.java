@@ -7,6 +7,8 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,37 +23,41 @@ public class UserInfo {
 
     private static final String USERINFO_URI = "https://cityquest.eu.auth0.com/userinfo";
 
-    private static ResponseEntity<String> getUserInfo(String accessToken) throws RestClientException{
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        headers.put("Authorization", Arrays.asList(accessToken));
-
-        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
-
-        return restTemplate.exchange(USERINFO_URI, HttpMethod.GET, entity, String.class);
-    }
-
-    public static String getAuth0UserId(String accessToken) throws ApiException{
+    public static JSONObject getUserInfo(String accessToken) throws ApiException{
+        logger.info("obtaining userinfo");
         JSONObject jsonObject;
         try {
-            ResponseEntity<String> response = getUserInfo(accessToken);
+
+            RestTemplate restTemplate = new RestTemplate();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+            headers.put("Authorization", Arrays.asList(accessToken));
+
+            HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+
+            ResponseEntity<String> response = restTemplate.exchange(USERINFO_URI, HttpMethod.GET, entity, String.class);
             JSONParser parser = new JSONParser();
             Object obj = parser.parse(response.getBody());
-            jsonObject = (JSONObject) obj;
+            return (JSONObject) obj;
         } catch (RestClientException e) {
             throw new ApiException(e.getMessage());
         } catch (ParseException e) {
-            throw new ApiException("Error while parsing user infos");
+            throw new ApiException("Error parsing user infos");
         }
-        String[] result = jsonObject.get("sub").toString().split("\\|");
-        if (result.length != 2){
-            throw new ApiException("Error while parsing user infos");
-        }
+    }
 
-        return result[1];
+    public static String getAuth0UserId() {
+        logger.info("obtaining auth0 user id from accessToken");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth.getPrincipal() == null || auth.getPrincipal().toString().equals("anonymousUser")) {
+            return null;
+        }
+        String[] sub = auth.getPrincipal().toString().split("\\|");
+        if (sub.length != 2){
+            throw new ApiException("Error obtaining auth0 id");
+        }
+        return sub[1];
     }
 
 }

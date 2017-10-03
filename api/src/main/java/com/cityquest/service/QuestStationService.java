@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 public interface QuestStationService {
 
-    QuestStationDto currentQuestStation(Long questId, String accessToken) throws ApiException;
+    QuestStationDto currentQuestStation(Long questId, String auth0UserId) throws ApiException;
 
-    QuestStationDto nextQuestStation(Long questId, String answer, String accessToken) throws ApiException;
+    QuestStationDto nextQuestStation(Long questId, String answer, String auth0UserId) throws ApiException;
 
-    QuestStationDto getRiddle(Long questId, String code, String accessToken) throws ApiException;
+    QuestStationDto getRiddle(Long questId, String code, String auth0UserId) throws ApiException;
 }

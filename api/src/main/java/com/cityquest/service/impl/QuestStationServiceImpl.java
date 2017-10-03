@@ -11,7 +11,6 @@ import com.cityquest.persistence.repository.QuestStationRepository;
 import com.cityquest.persistence.repository.SolvedQuestStationRepository;
 import com.cityquest.persistence.repository.UserRepository;
 import com.cityquest.service.QuestStationService;
-import com.cityquest.util.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +38,7 @@ public class QuestStationServiceImpl implements QuestStationService{
     @Autowired private UserRepository userRepo;
 
     @Override
-    public QuestStationDto currentQuestStation(Long questId, String accessToken) throws ApiException {
-        String auth0UserId = UserInfo.getAuth0UserId(accessToken);
+    public QuestStationDto currentQuestStation(Long questId, String auth0UserId) throws ApiException {
         logger.info("current quest station for quest " + questId + " and user "+auth0UserId);
 
         Quest quest = questRepo.findOne(questId);
@@ -50,12 +48,11 @@ public class QuestStationServiceImpl implements QuestStationService{
     }
 
     @Override
-    public QuestStationDto nextQuestStation(Long questId, String answer, String accessToken) throws ApiException {
+    public QuestStationDto nextQuestStation(Long questId, String answer, String auth0UserId) throws ApiException {
         if(answer == null) {
             throw new IllegalArgumentException("Answer is not defined");
         }
 
-        String auth0UserId = UserInfo.getAuth0UserId(accessToken);
         logger.info("next quest station for quest " + questId + " and user "+auth0UserId);
 
         Quest quest = questRepo.findOne(questId);
@@ -87,8 +84,7 @@ public class QuestStationServiceImpl implements QuestStationService{
     }
 
     @Override
-    public QuestStationDto getRiddle(Long questId, String code, String accessToken) throws ApiException {
-        String auth0UserId = UserInfo.getAuth0UserId(accessToken);
+    public QuestStationDto getRiddle(Long questId, String code, String auth0UserId) throws ApiException {
         logger.info("riddle for quest "+ questId +" and user "+ auth0UserId +" with code: "+ code);
 
         Quest quest = questRepo.findOne(questId);

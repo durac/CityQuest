@@ -8,7 +8,6 @@ import com.cityquest.exception.BadRequestException;
 import com.cityquest.persistence.model.*;
 import com.cityquest.persistence.repository.*;
 import com.cityquest.service.QuestService;
-import com.cityquest.util.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,20 +40,22 @@ public class QuestServiceImpl implements QuestService {
     @Override
     public List<FixedQuestDto> findFixedQuestsByStatus(QuestStatus status) {
         logger.info("find fixed quests by status " + status);
+
         return fixedQuestRepo.findByStatus(status).stream().map(s -> FixedQuestDto.of(s)).collect(Collectors.toList());
     }
 
     @Override
     public List<EventQuestDto> findOpenedEventQuests() {
         logger.info("find event quests opened for registration");
+
         return eventQuestRepo.findOpenedForRegistration()
                 .stream().map(s -> EventQuestDto.of(s)).collect(Collectors.toList());
     }
 
     @Override
-    public List<FixedQuestDto> findFixedQuestsByStatus(QuestStatus status, String accessToken) throws ApiException {
-        String auth0UserId = UserInfo.getAuth0UserId(accessToken);
+    public List<FixedQuestDto> findFixedQuestsByStatus(QuestStatus status, String auth0UserId) throws ApiException {
         logger.info("find fixed quests by status " + status + " for user "+auth0UserId);
+
         User user = userRepo.findByAuth0Id(auth0UserId);
         return fixedQuestRepo.findByStatus(status).stream().map(q -> {
             FixedQuestDto questDto = FixedQuestDto.of(q);
@@ -64,9 +65,9 @@ public class QuestServiceImpl implements QuestService {
     }
 
     @Override
-    public List<EventQuestDto> findOpenedEventQuests(String accessToken) throws ApiException {
-        String auth0UserId = UserInfo.getAuth0UserId(accessToken);
+    public List<EventQuestDto> findOpenedEventQuests(String auth0UserId) throws ApiException {
         logger.info("find event quests opened for registration for user "+auth0UserId);
+
         User user = userRepo.findByAuth0Id(auth0UserId);
         return eventQuestRepo.findOpenedForRegistration()
                 .stream().map(q -> {
@@ -77,9 +78,7 @@ public class QuestServiceImpl implements QuestService {
     }
 
     @Override
-    public QuestDto registerForQuest(Long questId, String accessToken) throws ApiException {
-
-        String auth0UserId = UserInfo.getAuth0UserId(accessToken);
+    public QuestDto registerForQuest(Long questId, String auth0UserId) throws ApiException {
         logger.info("register quest " + questId + " for auth0-user " + auth0UserId);
 
         Quest quest = questRepo.findOne(questId);
@@ -112,9 +111,7 @@ public class QuestServiceImpl implements QuestService {
     }
 
     @Override
-    public QuestDto unregisterFromQuest(Long questId, String accessToken) throws ApiException {
-
-        String auth0UserId = UserInfo.getAuth0UserId(accessToken);
+    public QuestDto unregisterFromQuest(Long questId, String auth0UserId) throws ApiException {
         logger.info("unregister quest " + questId + " for auth0-user " + auth0UserId);
 
         Quest quest = questRepo.findOne(questId);
@@ -135,23 +132,8 @@ public class QuestServiceImpl implements QuestService {
         return unregisteredQuest;
     }
 
-    private void checkRegistrationPeriod(Quest quest) {
-        if(quest.getStatus() != QuestStatus.ACTIVE) {
-            throw new BadRequestException("Quest is not active");
-        }
-        if (quest instanceof EventQuest) {
-            EventQuest eventQ = (EventQuest) quest;
-            if (eventQ.getRegistrationStart().after(new Date()))
-                throw new BadRequestException("Registration period not started");
-            if (eventQ.getRegistrationEnd().before(new Date()))
-                throw new BadRequestException("Registration period already ended");
-        }
-    }
-
     @Override
-    public List<FixedQuestDto> findFixedQuestsOfUser(String accessToken) throws ApiException {
-
-        String auth0UserId = UserInfo.getAuth0UserId(accessToken);
+    public List<FixedQuestDto> findFixedQuestsOfUser(String auth0UserId) throws ApiException {
         logger.info("find fixed quests of user " + auth0UserId);
 
         User user = userRepo.findByAuth0Id(auth0UserId);
@@ -170,9 +152,7 @@ public class QuestServiceImpl implements QuestService {
     }
 
     @Override
-    public List<EventQuestDto> findEventQuestsOfUser(String accessToken) throws ApiException {
-
-        String auth0UserId = UserInfo.getAuth0UserId(accessToken);
+    public List<EventQuestDto> findEventQuestsOfUser(String auth0UserId) throws ApiException {
         logger.info("find event quests of user " + auth0UserId);
 
         User user = userRepo.findByAuth0Id(auth0UserId);
@@ -188,6 +168,19 @@ public class QuestServiceImpl implements QuestService {
                     return questDto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    private void checkRegistrationPeriod(Quest quest) {
+        if(quest.getStatus() != QuestStatus.ACTIVE) {
+            throw new BadRequestException("Quest is not active");
+        }
+        if (quest instanceof EventQuest) {
+            EventQuest eventQ = (EventQuest) quest;
+            if (eventQ.getRegistrationStart().after(new Date()))
+                throw new BadRequestException("Registration period not started");
+            if (eventQ.getRegistrationEnd().before(new Date()))
+                throw new BadRequestException("Registration period already ended");
+        }
     }
 
 
