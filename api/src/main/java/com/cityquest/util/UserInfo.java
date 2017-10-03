@@ -53,11 +53,7 @@ public class UserInfo {
         if(auth.getPrincipal() == null || auth.getPrincipal().toString().equals("anonymousUser")) {
             return null;
         }
-        String[] sub = auth.getPrincipal().toString().split("\\|");
-        if (sub.length != 2){
-            throw new ApiException("Error obtaining auth0 id");
-        }
-        return sub[1];
+        return auth.getPrincipal().toString();
     }
 
 }

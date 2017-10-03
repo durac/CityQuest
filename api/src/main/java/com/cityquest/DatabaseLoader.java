@@ -61,12 +61,12 @@ public class DatabaseLoader implements CommandLineRunner {
         List<QuestStation> questStations = new ArrayList<>();
         questStationRepo.findAll().iterator().forEachRemaining(questStations::add);
 
-        User u1 = new User("109773705621073945970");
-        User u2 = new User("59afc13fa47a0e4e554ce556");
-        User u3 = new User("597897d0090f0405f833f00a");
-        User u4 = new User("59639f8139ea28315124a316");
-        User u5 = new User("59760241ef91cf39eab3fc51");
-        User u6 = new User("59760bb5090f0405f833c780");
+        User u1 = new User("google-oauth2|109773705621073945970");
+        User u2 = new User("auth0|59afc13fa47a0e4e554ce556 ");
+        User u3 = new User("auth0|597897d0090f0405f833f00a");
+        User u4 = new User("auth0|59639f8139ea28315124a316");
+        User u5 = new User("auth0|59760241ef91cf39eab3fc51");
+        User u6 = new User("auth0|59760bb5090f0405f833c780");
 
         u1.getQuests().add(fixedQuests.get(2));
         u1.getQuests().add(eventQuests.get(2));
