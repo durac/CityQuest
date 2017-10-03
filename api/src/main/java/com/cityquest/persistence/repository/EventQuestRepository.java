@@ -12,7 +12,7 @@ import java.util.List;
 public interface EventQuestRepository extends PagingAndSortingRepository<EventQuest, Long> {
 
     @Query(value="select q from EventQuest q where q.status = com.cityquest.persistence.model.QuestStatus.ACTIVE and "
-            + "q.registrationStart < CURRENT_DATE and q.registrationEnd > CURRENT_DATE")
+            + "q.registrationStart < CURRENT_TIMESTAMP and q.registrationEnd > CURRENT_TIMESTAMP")
     List<EventQuest> findOpenedForRegistration();
 
 
