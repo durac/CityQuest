@@ -4,7 +4,7 @@
 import { AsyncStorage} from "react-native";
 import { normalize } from 'normalizr';
 
-export const API_ROOT = 'http://192.168.0.12:8080/api/';
+export const API_ROOT = 'http://46.101.231.222/api/';
 
 const callApi = (endpoint, method, authenticatedRequest, accessToken) => {
 

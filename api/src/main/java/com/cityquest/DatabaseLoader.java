@@ -81,16 +81,16 @@ public class DatabaseLoader implements CommandLineRunner {
         u5 = this.userRepo.save(u5);
         u6 = this.userRepo.save(u6);
 
-        QuestStation qs1 = questStations.get(7);
-        QuestStation qs2 = questStations.get(8);
-        QuestStation qs3 = questStations.get(9);
-        QuestStation qs4 = questStations.get(10);
-        QuestStation qs5 = questStations.get(11);
+        QuestStation qs1 = questStations.get(4);
+        QuestStation qs2 = questStations.get(5);
+        QuestStation qs3 = questStations.get(6);
+        QuestStation qs4 = questStations.get(7);
+        QuestStation qs5 = questStations.get(8);
 
-        QuestStation qs6 = questStations.get(34);
-        QuestStation qs7 = questStations.get(35);
-        QuestStation qs8 = questStations.get(36);
-        QuestStation qs9 = questStations.get(37);
+        QuestStation qs6 = questStations.get(31);
+        QuestStation qs7 = questStations.get(32);
+        QuestStation qs8 = questStations.get(33);
+        QuestStation qs9 = questStations.get(34);
 
         this.solvedQuestStationRepo.save(
                 new SolvedQuestStation(u1, qs1, dateFormat.parse("2017-09-02 17:00"), dateFormat.parse("2017-09-02 17:13"), true));
@@ -150,13 +150,13 @@ public class DatabaseLoader implements CommandLineRunner {
     private void saveEventQuests() throws Exception {
         this.eventQuestRepo.save(new EventQuest("Logic Quest", QuestStatus.ACTIVE,
                 "Eine Reihe kniffliger Logikrätsel wartet auf euch. Seit ihr bereit? Aufgeben ist keine Option!",
-                QuestDifficulty.HARD, 120, 2.0, "Stadtpark", "https://i.imgur.com/3207Wla.png", dateFormat.parse("2017-10-03 15:40"),
-                dateFormat.parse("2017-10-03 23:00"), 10, 100, dateFormat.parse("2017-09-15 10:00"),
-                dateFormat.parse("2017-10-03 15:00"), ""));
+                QuestDifficulty.HARD, 120, 2.0, "Stadtpark", "https://i.imgur.com/3207Wla.png", dateFormat.parse("2017-10-30 08:40"),
+                dateFormat.parse("2017-10-30 21:00"), 10, 100, dateFormat.parse("2017-09-15 10:00"),
+                dateFormat.parse("2017-10-30 08:35"), ""));
         this.eventQuestRepo.save(new EventQuest("Prater Gaudi", QuestStatus.ACTIVE,
                 "Entdecke den historischen und modernen Prater auf einer neuen Art und Weise. Viel Spaß!", QuestDifficulty.MEDIUM, 90, 3.5,
-                "Prater", "https://i.imgur.com/zeAllnU.png", dateFormat.parse("2017-10-10 18:00"), dateFormat.parse("2017-10-10 23:00"), 20, 200,
-                dateFormat.parse("2017-09-20 10:00"), dateFormat.parse("2017-10-11 15:00"), ""));
+                "Prater", "https://i.imgur.com/zeAllnU.png", dateFormat.parse("2017-10-26 18:00"), dateFormat.parse("2017-10-26 23:00"), 20, 200,
+                dateFormat.parse("2017-09-20 10:00"), dateFormat.parse("2017-10-26 15:00"), ""));
         this.eventQuestRepo.save(new EventQuest("Testing Quest", QuestStatus.CLOSED,
                 "Bei dieser Quest müsst ihr eine Reihe kniffliger Logikrätsel lösen. Aufgeben ist keine Option!",
                 QuestDifficulty.HARD, 130, 7.0, "7. Bezirk", "https://i.imgur.com/3207Wla.png", dateFormat.parse("2017-09-12 18:00"),
@@ -177,12 +177,16 @@ public class DatabaseLoader implements CommandLineRunner {
         List<Riddle> riddles = new ArrayList<>();
         riddleRepo.findAll().iterator().forEachRemaining(riddles::add);
 
-        int j = 0;
-        for (int i = 1; i < 8; i++) {
-            this.questStationRepo.save(
-                    new QuestStation(i, "History Walk #" + i, "", fixedQuests.get(0), riddles.get(j), 48.2027+0.001*i, 16.3591+0.001*i, "code"+j));
-            j++;
-        }
+
+        this.questStationRepo.save(
+                    new QuestStation(1, "History Walk #1", "", fixedQuests.get(0), riddles.get(0), 0.0, 0.0, "code0"));
+        this.questStationRepo.save(
+                new QuestStation(2, "History Walk #2", "", fixedQuests.get(0), riddles.get(1), 48.208706, 16.369790, "code1"));
+        this.questStationRepo.save(
+                new QuestStation(3, "History Walk #3", "", fixedQuests.get(0), riddles.get(2), 48.205884, 16.364205, "code2"));
+        this.questStationRepo.save(
+                new QuestStation(4, "History Walk #4", "", fixedQuests.get(0), riddles.get(3),  48.204565, 16.360897, "code3"));
+        int j=4;
         for (int i = 1; i < 6; i++) {
             this.questStationRepo.save(
                     new QuestStation(i, "Already Closed #" + i, "", fixedQuests.get(2), riddles.get(j), 48.2027+0.001*i, 16.3591+0.001*i, "code"+j));
@@ -211,16 +215,20 @@ public class DatabaseLoader implements CommandLineRunner {
     }
 
     private void saveRiddles() {
-        this.riddleRepo.save(new Riddle("Riddle #1",
-                "What time of day, when written in a capital letters, is the same forwards, backwards and upside down?",
-                "Noon", RiddleType.NORMAL, RiddleCategory.LOGIC));
-        this.riddleRepo.save(new Riddle("Riddle #2", "Laughing Out?", "Loud", RiddleType.NORMAL, RiddleCategory.LOGIC));
+        this.riddleRepo.save(new Riddle("Das Wahrzeichen",
+                "Wie hoch ist der nicht fertiggestellte nördliche Turm des Stephansdoms (in Meter)?",
+                "68", RiddleType.NORMAL, RiddleCategory.HISTORY));
+        this.riddleRepo.save(new Riddle("Pestsäule", "Du befindest dich nun genau vor der Pestsäule! Diese barokke Säule wurde nach der Pestepidemie 1679 errichtet. "
+                + "Es befinden sich drei große Inschriften auf verschiedenen Seiten. Ergänze: Deo Filio ...",
+                "Redemptori", RiddleType.NORMAL, RiddleCategory.HISTORY));
         this.riddleRepo.save(
-                new Riddle("Riddle #3", "What five-letter word becomes shorter when you add two letters to it?", "Short",
+                new Riddle("Die Hofburg", "Gut gemacht! Du hast den nächsten Code gefunden. In diesem Moment stehst du auf dem Heldenplatz und betrachtest gerade das Prinz-Eugen-Reiterdenkmal, "
+                        + "dahinter befindet sich außerdem die im 13. Jahrhundert erbaute Hofburg. Wann wurde der Bau der Neuen Burg (Nationalbibliothek) begonnen?", "1881",
                         RiddleType.NORMAL, RiddleCategory.LOGIC));
         this.riddleRepo.save(
-                new Riddle("Riddle #4", "What starts with a 'P', ends with an 'E' and has thousands of letters?",
-                        "Post Office", RiddleType.NORMAL, RiddleCategory.LOGIC));
+                new Riddle("Maria Theresia", "Nun sind wir auch schon an der letzten Station unserer historischen Reise durch Wien angekommen! "
+                        + "Das Maria-Theresien-Denkmal befindet sich zwischen dem Naturhistorischen und dem Kunsthistorischen Museum. Wie viele Jahre regierte Maria Theresia als Erzherzogin von Österreich?",
+                        "40", RiddleType.NORMAL, RiddleCategory.LOGIC));
         this.riddleRepo.save(new Riddle("Riddle #5", "Where do fish keep their money?", "Riverbank", RiddleType.NORMAL,
                 RiddleCategory.LOGIC));
         this.riddleRepo.save(new Riddle("Riddle #6",

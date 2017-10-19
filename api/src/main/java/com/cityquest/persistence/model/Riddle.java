@@ -16,7 +16,7 @@ public class Riddle implements Serializable {
 
     @Column(unique = true) private String name;
 
-    private String description;
+    @Column(columnDefinition = "TEXT") private String description;
 
     private String solution;
 
